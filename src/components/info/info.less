@@ -1,0 +1,61 @@
+// @import '../../index.less';
+@main:#9899E4;
+.achieve{
+    width: 100%;
+    height: 100%;
+    // 
+
+    .box{
+        display: flex;
+        flex-wrap:wrap;
+        .item{
+            background-color:@main;
+            width: 20%;
+            margin-right: 16px;
+            margin-bottom: 16px;
+            padding:8px;
+            border-radius: 8px;
+
+            display:flex;
+
+            .left{
+                display: flex;
+                align-items:center;
+            }
+
+            .right{
+                display:flex;
+                flex-direction: column;
+
+                margin-left: 8px;
+            }
+        }
+    }
+
+    
+}
+
+.userInfo{
+    .item{
+        display: flex;
+
+        .title{
+            font-weight:600;
+        }
+        .desc{
+            margin-left:8px;
+        }
+    }
+}
+
+.Record{
+    .tabContent{
+        display: flex;
+        // word-wrap: break-word;
+        white-space:nowrap;
+    }
+}
+
+.Story{
+
+}
