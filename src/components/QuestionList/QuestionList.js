@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/href-no-hash */
 import React, { useState, useEffect } from 'react';
+import { connect } from 'dva';
+import { history } from 'umi';
 import Question from '../qAndA/question';
 
-import { Card, Progress } from 'antd';
+import { Card, Progress, Button } from 'antd';
 import {
   FieldTimeOutlined,
 } from '@ant-design/icons';
@@ -36,30 +38,17 @@ const QuestionList = ({ questionList, mode }) => {
 
   }
 
-  const duration = () => {
-    const { rowValues } = this.props
-    const createTime = new Date(rowValues.create_time).getTime() // 建单时间戳
-    const currentTime = new Date().getTime() // 当前时间戳
-    const durTime = currentTime - createTime
-    let hour = Math.floor(durTime / 1000 / 3600)
-    let minute = Math.floor(durTime / 1000 % 3600 / 60)
-    let second = Math.floor(durTime / 1000 % 3600 % 60)
-    if (hour.toString().length === 1) {
-      hour = `0${hour}`
-    }
-    if (minute.toString().length === 1) {
-      minute = `0${minute}`
-    }
-    if (second.toString().length === 1) {
-      second = `0${second}`
-    }
-    return `${hour} : ${minute} : ${second}`
+  const nextGame = () => {
+    setIndex(0);
+    setGrade(0);
+
+    history.go(window.location.href)
   }
 
   return (
     <div className={styles.box}>
       {(index === totalNum && index !== 0) && <div>
-        <Card title="游戏结束" extra={<a href="#">下一关</a>} style={{ width: 300 }}>
+        <Card title="游戏结束" extra={<Button onClick={nextGame} type='link'>下一关</Button>} style={{ width: 300 }}>
           <p>本次得分为：{grade}</p>
           <a href={window.location.href} onClick={() => {
             setIndex(0);

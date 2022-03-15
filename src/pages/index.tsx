@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 
 import styles from './index.less';
-const namespace = 'questions';
+const namespace = 'user';
 
 // export default function IndexPage({ dispatch, questions, loading }:any) {
 const Game = ({ dispatch, questions, loading }: any) => {
   const getData = (amount: any) => {
     dispatch({
-      type: `${namespace}/testGet`,
+      type: `${namespace}/getUserInfo`,
       payload: {
-        amount,
-        category: 18
+
       },
+    }).then((res: any) => {
+      console.log(res)
     });
   }
   useEffect(() => {

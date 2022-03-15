@@ -40,12 +40,17 @@ const Game = ({ dispatch, questions, loading }) => {
 
 
   function getData(amount) {
+    console.log('userInfo', localStorage.getItem('user'))
     dispatch({
       type: `${namespace}/getQuestions`,
-      payload: {
-        amount,
-        category: 18
-      },
+      // payload: {
+      //   amount,
+      //   category: 18
+      // }, // 测试用数据
+      payload:{
+        chapterId:localStorage.getItem('user').chapterId,
+        pageSize:amount
+      }
     });
   }
   // useEffect(() => {

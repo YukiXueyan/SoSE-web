@@ -12,10 +12,10 @@ const Question = ({ question, onBtnClick }) => {
 
   useEffect(() =>{
     setOptions([])
-    const list = _.get(question, 'incorrect_answers')
+    const list = _.get(question, 'options')
     const optionList = [];
     if(list && list.length){
-      optionList.push(_.get(question, 'correct_answer'))
+      // optionList.push(_.get(question, 'currentAnswer'))
       list.map(item => {
         optionList.push(item)
       })
@@ -25,8 +25,8 @@ const Question = ({ question, onBtnClick }) => {
     }
 
     setOptions(optionList);
-    // setCurrentOption(question.correct_answer);
-    setCurrentOption(_.get(question, 'correct_answer'));
+    // setCurrentOption(question.currentAnswer);
+    setCurrentOption(_.get(question, 'currentAnswer'));
 
   },[question])
 
