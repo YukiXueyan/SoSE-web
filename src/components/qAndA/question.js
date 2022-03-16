@@ -36,11 +36,12 @@ const Question = ({ question, onBtnClick }) => {
         {_.get(question, 'question')}
       </div>
       <div className={styled.options}>
-        {options.map(o => (
+        {options.map((o,index) => (
           <Button
           onClick={() => {
             onBtnClick(o, current_option)
           }}
+          key={index}
           className={styled.optBtn}
           >{o}</Button>
         ))}
