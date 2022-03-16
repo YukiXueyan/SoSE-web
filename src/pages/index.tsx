@@ -12,13 +12,10 @@ const Game = ({ dispatch, questions, loading }: any) => {
       payload: {
 
       },
-    }).then((res: any) => {
-      console.log(res)
-    });
+    })
   }
   useEffect(() => {
     getData(10)
-    console.log('useEffect')
   },[])
 
   return (

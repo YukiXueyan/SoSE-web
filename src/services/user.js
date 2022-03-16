@@ -34,3 +34,11 @@ export async function addUserPoint(data) {
 export async function addNewUser() {
   return request(`${URL}/user/add`, { method: 'POST' })
 }
+// 修改用户名 // name
+export async function updateUser(data) {
+  return request(`${URL}/user/changeInfo?userId=${userId}&${stringify(data)}`, { method: 'PUT',data })
+}
+// 删除数据
+export async function deleteUser(data) {
+  return request(`${URL}/user/delete?userId=${userId}`, { method: 'delete' })
+}

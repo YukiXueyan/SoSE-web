@@ -13,21 +13,32 @@ import {
   userMode,
   userAchieve,
   addUserPoint,
-  addNewUser
+  addNewUser,
+  updateUser,
+  deleteUser
 } from '../services/user'
 
 export default {
     namespace: 'user',
     state: {
-      data:[]
+      data:{}
     },
     reducers: {
-
+      
+      save(state, { payload: user }) {
+        return {
+          data: user[0],
+        };
+      }
     },
     effects: {
       *getUserInfo({ payload }, { call, put }) {
         
         const { status, data } = yield call(userInfo, payload)
+        if(data){
+          localStorage.setItem('user', JSON.stringify(data))
+        }
+        yield put({ type: 'save', payload: data });
         return data;
       },
       *userPassGame({ payload }, { call, put }) {
@@ -53,6 +64,16 @@ export default {
       *addUser({ payload }, { call, put }) {
         
         const { status, data } = yield call(addNewUser, payload)
+        return data;
+      },
+      *updateUserinfo({ payload }, { call, put }) {
+        
+        const { status, data } = yield call(updateUser, payload)
+        return data;
+      },
+      *deleteUser({ payload }, { call, put }) {
+        
+        const { status, data } = yield call(deleteUser, payload)
         return data;
       },
     },

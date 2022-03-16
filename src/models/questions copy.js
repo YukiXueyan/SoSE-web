@@ -49,7 +49,6 @@ export default {
         // const endPointURI = 'http://jsonplaceholder.typicode.com/users';
   
         const puzzle = yield call(request, endPointURI);
-        console.log('queryInitCards', puzzle)
         // yield put({ type: 'addNewCard', payload: puzzle });
       },
       *testGet({ payload }, { call, put }) {  // eslint-disable-line
@@ -73,7 +72,6 @@ export default {
       *userPassGame({ payload }, { call, put }) {
         
         const { status, data } = yield call(passGame, payload)
-        console.log(stringify(payload))
         return data;
         // if (status === 200) {
         //   yield put({

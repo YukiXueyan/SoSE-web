@@ -12,12 +12,14 @@ import styles from './QuestionList.less';
 import ShowTimer from './timer'
 
 
-const QuestionList = ({ questionList, mode }) => {
+const QuestionList = ({ questionList, dispatch, questions, loading }) => {
   const [index, setIndex] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [newQuestion, setQuestion] = useState();
   const [grade, setGrade] = useState(0);
   const [totalNum, setTotalNum] = useState(NaN);
+  
+  const modeId = localStorage.getItem('modeId')
 
 
   useEffect(() => {
@@ -25,14 +27,25 @@ const QuestionList = ({ questionList, mode }) => {
     setQuestion(questionList[0])
     setIndex(0)
   }, [questionList])
+  
 
   useEffect(() => {
     setQuestion(questionList[index])
   }, [index])
+  console.log('QuestionList', questionList, modeId, questions)
 
   const onBtnClick = (option, current_option) => {
     if (option === current_option) {
       setGrade(grade + 20);
+    }else if(modeId !== '0'){
+      dispatch({
+        type: `user/successGame`,
+        payload:{
+          modeId:Number(modeId),
+          grade:grade,
+          number:index,
+        }
+      })
     }
     setIndex(index + 1)
 
@@ -41,9 +54,35 @@ const QuestionList = ({ questionList, mode }) => {
   const nextGame = () => {
     setIndex(0);
     setGrade(0);
-
-    history.go(window.location.href)
+    dispatch({
+      type: `questions/getQuestions`,
+      payload:{
+        chapterId:JSON.parse(localStorage.getItem('user')).chapterId,
+        pageSize:5,
+        pageNum:JSON.parse(localStorage.getItem('user')).checkpoint+1
+      }
+    })
   }
+
+  // useEffect(() => {
+  //   // if(index === totalNum && index !== 0) {
+  //   //   if(String(modeId) === '0'){
+  //   //     dispatch({
+  //   //       type: `user/userPassGame`,
+  //   //       payload:{
+  //   //         chapterId:JSON.parse(localStorage.getItem('user')).chapterId,
+  //   //         checkpoint:JSON.parse(localStorage.getItem('user')).checkpoint+1
+  //   //       }
+  //   //     }).then(() => {
+  //   //       dispatch({
+  //   //         type: `user/getUserInfo`,
+  //   //       })
+  //   //     });
+  //   //   }
+
+
+  //   // }
+  // },[index])
 
   return (
     <div className={styles.box}>
@@ -80,4 +119,15 @@ const QuestionList = ({ questionList, mode }) => {
 QuestionList.propTypes = {
 };
 
-export default QuestionList;
+function mapStateToProps(state) {
+  // const questions = state.questions.data;
+  return {
+    // loading: state.loading.models.questions,
+    // questions
+    ...state
+    // ...listSelector(state, ownProps),
+  };
+}
+
+export default connect(mapStateToProps)(QuestionList);
+

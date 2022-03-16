@@ -11,37 +11,45 @@ import { stringify } from 'qs'
 
 import {
   questionList,
+  addRecord
 } from '../services/questions'
 
 export default {
     namespace: 'questions',
     state: {
-      data:[]
+      data:[],
+      mode:0
     },
     reducers: {
-      'search'(state, { payload: id }) {
-        return state;
-      },
       addNewQuestion(state, { payload: data }) {
+        console.log('addNewQuestion',data)
         return {
+          ...state,
           data: data,
+        };
+      },
+      changeMode(state, { payload: data }) {
+        return {
+          ...state,
+          mode: data,
         };
       },
     },
     effects: {
-      // *getQuestions({ payload }, { call, put }) {  // eslint-disable-line
-      //   // const { call, put } = sagaEffects;
-      //   const {amount, category} = payload;
-      //   const endPointURI = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=easy&type=multiple`;
-  
-      //   const data = yield call(request, endPointURI);
-      //   yield put({ type: 'addNewQuestion', payload: data });
-      // },
+
       *getQuestions({ payload }, { call, put }) {
         
         const { status, data } = yield call(questionList, payload)
         yield put({ type: 'addNewQuestion', payload: data });
         return data;
+      },
+      *successGame({ payload }, { call, put }) {
+        
+        const { status, data } = yield call(addRecord, payload)
+        return data;
+      },
+      *choiceMode({ payload }, { call, put }) {
+        yield put({ type: 'changeMode', payload: data });
       },
       
     },

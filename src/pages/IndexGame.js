@@ -16,7 +16,6 @@ const namespace = 'questions';
 const Game = ({ dispatch, questions, loading }) => {
   const [title, setTitle] = useState('');
   
-
   useEffect(() => {
     const location = window.location.href;
 
@@ -40,23 +39,20 @@ const Game = ({ dispatch, questions, loading }) => {
 
 
   function getData(amount) {
-    console.log('userInfo', localStorage.getItem('user'))
     dispatch({
       type: `${namespace}/getQuestions`,
-      // payload: {
-      //   amount,
-      //   category: 18
-      // }, // 测试用数据
       payload:{
-        chapterId:localStorage.getItem('user').chapterId,
+        chapterId:JSON.parse(localStorage.getItem('user')).chapterId,
         pageSize:amount
       }
-    });
+    }).then(res => {
+      console.log('getData',res)
+      console.log(questions)
+    })
   }
   // useEffect(() => {
   //   getData(amount)
   // },[])
-  // console.log('loading', loading)
   return (
     <div className={styles.box}>
       <TopNav />
