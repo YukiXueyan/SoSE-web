@@ -13,6 +13,7 @@ export async function questionList(data) {
     pageSize:pageSize || 10,
     chapterId:chapterId || 1
   }
+
   return request(`${URL}/question/list?${stringify(param)}`)
 }
 

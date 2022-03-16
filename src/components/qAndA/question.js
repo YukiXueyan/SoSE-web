@@ -6,7 +6,7 @@ import styled from './question.less'
 
 
 const Question = ({ question, onBtnClick }) => {
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(['T','F']);
   const [current_option, setCurrentOption] = useState(null);
 
 
@@ -19,12 +19,14 @@ const Question = ({ question, onBtnClick }) => {
       list.map(item => {
         optionList.push(item)
       })
+      
     optionList.sort(() => {return Math.random() - 0.5});
-    } else{
-      return;
-    }
-
     setOptions(optionList);
+    } else{
+      setOptions(['T','F']);
+    }
+    
+    
     // setCurrentOption(question.currentAnswer);
     setCurrentOption(_.get(question, 'currentAnswer'));
 

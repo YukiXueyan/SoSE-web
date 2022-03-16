@@ -24,7 +24,7 @@ const Game = ({ dispatch, questions, loading }) => {
       getData(10)
     } else if (location.indexOf('endlessMode') !== -1) {
       setTitle('无尽模式')
-      getData(12)
+      getData(4)
     } else {
       getData(5)
     }
@@ -38,16 +38,14 @@ const Game = ({ dispatch, questions, loading }) => {
   // },[])
 
 
-  function getData(amount) {
+  function getData(amount ) {
+    const user = JSON.parse(localStorage.getItem('user'))[0] || JSON.parse(localStorage.getItem('user'))
     dispatch({
       type: `${namespace}/getQuestions`,
       payload:{
-        chapterId:JSON.parse(localStorage.getItem('user')).chapterId,
+        chapterId:user.chapterId,
         pageSize:amount
       }
-    }).then(res => {
-      console.log('getData',res)
-      console.log(questions)
     })
   }
   // useEffect(() => {

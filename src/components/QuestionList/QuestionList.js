@@ -3,13 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
 import Question from '../qAndA/question';
-
 import { Card, Progress, Button } from 'antd';
 import {
   FieldTimeOutlined,
 } from '@ant-design/icons';
 import styles from './QuestionList.less';
 import ShowTimer from './timer'
+
+import MaxCheckpoint from '../../utils/globalData'
 
 
 const QuestionList = ({ questionList, dispatch, questions, loading }) => {
@@ -18,6 +19,7 @@ const QuestionList = ({ questionList, dispatch, questions, loading }) => {
   const [newQuestion, setQuestion] = useState();
   const [grade, setGrade] = useState(0);
   const [totalNum, setTotalNum] = useState(NaN);
+  const [end, setEnd] = useState(false)
   
   const modeId = localStorage.getItem('modeId')
 
@@ -27,28 +29,64 @@ const QuestionList = ({ questionList, dispatch, questions, loading }) => {
     setQuestion(questionList[0])
     setIndex(0)
   }, [questionList])
-  
+
 
   useEffect(() => {
     setQuestion(questionList[index])
   }, [index])
-  console.log('QuestionList', questionList, modeId, questions)
+
+  // 添加游戏记录（非主线模式
+  const addRecord = () => {
+    dispatch({
+      type: `questions/successGame`,
+      payload:{
+        modeId:Number(modeId),
+        grade:grade,
+        number:index,
+      }
+    }).then(() =>{
+      setEnd(true)
+    })
+  }
+
+  // 主线模式通关，修改进度
+  const userPassGame = () => {
+    
+    const user = JSON.parse(localStorage.getItem('user'))[0] || JSON.parse(localStorage.getItem('user'));
+    const nextCheckpoint = Number(user?.checkpoint) === MaxCheckpoint ? 1 :Number(user?.checkpoint)+1;
+    const nextChapterId = Number(user?.checkpoint) === MaxCheckpoint ? Number(user?.chapterId)+1:Number(user?.chapterId);
+
+    console.log(nextCheckpoint, nextChapterId)
+    setEnd(true)
+    dispatch({
+      type: `user/userPassGame`,
+      payload:{
+        chapterId:nextChapterId,
+        checkpoint:nextCheckpoint
+      }
+    }).then(() =>{
+      // dispatch({
+      //   type: `user/getUserInfo`,
+      //   payload:{
+      //   }
+      // }).then(() =>{
+      //   setEnd(false)
+      // })
+    })
+  }
 
   const onBtnClick = (option, current_option) => {
+
     if (option === current_option) {
       setGrade(grade + 20);
-    }else if(modeId !== '0'){
-      dispatch({
-        type: `user/successGame`,
-        payload:{
-          modeId:Number(modeId),
-          grade:grade,
-          number:index,
-        }
-      })
     }
+    if(index+1 === totalNum){
+      setEnd(true)
+      if(String(modeId) === '0'){
+        userPassGame()
+      }
+     }
     setIndex(index + 1)
-
   }
 
   const nextGame = () => {
@@ -59,44 +97,27 @@ const QuestionList = ({ questionList, dispatch, questions, loading }) => {
       payload:{
         chapterId:JSON.parse(localStorage.getItem('user')).chapterId,
         pageSize:5,
-        pageNum:JSON.parse(localStorage.getItem('user')).checkpoint+1
+        pageNum:JSON.parse(localStorage.getItem('user')).checkpoint
       }
     })
   }
 
-  // useEffect(() => {
-  //   // if(index === totalNum && index !== 0) {
-  //   //   if(String(modeId) === '0'){
-  //   //     dispatch({
-  //   //       type: `user/userPassGame`,
-  //   //       payload:{
-  //   //         chapterId:JSON.parse(localStorage.getItem('user')).chapterId,
-  //   //         checkpoint:JSON.parse(localStorage.getItem('user')).checkpoint+1
-  //   //       }
-  //   //     }).then(() => {
-  //   //       dispatch({
-  //   //         type: `user/getUserInfo`,
-  //   //       })
-  //   //     });
-  //   //   }
 
-
-  //   // }
-  // },[index])
-
+  console.log('end', end)
   return (
     <div className={styles.box}>
-      {(index === totalNum && index !== 0) && <div>
+      {(end) && <div>
         <Card title="游戏结束" extra={<Button onClick={nextGame} type='link'>下一关</Button>} style={{ width: 300 }}>
           <p>本次得分为：{grade}</p>
-          <a href={window.location.href} onClick={() => {
+          <a onClick={() => {
             setIndex(0);
             setGrade(0);
+            setEnd(false)
           }}>再试一次</a>
         </Card>
       </div>}
 
-      {(index !== totalNum) && <div>
+      {(!end) && <div>
         <div className={styles.tool}>
           <div className={styles.process}>
             <Progress percent={index*100 / totalNum} showInfo={false} />

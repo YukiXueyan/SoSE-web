@@ -18,13 +18,14 @@ export default {
     namespace: 'questions',
     state: {
       data:[],
-      mode:0
+      mode:0,
+      checkpoint:1,
+      chapterId:1,
     },
     reducers: {
-      addNewQuestion(state, { payload: data }) {
-        console.log('addNewQuestion',data)
+      addNewQuestion(state, { payload: data,param }) {
+        console.log('param', param)
         return {
-          ...state,
           data: data,
         };
       },
@@ -40,7 +41,7 @@ export default {
       *getQuestions({ payload }, { call, put }) {
         
         const { status, data } = yield call(questionList, payload)
-        yield put({ type: 'addNewQuestion', payload: data });
+        yield put({ type: 'addNewQuestion', payload: data,param:payload });
         return data;
       },
       *successGame({ payload }, { call, put }) {

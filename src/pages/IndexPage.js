@@ -14,6 +14,9 @@ const modeBtnList = [
 const IndexPage = ({ dispatch, products }) => {
 
   const [userModeList, setUserModeList] = useState([]);
+  useEffect(() => {
+    localStorage.setItem('modeId', 0)
+  },[]),
   function addNewUser() {
     dispatch({
       type: 'user/addUser',
@@ -86,7 +89,7 @@ const IndexPage = ({ dispatch, products }) => {
       <MainIndex />
       <div className={styles.box}>
 
-        <a href="/game" className={styles.box2}>Getting Started</a>
+        <a href="/game" className={styles.box2} onClick={()=>{localStorage.setItem('modeId', 0)}}>Getting Started</a>
         {renderModeListBtn()}
       </div>
     </div>
