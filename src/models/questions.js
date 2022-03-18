@@ -24,7 +24,6 @@ export default {
     },
     reducers: {
       addNewQuestion(state, { payload: data,param }) {
-        console.log('param', param)
         return {
           data: data,
         };
