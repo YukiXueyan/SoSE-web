@@ -11,7 +11,7 @@ export async function questionList(data) {
   const param = {
     pageNum:pageNum || user.checkpoint|| 0,
     pageSize:pageSize || 10,
-    chapterId:chapterId || 1
+    chapterId:chapterId
   }
 
   return request(`${URL}/question/list?${stringify(param)}`)

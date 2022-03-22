@@ -15,7 +15,8 @@ import {
   addUserPoint,
   addNewUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  unlockMode
 } from '../services/user'
 
 export default {
@@ -49,6 +50,10 @@ export default {
       *getUSerMode({ payload }, { call, put }) {
         
         const { status, data } = yield call(userMode, payload)
+        return data;
+      },
+      *unlockUserMode({payload}, {call,put}){
+        const {status, data} = yield call(unlockMode, payload)
         return data;
       },
       *getUserAchieve({ payload }, { call, put }) {

@@ -14,9 +14,11 @@ const modeBtnList = [
 const IndexPage = ({ dispatch, products }) => {
 
   const [userModeList, setUserModeList] = useState([]);
+
   useEffect(() => {
     localStorage.setItem('modeId', 0)
   },[]),
+
   function addNewUser() {
     dispatch({
       type: 'user/addUser',
@@ -49,6 +51,7 @@ const IndexPage = ({ dispatch, products }) => {
       }
     });
   }
+
   useEffect(() => {
 
     const userId = localStorage.getItem('userId')
@@ -73,7 +76,7 @@ const IndexPage = ({ dispatch, products }) => {
     const btns = [];
     // href={modeBtnList[index]}
     userModeList.map((item, index) => {
-      if (item.feature) {
+      if (item.userId) {
         const btn = <a href={modeBtnList[index]} className={styles.box2} onClick={userChangeMode(item?.modeId)} key={index}>{item.name}</a>
         btns.push(btn);
       } else {

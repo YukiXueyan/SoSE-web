@@ -12,6 +12,10 @@ export async function passGame(data) {
 export async function userMode(data) {
   return request(`${URL}/user/mode/list?userId=${userId}`, { method: 'GET', data })
 }
+// 解锁模式
+export async function unlockMode(data) {
+  return request(`${URL}/user/mode/unlock?userId=${userId}&${stringify(data)}`, { method: 'POST', data })
+}
 //获取用户信息
 // userId
 export function userInfo() {

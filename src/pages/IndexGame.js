@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import styles from './IndexGame.less';
 import QuestionList from '../components/QuestionList/QuestionList';
 import TopNav from '../components/TopNav/TopNav';
+import Map from '../components/Map/Map'
 // import { LoadingOutlined } from 'antd';
 // import {
 //   LoadingOutlined
@@ -12,10 +13,13 @@ import { Spin } from 'antd';
 
 
 const namespace = 'questions';
+const user = JSON.parse(localStorage.getItem('user'))[0] || JSON.parse(localStorage.getItem('user'))
 
 const Game = ({ dispatch, questions, loading }) => {
   const [title, setTitle] = useState('');
-  
+  const [startGame, setStartGame] = useState(false); // 是否开始游戏。true：显示游戏列表；false：显示地图列表
+  const [newCheckpoint, setCheckpoint] = useState(null); // 判断当前关卡
+
   useEffect(() => {
     const location = window.location.href;
 
@@ -24,9 +28,10 @@ const Game = ({ dispatch, questions, loading }) => {
       getData(10)
     } else if (location.indexOf('endlessMode') !== -1) {
       setTitle('无尽模式')
-      getData(4)
+      setStartGame(true)
+     getData(5)
     } else {
-      getData(5)
+      getData(5, user.chapterId)
     }
   }, [])
 
@@ -36,15 +41,21 @@ const Game = ({ dispatch, questions, loading }) => {
   //     setTimeout(hide, 2500);
   //   }
   // },[])
+  useEffect(() => {
+    if(newCheckpoint && newCheckpoint !== null){
+      getData(newCheckpoint?.checkpoint,newCheckpoint?.chapterId,6)
+    }
+  },[newCheckpoint])
 
 
-  function getData(amount ) {
-    const user = JSON.parse(localStorage.getItem('user'))[0] || JSON.parse(localStorage.getItem('user'))
+
+  function getData(checkpoint, chapterId,pageSize) {
     dispatch({
       type: `${namespace}/getQuestions`,
-      payload:{
-        chapterId:user.chapterId,
-        pageSize:amount
+      payload: {
+        chapterId,
+        pageNum: checkpoint,
+        pageSize
       }
     })
   }
@@ -52,14 +63,26 @@ const Game = ({ dispatch, questions, loading }) => {
   //   getData(amount)
   // },[])
   return (
-    <div className={styles.box}>
-      <TopNav />
-      <h2 className={styles.title}>{title}</h2>
-      {loading && loading.global ? <div>
-        <Spin size="large" />
-      </div>:<QuestionList questionList={questions.data} />}
-      
-    </div>
+    <>
+      {startGame ? <div className={styles.box}>
+        <TopNav />
+        <h2 className={styles.title}>{title}</h2>
+        {loading && loading.global ? <div>
+          <Spin size="large" />
+        </div> : <QuestionList 
+          questionList={questions.data} 
+          setCheckpoint={setCheckpoint} 
+          checkpoint={newCheckpoint} 
+          setStartGame={setStartGame}/>}
+
+      </div> : <div>
+        <Map 
+        user={user}
+        setStartGame={setStartGame}
+        setCheckpoint={setCheckpoint}
+        />
+        </div>}
+    </>
   );
 };
 
