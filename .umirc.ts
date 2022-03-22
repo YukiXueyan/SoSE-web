@@ -11,7 +11,6 @@ export default defineConfig({
     { path: '/review', component: '@/pages/ReviewPage' },
     { path: '/products', component: '@/pages/Products' },
     { path: '/endlessMode', component: '@/pages/IndexGame' },
-    { path: '/endlessMode', component: '@/pages/IndexGame' },
     { path: '/info', component: '@/pages/InfoPage' },
   ],
   fastRefresh: {},

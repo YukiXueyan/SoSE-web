@@ -2,25 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 
 import styles from './index.less';
-const namespace = 'user';
+import MainQuestion from '@/components/QuestionList/MainQuestion';
 
 // export default function IndexPage({ dispatch, questions, loading }:any) {
 const Game = ({ dispatch, questions, loading }: any) => {
-  const getData = (amount: any) => {
-    dispatch({
-      type: `${namespace}/getUserInfo`,
-      payload: {
-
-      },
-    })
-  }
-  useEffect(() => {
-    getData(10)
-  },[])
 
   return (
     <div>
       <h1 className={styles.title}>Page index</h1>
+      <MainQuestion />
     </div>
   );
 }

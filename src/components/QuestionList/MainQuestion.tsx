@@ -1,11 +1,9 @@
-/* eslint-disable jsx-a11y/href-no-hash */
 import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
 import { connect } from 'dva';
 import { history } from 'umi';
 import axios from "axios";
-import URL from '../../utils/url';
 import { stringify } from 'qs'
-import _ from 'lodash';
 
 import Question from '../qAndA/question';
 import { Card, Progress, Button } from 'antd';
@@ -18,37 +16,55 @@ import EndShow from './endShow';
 import StoryShow from './StoryShow';
 
 import { passRightNum, Menu, LifeNum } from '../../utils/globalData'
-const user = JSON.parse(localStorage.getItem('user'))[0] || JSON.parse(localStorage.getItem('user'));
 
-const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, setCheckpoint, setStartGame }) => {
+const user = JSON.parse(localStorage.getItem('user') || '')[0] || JSON.parse(localStorage.getItem('user') || '');
+const modeId = localStorage.getItem('modeId')
+
+const MainQuestion = (props: any) => {
+  const { dispatch, questions,
+    checkpoint, setCheckpoint, setStartGame } = props;
+
   const [index, setIndex] = useState(0);
   const [totalNum, setTotalNum] = useState(NaN);
   const [end, setEnd] = useState(false)
   const [right, setRight] = useState(0);//答对数量
-  const [result, setResult] = useState(null) // 是否答对
+  const [result, setResult] = useState<boolean | null>(null) // 是否答对
   const [showStory, setShowStory] = useState(true); // 展示故事
   const [life, setLife] = useState(LifeNum);
 
-
-  const modeId = localStorage.getItem('modeId')
-  const userId = localStorage.getItem('userId')
-
   const isLastGame = _.get(checkpoint, 'end');
 
-  // 判断游戏模式
-  useEffect(() => {
+  function getData(checkpoint: any, chapterId: any, pageSize: any) {
+    console.log('test, getData')
+    dispatch({
+      type: `questions/getQuestions`,
+      payload: {
+        chapterId,
+        pageNum: checkpoint,
+        pageSize
+      }
+    })
+  }
 
-    if(Number(modeId) === 1){
-      // setStartGame(true)
-      setShowStory(false)
-
-    }
-  },[modeId])
   useEffect(() => {
-    setTotalNum(questionList.length);
+    console.log('init', props)
+    getData(1, 1, 10)
+  }, [])
+  useEffect(() => {
+    const list = questions?.data || []
+    console.log('questions', questions, list)
+
+    setTotalNum(list?.length);
     setIndex(0)
-    // }, [])
-  }, [questionList])
+  }, [questions])
+
+  //判断游戏模式
+  useEffect(() => {
+    if (Number(modeId) === 1) {
+      // setStartGame(true) //todo
+      setShowStory(false)
+    }
+  }, [modeId])
 
   useEffect(() => {
     if (result === true) {
@@ -60,18 +76,17 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
         setEnd(true);
         setLife(LifeNum)
         setResult(null)
-        if(Number(modeId) === 1){
+        if (Number(modeId) === 1) {
           addRecord()
         }
-        
+
       }
     }
 
-    if (index === questionList.length && index) {
+    if (index === questions?.data.length && index) {
       setEnd(true);
     }
   }, [index]);
-
 
   // 添加游戏记录（非主线模式
   const addRecord = () => {
@@ -84,13 +99,13 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
       }
     })
   }
-
   const returnMap = () => {
     setStartGame(false)
   }
+
   // 主线模式通关，修改进度
   const userPassGame = async () => {
-
+    const userId = user.id;
     if (user?.chapterId === checkpoint?.chapterId && user?.checkpoint === checkpoint?.checkpoint && right > passRightNum) {
       //通关
       const newProgress = Menu[checkpoint?.index + 1]
@@ -103,7 +118,7 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
       ).then(() => {
         axios.get(
           `${URL}/user/info?userId=${userId}`
-        ).then(res => {
+        ).then((res: { data: any[]; }) => {
           console.log('incomingData', res?.data[0])
           localStorage.setItem('user', JSON.stringify(res?.data[0]))
         })
@@ -117,9 +132,9 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
     dispatch({
       type: 'user/getUSerMode',
       payload: {}
-    }).then((res) => {
+    }).then((res: any[]) => {
       if (res && res.length) {
-        res.forEach(item => {
+        res.forEach((item: { id: number; userId: null; }) => {
           if (item.id === 1 && item.userId === null) {
             dispatch({
               type: 'user/unlockUserMode',
@@ -133,7 +148,7 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
     });
   }
 
-  const onBtnClick = (option, current_option) => {
+  const onBtnClick = (option: any, current_option: any) => {
 
     setIndex(index + 1);
     option === current_option ? setResult(true) : setResult(false);
@@ -143,6 +158,7 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
     setIndex(0);
 
     const newProgress = Menu[checkpoint?.index + 1]
+    //@ts-ignore
     newProgress['index'] = checkpoint?.index + 1
     setCheckpoint(newProgress)
 
@@ -155,8 +171,6 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
       }
     })
   }
-
-
 
   return (
     <div className={styles.box}>
@@ -192,7 +206,8 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
             {life}
           </div>
         </div>
-        <Question question={questionList[index]} onBtnClick={onBtnClick} />
+        <Question question={questions?.data[index]} onBtnClick={onBtnClick} />
+        {/* <Question question={questionList[index]} onBtnClick={onBtnClick} /> */}
       </div>}
 
       {showStory && <div>
@@ -202,12 +217,9 @@ const QuestionList = ({ questionList, dispatch, questions, loading, checkpoint, 
 
     </div>
   );
-};
+}
 
-QuestionList.propTypes = {
-};
-
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
   // const questions = state.questions.data;
   return {
     // loading: state.loading.models.questions,
@@ -217,5 +229,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(QuestionList);
-
+export default connect(mapStateToProps)(MainQuestion);

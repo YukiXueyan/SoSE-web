@@ -5,14 +5,14 @@ import styles from './IndexGame.less';
 import QuestionList from '../components/QuestionList/QuestionList';
 import TopNav from '../components/TopNav/TopNav';
 import Map from '../components/Map/Map'
+import MainQuestion from '../components/QuestionList/MainQuestion'
+
 // import { LoadingOutlined } from 'antd';
 // import {
 //   LoadingOutlined
 // } from '@ant-design/icons';
 import { Spin } from 'antd';
 
-
-const namespace = 'questions';
 const user = JSON.parse(localStorage.getItem('user'))[0] || JSON.parse(localStorage.getItem('user'))
 
 const Game = ({ dispatch, questions, loading }) => {
@@ -25,55 +25,26 @@ const Game = ({ dispatch, questions, loading }) => {
 
     if (location.indexOf('testMode') !== -1) {
       setTitle('测试模式')
-      getData(10)
     } else if (location.indexOf('endlessMode') !== -1) {
       setTitle('无尽模式')
       setStartGame(true)
-     getData(5)
-    } else {
-      getData(5, user.chapterId)
     }
   }, [])
 
-  // useEffect(() => {
-  //   if(loading){
-  //     const hide = message.loading('Action in progress..', 0);
-  //     setTimeout(hide, 2500);
-  //   }
-  // },[])
-  useEffect(() => {
-    if(newCheckpoint && newCheckpoint !== null){
-      getData(newCheckpoint?.checkpoint,newCheckpoint?.chapterId,6)
-    }
-  },[newCheckpoint])
 
 
-
-  function getData(checkpoint, chapterId,pageSize) {
-    dispatch({
-      type: `${namespace}/getQuestions`,
-      payload: {
-        chapterId,
-        pageNum: checkpoint,
-        pageSize
-      }
-    })
-  }
-  // useEffect(() => {
-  //   getData(amount)
-  // },[])
   return (
     <>
+     <TopNav />
       {startGame ? <div className={styles.box}>
-        <TopNav />
+       
         <h2 className={styles.title}>{title}</h2>
-        {loading && loading.global ? <div>
-          <Spin size="large" />
-        </div> : <QuestionList 
-          questionList={questions.data} 
+        <MainQuestion
           setCheckpoint={setCheckpoint} 
           checkpoint={newCheckpoint} 
-          setStartGame={setStartGame}/>}
+          setStartGame={setStartGame}
+          />
+
 
       </div> : <div>
         <Map 
