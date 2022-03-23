@@ -1,0 +1,11 @@
+.qbox .qdesc {
+  margin: 4px 0;
+}
+.qbox .options {
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+}
+.qbox .options .optBtn {
+  margin: 4px;
+}

@@ -37,7 +37,7 @@ const MainQuestion = (props: any) => {
   const isLastGame = _.get(checkpoint, 'end') || false;
 
   function getData(params: { checkpoint?: any; chapterId?: any; pageSize: any; }) {
-    const {checkpoint, chapterId, pageSize} = params;
+    const { checkpoint, chapterId, pageSize } = params;
     dispatch({
       type: `questions/getQuestions`,
       payload: {
@@ -50,31 +50,31 @@ const MainQuestion = (props: any) => {
 
   useEffect(() => {
     setShowStory(true)
-  },[])
+  }, [])
 
   useEffect(() => {
-    if(isLastGame){
-      openEndlessMode({mode:1})
+    if (isLastGame) {
+      openEndlessMode({ mode: 1 })
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     console.log('props', props)
-    switch (modeId){
+    switch (modeId) {
       case '0':
         getData({
-          checkpoint:checkpoint?.checkpoint, chapterId:checkpoint?.chapterId, pageSize:QuestionNum
+          checkpoint: checkpoint?.checkpoint, chapterId: checkpoint?.chapterId, pageSize: QuestionNum
         })
         setShowStory(true)
 
         break;
       case '1':
         getData({
-          pageSize:10
+          pageSize: 10
         })
         break;
-      
-    } 
+
+    }
   }, [])
   useEffect(() => {
     const list = questions?.data || []
@@ -155,9 +155,9 @@ const MainQuestion = (props: any) => {
   }
 
   //解锁新模式
-  const openEndlessMode = (params:any) => {
+  const openEndlessMode = (params: any) => {
     console.log('openEndlessMode')
-    const {mode} = params;
+    const { mode } = params;
     dispatch({
       type: 'user/getUSerMode',
       payload: {}
@@ -168,7 +168,7 @@ const MainQuestion = (props: any) => {
             dispatch({
               type: 'user/unlockUserMode',
               payload: {
-                modeId:mode
+                modeId: mode
               }
             })
           }
@@ -225,6 +225,14 @@ const MainQuestion = (props: any) => {
             <Progress percent={index * 100 / totalNum} showInfo={false} />
             <div className={styles.desc}>{index} / {totalNum}</div>
           </div>
+
+          <div className={styles.timer}>
+            <FieldTimeOutlined />
+            {life}
+          </div>
+        </div>
+        <Question question={questions?.data[index]} onBtnClick={onBtnClick} />
+        <div className={styles.footer}>
           <div className={styles.btns}>
             <Button type="text" onClick={() => setShowStory(true)}>重新开始</Button>
             <Button type="text" onClick={() => {
@@ -234,21 +242,16 @@ const MainQuestion = (props: any) => {
               history.push('/')
             }}>返回首页</Button>
           </div>
-          <div className={styles.timer}>
-            <FieldTimeOutlined />
-            {life}
-          </div>
         </div>
-        <Question question={questions?.data[index]} onBtnClick={onBtnClick} />
         {/* <Question question={questionList[index]} onBtnClick={onBtnClick} /> */}
       </div>}
-{/* todo 解决传入dispatch导致重复渲染的问题？ */}
-      {showStory && <StoryShow 
-          story={checkpoint?.story}
-          setShowStory={setShowStory}
-          isLastGame={isLastGame}
-          // openEndlessMode={openEndlessMode({modeId:1})}
-          />}
+      {/* todo 解决传入dispatch导致重复渲染的问题？ */}
+      {showStory && <StoryShow
+        story={checkpoint?.story}
+        setShowStory={setShowStory}
+        isLastGame={isLastGame}
+      // openEndlessMode={openEndlessMode({modeId:1})}
+      />}
 
     </div>
   );

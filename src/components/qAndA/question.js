@@ -45,7 +45,9 @@ const Question = ({ question, onBtnClick }) => {
           }}
           key={index}
           className={styled.optBtn}
-          >{o}</Button>
+          >
+            {o}
+          </Button>
         ))}
       </div>
     </div>

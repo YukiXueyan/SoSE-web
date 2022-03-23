@@ -1,6 +1,5 @@
 .box {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   margin: 5vw;
   padding: 8px;
@@ -24,4 +23,14 @@
   display: inline-block;
   white-space: nowrap;
   margin-left: 8px;
+}
+.box .footer {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.content {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }

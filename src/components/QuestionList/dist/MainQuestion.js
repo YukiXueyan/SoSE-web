@@ -242,6 +242,11 @@ var MainQuestion = function (props) {
                         index,
                         " / ",
                         totalNum)),
+                react_1["default"].createElement("div", { className: QuestionList_less_1["default"].timer },
+                    react_1["default"].createElement(icons_1.FieldTimeOutlined, null),
+                    life)),
+            react_1["default"].createElement(question_1["default"], { question: questions === null || questions === void 0 ? void 0 : questions.data[index], onBtnClick: onBtnClick }),
+            react_1["default"].createElement("div", { className: QuestionList_less_1["default"].footer },
                 react_1["default"].createElement("div", { className: QuestionList_less_1["default"].btns },
                     react_1["default"].createElement(antd_1.Button, { type: "text", onClick: function () { return setShowStory(true); } }, "\u91CD\u65B0\u5F00\u59CB"),
                     react_1["default"].createElement(antd_1.Button, { type: "text", onClick: function () {
@@ -249,11 +254,7 @@ var MainQuestion = function (props) {
                         } }, "\u8FD4\u56DE\u5217\u8868"),
                     react_1["default"].createElement(antd_1.Button, { type: "text", onClick: function () {
                             umi_1.history.push('/');
-                        } }, "\u8FD4\u56DE\u9996\u9875")),
-                react_1["default"].createElement("div", { className: QuestionList_less_1["default"].timer },
-                    react_1["default"].createElement(icons_1.FieldTimeOutlined, null),
-                    life)),
-            react_1["default"].createElement(question_1["default"], { question: questions === null || questions === void 0 ? void 0 : questions.data[index], onBtnClick: onBtnClick })),
+                        } }, "\u8FD4\u56DE\u9996\u9875")))),
         showStory && react_1["default"].createElement(StoryShow_1["default"], { story: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.story, setShowStory: setShowStory, isLastGame: isLastGame })));
 };
 function mapStateToProps(state) {
