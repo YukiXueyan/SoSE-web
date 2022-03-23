@@ -25,6 +25,7 @@ export default {
     reducers: {
       addNewQuestion(state, { payload: data,param }) {
         return {
+          ...state,
           data: data,
         };
       },
@@ -49,7 +50,8 @@ export default {
         return data;
       },
       *choiceMode({ payload }, { call, put }) {
-        yield put({ type: 'changeMode', payload: data });
+        const { status, data } = yield put({ type: 'changeMode', payload: data });
+        return data;
       },
       
     },

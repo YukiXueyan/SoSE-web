@@ -60,7 +60,6 @@ var icons_1 = require("@ant-design/icons");
 var QuestionList_less_1 = require("./QuestionList.less");
 //@ts-ignore
 var endShow_1 = require("./endShow");
-var StoryShow_1 = require("./StoryShow");
 var globalData_1 = require("../../utils/globalData");
 var user = JSON.parse(localStorage.getItem('user') || '')[0] || JSON.parse(localStorage.getItem('user') || '');
 var modeId = localStorage.getItem('modeId') || '0';
@@ -71,11 +70,12 @@ var MainQuestion = function (props) {
     var _c = react_1.useState(false), end = _c[0], setEnd = _c[1];
     var _d = react_1.useState(0), right = _d[0], setRight = _d[1]; //答对数量
     var _e = react_1.useState(null), result = _e[0], setResult = _e[1]; // 是否答对
-    var _f = react_1.useState(true), showStory = _f[0], setShowStory = _f[1]; // 展示故事
+    var _f = react_1.useState(false), showStory = _f[0], setShowStory = _f[1]; // 展示故事
     var _g = react_1.useState(globalData_1.LifeNum), life = _g[0], setLife = _g[1];
-    var isLastGame = lodash_1["default"].get(checkpoint, 'end');
+    var isLastGame = lodash_1["default"].get(checkpoint, 'end') || false;
     function getData(params) {
         var checkpoint = params.checkpoint, chapterId = params.chapterId, pageSize = params.pageSize;
+        console.log('getDAta', params);
         dispatch({
             type: "questions/getQuestions",
             payload: {
@@ -85,6 +85,9 @@ var MainQuestion = function (props) {
             }
         });
     }
+    react_1.useEffect(function () {
+        setShowStory(true);
+    }, []);
     react_1.useEffect(function () {
         console.log('props', props);
         switch (modeId) {
@@ -98,6 +101,7 @@ var MainQuestion = function (props) {
                 getData({
                     pageSize: 10
                 });
+                setShowStory(false);
                 break;
         }
     }, []);
@@ -243,8 +247,11 @@ var MainQuestion = function (props) {
                     react_1["default"].createElement(icons_1.FieldTimeOutlined, null),
                     life)),
             react_1["default"].createElement(question_1["default"], { question: questions === null || questions === void 0 ? void 0 : questions.data[index], onBtnClick: onBtnClick })),
+        console.log({ showStory: showStory }),
         showStory && react_1["default"].createElement("div", null,
-            react_1["default"].createElement(StoryShow_1["default"], { story: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.story, setShowStory: setShowStory, isLastGame: isLastGame, openEndlessMode: openEndlessMode(1) }))));
+            react_1["default"].createElement(antd_1.Button, { onClick: function () {
+                    setShowStory(false);
+                } }, "\u5F00\u59CB"))));
 };
 function mapStateToProps(state) {
     // const questions = state.questions.data;

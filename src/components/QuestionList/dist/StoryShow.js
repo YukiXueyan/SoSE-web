@@ -1,10 +1,9 @@
 "use strict";
 exports.__esModule = true;
 var react_1 = require("react");
-var StoryShow_less_1 = require("./StoryShow.less");
 var antd_1 = require("antd");
-var icons_1 = require("@ant-design/icons");
 var umi_1 = require("umi");
+//
 var StoryShow = function (_a) {
     var story = _a.story, setShowStory = _a.setShowStory, isLastGame = _a.isLastGame, openEndlessMode = _a.openEndlessMode;
     var _b = react_1.useState([]), storyList = _b[0], setStoryList = _b[1];
@@ -12,24 +11,13 @@ var StoryShow = function (_a) {
     var _d = react_1.useState(false), btnWord = _d[0], setBtnWord = _d[1];
     var _e = react_1.useState(false), showEnding = _e[0], setShowEnding = _e[1];
     react_1.useEffect(function () {
-        var list = String(story).split('\n');
-        setStoryList(list);
-        setIndex(0);
-    }, [story]);
-    // '监听点击事件
-    // useEffect(() =>{
-    //   document.addEventListener('click',() => {
-    //     continueStory()
-    //   })
-    //   document.addEventListener('keydown',(e) => {
-    //     console.log(e)
-    //   })
-    // },[storyList])
+        console.log('init StoryShow');
+    }, []);
     // useEffect(() => {
-    //   if(isLastGame){
-    //     openEndlessMode()
-    //   }
-    // },[isLastGame])
+    //   const list = String(story).split('\n');
+    //   setStoryList(list)
+    //   setIndex(0)
+    // }, [])
     // 下一步劇情
     var continueStory = function () {
         var len = storyList.length;
@@ -52,17 +40,33 @@ var StoryShow = function (_a) {
     };
     var finallyGoBack = function () {
         umi_1.history.push('/');
-        openEndlessMode();
+        // openEndlessMode()
     };
-    return react_1["default"].createElement("div", { onClick: continueStory, className: StoryShow_less_1["default"].content },
-        storyList[index],
-        react_1["default"].createElement("div", { className: StoryShow_less_1["default"].btns },
-            react_1["default"].createElement(antd_1.Button, { type: 'text' }, btnWord ? '开始' : react_1["default"].createElement(icons_1.DoubleRightOutlined, null)),
-            react_1["default"].createElement(antd_1.Button, { type: 'text', style: { margin: '0 8px' }, onClick: function () {
-                    console.log('click 跳过');
-                    setShowStory(false);
-                } }, "\u8DF3\u8FC7"),
-            showEnding && react_1["default"].createElement("div", null,
-                react_1["default"].createElement(antd_1.Button, { onClick: finallyGoBack }, "\u8FD4\u56DE\u4E3B\u9875"))));
+    // return (
+    //   <div className={styled.content}>
+    //   {storyList[index]}
+    //   <div className={styled.btns}>
+    //     {/* <Button type='text' onClick={() => { continueStory() }}>
+    //       {btnWord ? '开始' : <DoubleRightOutlined />}
+    //     </Button> */}
+    //     <Button type='text' style={{ margin: '0 8px' }} onClick={() => {
+    //       console.log('click 跳过')
+    //       setShowStory(false)
+    //     }}>
+    //       跳过
+    //     </Button>
+    //     {showEnding && <div>
+    //       <Button onClick={()=>{finallyGoBack}}>
+    //         返回主页
+    //       </Button>
+    //     </div>}
+    //   </div>
+    // </div>
+    // )
+    return (react_1["default"].createElement("div", null,
+        story,
+        react_1["default"].createElement(antd_1.Button, { onClick: function () {
+                console.log('click test');
+            } }, "\u6D4B\u8BD5")));
 };
 exports["default"] = StoryShow;

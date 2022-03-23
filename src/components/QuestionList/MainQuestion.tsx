@@ -31,13 +31,14 @@ const MainQuestion = (props: any) => {
   const [end, setEnd] = useState(false)
   const [right, setRight] = useState(0);//答对数量
   const [result, setResult] = useState<boolean | null>(null) // 是否答对
-  const [showStory, setShowStory] = useState(true); // 展示故事
+  const [showStory, setShowStory] = useState(false); // 展示故事
   const [life, setLife] = useState(LifeNum);
 
-  const isLastGame = _.get(checkpoint, 'end');
+  const isLastGame = _.get(checkpoint, 'end') || false;
 
   function getData(params: { checkpoint?: any; chapterId?: any; pageSize: any; }) {
     const {checkpoint, chapterId, pageSize} = params;
+    console.log('getDAta', params)
     dispatch({
       type: `questions/getQuestions`,
       payload: {
@@ -47,6 +48,10 @@ const MainQuestion = (props: any) => {
       }
     })
   }
+
+  useEffect(() => {
+    setShowStory(true)
+  },[])
 
   useEffect(() => {
     console.log('props', props)
@@ -60,6 +65,7 @@ const MainQuestion = (props: any) => {
         getData({
           pageSize:10
         })
+        setShowStory(false)
         break;
       
     } 
@@ -230,9 +236,15 @@ const MainQuestion = (props: any) => {
         {/* <Question question={questionList[index]} onBtnClick={onBtnClick} /> */}
       </div>}
 
+{console.log({showStory})}
       {showStory && <div>
-        <StoryShow story={checkpoint?.story} setShowStory={setShowStory} isLastGame={isLastGame}
-          openEndlessMode={openEndlessMode(1)} />
+        {/* 重复渲染？ */}
+        {/* <StoryShow story={checkpoint?.story} setShowStory={setShowStory} isLastGame={isLastGame}
+          openEndlessMode={openEndlessMode(1)} /> */}
+
+          <Button onClick={() =>{
+              setShowStory(false)
+          }}>开始</Button>
       </div>}
 
     </div>

@@ -5,6 +5,7 @@ import MainIndex from '../components/MainIndex/MainIndex'
 import TopNav from '../components/TopNav/TopNav';
 import { message } from 'antd';
 import { history } from 'umi';
+import {Button} from 'antd';
 
 const modeBtnList = [
   '/endlessMode',
@@ -69,15 +70,17 @@ const IndexPage = ({ dispatch, products }) => {
     return false;
   }
 
-  const userChangeMode = (modeId) => {
+  const userChangeMode = (modeId, index) => {
     localStorage.setItem('modeId', modeId)
+    history.push(modeBtnList[index])
   }
   const renderModeListBtn = () => {
     const btns = [];
     // href={modeBtnList[index]}
     userModeList.map((item, index) => {
       if (item.userId) {
-        const btn = <a href={modeBtnList[index]} className={styles.box2} onClick={userChangeMode(item?.modeId)} key={index}>{item.name}</a>
+        const btn = <div className={styles.box2} onClick={() => {userChangeMode(item?.modeId, index)}} key={index}>{item.name}</div>
+        // const btn = <a href={modeBtnList[index]} className={styles.box2} onClick={userChangeMode(item?.modeId)} key={index}>{item.name}</a>
         btns.push(btn);
       } else {
         const btn = <div className={styles.box2} onClick={lockedBtn} key={index}>{item.name}</div>
