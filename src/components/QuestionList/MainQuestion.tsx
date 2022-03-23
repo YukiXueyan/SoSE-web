@@ -38,7 +38,6 @@ const MainQuestion = (props: any) => {
 
   function getData(params: { checkpoint?: any; chapterId?: any; pageSize: any; }) {
     const {checkpoint, chapterId, pageSize} = params;
-    console.log('getDAta', params)
     dispatch({
       type: `questions/getQuestions`,
       payload: {
@@ -54,18 +53,25 @@ const MainQuestion = (props: any) => {
   },[])
 
   useEffect(() => {
+    if(isLastGame){
+      openEndlessMode({mode:1})
+    }
+  },[])
+
+  useEffect(() => {
     console.log('props', props)
     switch (modeId){
       case '0':
         getData({
           checkpoint:checkpoint?.checkpoint, chapterId:checkpoint?.chapterId, pageSize:QuestionNum
         })
+        setShowStory(true)
+
         break;
       case '1':
         getData({
           pageSize:10
         })
-        setShowStory(false)
         break;
       
     } 
@@ -149,19 +155,20 @@ const MainQuestion = (props: any) => {
   }
 
   //解锁新模式
-  const openEndlessMode = (modeId:any) => {
-
+  const openEndlessMode = (params:any) => {
+    console.log('openEndlessMode')
+    const {mode} = params;
     dispatch({
       type: 'user/getUSerMode',
       payload: {}
     }).then((res: any[]) => {
       if (res && res.length) {
         res.forEach((item: { id: number; userId: null; }) => {
-          if (item.id === modeId && item.userId === null) {
+          if (item.id === mode && item.userId === null) {
             dispatch({
               type: 'user/unlockUserMode',
               payload: {
-                modeId
+                modeId:mode
               }
             })
           }
@@ -239,9 +246,12 @@ const MainQuestion = (props: any) => {
 {console.log({showStory})}
       {showStory && <div>
         {/* 重复渲染？ */}
-        {/* <StoryShow story={checkpoint?.story} setShowStory={setShowStory} isLastGame={isLastGame}
-          openEndlessMode={openEndlessMode(1)} /> */}
-
+          <StoryShow 
+          story={checkpoint?.story}
+          setShowStory={setShowStory}
+          isLastGame={isLastGame}
+          // openEndlessMode={openEndlessMode({modeId:1})}
+          />
           <Button onClick={() =>{
               setShowStory(false)
           }}>开始</Button>

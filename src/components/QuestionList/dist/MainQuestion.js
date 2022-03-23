@@ -60,6 +60,7 @@ var icons_1 = require("@ant-design/icons");
 var QuestionList_less_1 = require("./QuestionList.less");
 //@ts-ignore
 var endShow_1 = require("./endShow");
+var StoryShow_1 = require("./StoryShow");
 var globalData_1 = require("../../utils/globalData");
 var user = JSON.parse(localStorage.getItem('user') || '')[0] || JSON.parse(localStorage.getItem('user') || '');
 var modeId = localStorage.getItem('modeId') || '0';
@@ -75,7 +76,6 @@ var MainQuestion = function (props) {
     var isLastGame = lodash_1["default"].get(checkpoint, 'end') || false;
     function getData(params) {
         var checkpoint = params.checkpoint, chapterId = params.chapterId, pageSize = params.pageSize;
-        console.log('getDAta', params);
         dispatch({
             type: "questions/getQuestions",
             payload: {
@@ -89,6 +89,11 @@ var MainQuestion = function (props) {
         setShowStory(true);
     }, []);
     react_1.useEffect(function () {
+        if (isLastGame) {
+            openEndlessMode({ mode: 1 });
+        }
+    }, []);
+    react_1.useEffect(function () {
         console.log('props', props);
         switch (modeId) {
             case '0':
@@ -96,12 +101,12 @@ var MainQuestion = function (props) {
                     checkpoint: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.checkpoint, chapterId: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.chapterId,
                     pageSize: globalData_1.QuestionNum
                 });
+                setShowStory(true);
                 break;
             case '1':
                 getData({
                     pageSize: 10
                 });
-                setShowStory(false);
                 break;
         }
     }, []);
@@ -180,18 +185,20 @@ var MainQuestion = function (props) {
         });
     }); };
     //解锁新模式
-    var openEndlessMode = function (modeId) {
+    var openEndlessMode = function (params) {
+        console.log('openEndlessMode');
+        var mode = params.mode;
         dispatch({
             type: 'user/getUSerMode',
             payload: {}
         }).then(function (res) {
             if (res && res.length) {
                 res.forEach(function (item) {
-                    if (item.id === modeId && item.userId === null) {
+                    if (item.id === mode && item.userId === null) {
                         dispatch({
                             type: 'user/unlockUserMode',
                             payload: {
-                                modeId: modeId
+                                modeId: mode
                             }
                         });
                     }
@@ -249,6 +256,7 @@ var MainQuestion = function (props) {
             react_1["default"].createElement(question_1["default"], { question: questions === null || questions === void 0 ? void 0 : questions.data[index], onBtnClick: onBtnClick })),
         console.log({ showStory: showStory }),
         showStory && react_1["default"].createElement("div", null,
+            react_1["default"].createElement(StoryShow_1["default"], { story: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.story, setShowStory: setShowStory, isLastGame: isLastGame }),
             react_1["default"].createElement(antd_1.Button, { onClick: function () {
                     setShowStory(false);
                 } }, "\u5F00\u59CB"))));

@@ -1,31 +1,30 @@
 "use strict";
 exports.__esModule = true;
 var react_1 = require("react");
+var StoryShow_less_1 = require("./StoryShow.less");
 var antd_1 = require("antd");
+var icons_1 = require("@ant-design/icons");
 var umi_1 = require("umi");
 //
+// const StoryShow = ({  }: any) => {
 var StoryShow = function (_a) {
-    var story = _a.story, setShowStory = _a.setShowStory, isLastGame = _a.isLastGame, openEndlessMode = _a.openEndlessMode;
+    var story = _a.story, setShowStory = _a.setShowStory, isLastGame = _a.isLastGame;
     var _b = react_1.useState([]), storyList = _b[0], setStoryList = _b[1];
     var _c = react_1.useState(0), index = _c[0], setIndex = _c[1];
     var _d = react_1.useState(false), btnWord = _d[0], setBtnWord = _d[1];
     var _e = react_1.useState(false), showEnding = _e[0], setShowEnding = _e[1];
     react_1.useEffect(function () {
-        console.log('init StoryShow');
+        var list = String(story).split('\n');
+        setStoryList(list);
+        setIndex(0);
     }, []);
-    // useEffect(() => {
-    //   const list = String(story).split('\n');
-    //   setStoryList(list)
-    //   setIndex(0)
-    // }, [])
     // 下一步劇情
     var continueStory = function () {
         var len = storyList.length;
         if (index + 1 >= len) {
             if (isLastGame) {
                 setShowEnding(true);
-                // 解锁更多模式
-                // openEndlessMode()
+                umi_1.history.push('/');
             }
             else {
                 setShowStory(false);
@@ -40,33 +39,20 @@ var StoryShow = function (_a) {
     };
     var finallyGoBack = function () {
         umi_1.history.push('/');
-        // openEndlessMode()
     };
-    // return (
-    //   <div className={styled.content}>
-    //   {storyList[index]}
-    //   <div className={styled.btns}>
-    //     {/* <Button type='text' onClick={() => { continueStory() }}>
-    //       {btnWord ? '开始' : <DoubleRightOutlined />}
-    //     </Button> */}
-    //     <Button type='text' style={{ margin: '0 8px' }} onClick={() => {
-    //       console.log('click 跳过')
-    //       setShowStory(false)
-    //     }}>
-    //       跳过
-    //     </Button>
-    //     {showEnding && <div>
-    //       <Button onClick={()=>{finallyGoBack}}>
-    //         返回主页
-    //       </Button>
-    //     </div>}
-    //   </div>
-    // </div>
-    // )
-    return (react_1["default"].createElement("div", null,
-        story,
-        react_1["default"].createElement(antd_1.Button, { onClick: function () {
-                console.log('click test');
-            } }, "\u6D4B\u8BD5")));
+    return (react_1["default"].createElement("div", { className: StoryShow_less_1["default"].content },
+        storyList[index],
+        react_1["default"].createElement("div", { className: StoryShow_less_1["default"].btns },
+            react_1["default"].createElement(antd_1.Button, { type: 'text', onClick: function () { continueStory(); } }, btnWord ? '开始' : react_1["default"].createElement(icons_1.DoubleRightOutlined, null)),
+            react_1["default"].createElement(antd_1.Button, { type: 'text', style: { margin: '0 8px' }, onClick: function () {
+                    if (isLastGame) {
+                        umi_1.history.push('/');
+                    }
+                    else {
+                        setShowStory(false);
+                    }
+                } }, "\u8DF3\u8FC7"),
+            showEnding && react_1["default"].createElement("div", null,
+                react_1["default"].createElement(antd_1.Button, { onClick: function () { finallyGoBack; } }, "\u8FD4\u56DE\u4E3B\u9875")))));
 };
 exports["default"] = StoryShow;

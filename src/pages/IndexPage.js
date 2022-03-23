@@ -92,6 +92,7 @@ const IndexPage = ({ dispatch, products }) => {
   return (
     <div className={styles.normal}>
       <TopNav isIndex={true} />
+      The Story of Software engineering
       <MainIndex />
       <div className={styles.box}>
 

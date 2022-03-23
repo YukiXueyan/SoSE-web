@@ -6,21 +6,19 @@ import { Button } from 'antd';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 //
-const StoryShow = ({ story, setShowStory, isLastGame, openEndlessMode }: any) => {
+// const StoryShow = ({  }: any) => {
+  const StoryShow = ({ story, setShowStory, isLastGame }: any) => {
 
   const [storyList, setStoryList] = useState<any>([]);
   const [index, setIndex] = useState(0);
   const [btnWord, setBtnWord] = useState(false);
   const [showEnding, setShowEnding] = useState(false)
 
-  useEffect(() =>{
-    console.log('init StoryShow')
-  },[])
-  // useEffect(() => {
-  //   const list = String(story).split('\n');
-  //   setStoryList(list)
-  //   setIndex(0)
-  // }, [])
+  useEffect(() => {
+    const list = String(story).split('\n');
+    setStoryList(list)
+    setIndex(0)
+  }, [])
 
   // 下一步劇情
   const continueStory = () => {
@@ -28,8 +26,7 @@ const StoryShow = ({ story, setShowStory, isLastGame, openEndlessMode }: any) =>
     if (index + 1 >= len) {
       if (isLastGame) {
         setShowEnding(true)
-        // 解锁更多模式
-        // openEndlessMode()
+        history.push('/')
       } else {
         setShowStory(false)
       }
@@ -45,41 +42,34 @@ const StoryShow = ({ story, setShowStory, isLastGame, openEndlessMode }: any) =>
 
   const finallyGoBack = () => {
     history.push('/')
-    // openEndlessMode()
   }
-  // return (
-  //   <div className={styled.content}>
-  //   {storyList[index]}
-  //   <div className={styled.btns}>
-  //     {/* <Button type='text' onClick={() => { continueStory() }}>
-  //       {btnWord ? '开始' : <DoubleRightOutlined />}
-  //     </Button> */}
-  //     <Button type='text' style={{ margin: '0 8px' }} onClick={() => {
-  //       console.log('click 跳过')
-  //       setShowStory(false)
-  //     }}>
-  //       跳过
-  //     </Button>
-  //     {showEnding && <div>
-  //       <Button onClick={()=>{finallyGoBack}}>
-  //         返回主页
-  //       </Button>
-  //     </div>}
-  //   </div>
-
-  // </div>
-  // )
-
   return (
-    <div>
-      {story}
-      <Button onClick={() =>{
-        console.log('click test')
-      }}>
-        测试
+    <div className={styled.content}>
+    {storyList[index]}
+    <div className={styled.btns}>
+      <Button type='text' onClick={() => { continueStory() }}>
+        {btnWord ? '开始' : <DoubleRightOutlined />}
       </Button>
+      <Button type='text' style={{ margin: '0 8px' }} onClick={() => {
+        
+        if(isLastGame){
+          history.push('/')
+        }else{
+          setShowStory(false)
+        }
+      }}>
+        跳过
+      </Button>
+      {showEnding && <div>
+        <Button onClick={()=>{finallyGoBack}}>
+          返回主页
+        </Button>
+      </div>}
     </div>
+
+  </div>
   )
+
 }
 
 
