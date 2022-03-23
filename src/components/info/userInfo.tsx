@@ -55,7 +55,7 @@ const UserInfo = ({ dispatch, user, loading }: any) => {
                 {title}
             </div>
             <div className={styles.desc}>
-                {desc}
+                {desc || '-'}
             </div>
         </div>
     }
@@ -83,9 +83,8 @@ const UserInfo = ({ dispatch, user, loading }: any) => {
             </div>}
 
             {renderItem('积分', user?.data?.point)}
-            {renderItem('目前进度', `第${user?.data?.chapterId}章-第${user?.data?.checkpoint}节`)}
-            {/* {renderItem('游戏次数', 20)}
-            {renderItem('游戏天数', 4)} */}
+            {renderItem('目前进度', `第${user?.data?.chapterId || '-'}章-第${user?.data?.checkpoint || '-'}节`)}
+
 
 
             <Popconfirm

@@ -16,7 +16,8 @@ import {
   addNewUser,
   updateUser,
   deleteUser,
-  unlockMode
+  unlockMode,
+  userRecord,
 } from '../services/user'
 
 export default {
@@ -81,5 +82,11 @@ export default {
         const { status, data } = yield call(deleteUser, payload)
         return data;
       },
+      *getRecord({ payload }, { call, put }) {
+        
+        const { status, data } = yield call(userRecord, payload)
+        return data;
+      },
+      
     },
   };

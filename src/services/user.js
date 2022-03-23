@@ -46,3 +46,9 @@ export async function updateUser(data) {
 export async function deleteUser(data) {
   return request(`${URL}/user/delete?userId=${userId}`, { method: 'delete' })
 }
+
+//获取用户信息
+// userId
+export function userRecord(data) {
+  return request(`${URL}/record?userId=${userId}&${stringify(data)}`);
+}

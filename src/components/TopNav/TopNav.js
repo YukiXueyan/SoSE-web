@@ -32,11 +32,6 @@ const TopNav = ({ isIndex, title, onClickHandle }) => {
         </a>
       </Menu.Item>
       <Menu.Item>
-        <a rel="noopener noreferrer" href="/info?key=help">
-          帮助中心
-        </a>
-      </Menu.Item>
-      <Menu.Item>
         <a rel="noopener noreferrer" href="/info?key=about">
           关于
         </a>

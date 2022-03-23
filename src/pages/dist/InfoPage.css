@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+}
+.container .right {
+  margin: 16px;
+  width: 100%;
+}

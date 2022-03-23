@@ -40,12 +40,6 @@ const MenuList = [
         component:<Record />
     },
     {
-        key: 'help',
-        icon: <SettingOutlined />,
-        title: '帮助中心',
-        component:<Help />
-    },
-    {
         key: 'about',
         icon: <SettingOutlined />,
         title: '关于',

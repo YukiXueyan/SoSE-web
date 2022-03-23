@@ -5,6 +5,7 @@ const Menu = [
     chapterId:1,
     checkpoint:1,
     title:'欢迎新员工',
+    open:true,
     story:`欢迎新员工的到来！
     这是开始工作的第一天。
     我们团队近期的任务是开发出一款软件。
@@ -131,15 +132,21 @@ const Menu = [
   },
 ];
 
-const LifeNum = 3;
+const LifeNum = 3; // 生命次数
 // export default {
 //   MaxCheckpoint,
 //   Menu
 // };
+const user = JSON.parse(localStorage.getItem('user') || '')[0] || JSON.parse(localStorage.getItem('user') || '');
+const modeId = localStorage.getItem('modeId') || '0'
 
+const QuestionNum = 5; // 主线模式题目数量
 export  {
   MaxCheckpoint,
   Menu,
   passRightNum,
-  LifeNum
+  LifeNum,
+  QuestionNum,
+  user,
+  modeId
 };

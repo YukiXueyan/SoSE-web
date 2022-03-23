@@ -26,7 +26,7 @@ const Map = ({ user,  setStartGame,setCheckpoint }: any) => {
         {Menu?.map((item, index) => (
 
           <Timeline.Item dot={<DownCircleOutlined style={judge(item) ? { fontSize: '24px' } : { fontSize: '24px', color: '#e3e3e3' }} key={index} />}>
-            {judge(item) ? <span className={styled.title} onClick={() =>{onClick(item, index)}}>
+            {judge(item) || item?.open ? <span className={styled.title} onClick={() =>{onClick(item, index)}}>
               {item?.title}
             </span> : <span className={styled.title2}>
               {item?.title}

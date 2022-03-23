@@ -53,15 +53,17 @@ var dva_1 = require("dva");
 var umi_1 = require("umi");
 var axios_1 = require("axios");
 var qs_1 = require("qs");
+//@ts-ignore
 var question_1 = require("../qAndA/question");
 var antd_1 = require("antd");
 var icons_1 = require("@ant-design/icons");
 var QuestionList_less_1 = require("./QuestionList.less");
+//@ts-ignore
 var endShow_1 = require("./endShow");
 var StoryShow_1 = require("./StoryShow");
 var globalData_1 = require("../../utils/globalData");
 var user = JSON.parse(localStorage.getItem('user') || '')[0] || JSON.parse(localStorage.getItem('user') || '');
-var modeId = localStorage.getItem('modeId');
+var modeId = localStorage.getItem('modeId') || '0';
 var MainQuestion = function (props) {
     var dispatch = props.dispatch, questions = props.questions, checkpoint = props.checkpoint, setCheckpoint = props.setCheckpoint, setStartGame = props.setStartGame;
     var _a = react_1.useState(0), index = _a[0], setIndex = _a[1];
@@ -72,8 +74,8 @@ var MainQuestion = function (props) {
     var _f = react_1.useState(true), showStory = _f[0], setShowStory = _f[1]; // 展示故事
     var _g = react_1.useState(globalData_1.LifeNum), life = _g[0], setLife = _g[1];
     var isLastGame = lodash_1["default"].get(checkpoint, 'end');
-    function getData(checkpoint, chapterId, pageSize) {
-        console.log('test, getData');
+    function getData(params) {
+        var checkpoint = params.checkpoint, chapterId = params.chapterId, pageSize = params.pageSize;
         dispatch({
             type: "questions/getQuestions",
             payload: {
@@ -84,12 +86,23 @@ var MainQuestion = function (props) {
         });
     }
     react_1.useEffect(function () {
-        console.log('init', props);
-        getData(1, 1, 10);
+        console.log('props', props);
+        switch (modeId) {
+            case '0':
+                getData({
+                    checkpoint: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.checkpoint, chapterId: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.chapterId,
+                    pageSize: globalData_1.QuestionNum
+                });
+                break;
+            case '1':
+                getData({
+                    pageSize: 10
+                });
+                break;
+        }
     }, []);
     react_1.useEffect(function () {
         var list = (questions === null || questions === void 0 ? void 0 : questions.data) || [];
-        console.log('questions', questions, list);
         setTotalNum(list === null || list === void 0 ? void 0 : list.length);
         setIndex(0);
     }, [questions]);
@@ -119,6 +132,8 @@ var MainQuestion = function (props) {
         if (index === (questions === null || questions === void 0 ? void 0 : questions.data.length) && index) {
             setEnd(true);
         }
+        //解锁新模式
+        //    openEndlessMode(2)
     }, [index]);
     // 添加游戏记录（非主线模式
     var addRecord = function () {
@@ -136,10 +151,11 @@ var MainQuestion = function (props) {
     };
     // 主线模式通关，修改进度
     var userPassGame = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var userId, newProgress, data, incomingData;
+        var URL, userId, newProgress, data, incomingData;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    URL = 'http://localhost:3000';
                     userId = user.id;
                     if (!((user === null || user === void 0 ? void 0 : user.chapterId) === (checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.chapterId) && (user === null || user === void 0 ? void 0 : user.checkpoint) === (checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.checkpoint) && right > globalData_1.passRightNum)) return [3 /*break*/, 2];
                     newProgress = globalData_1.Menu[(checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.index) + 1];
@@ -149,7 +165,6 @@ var MainQuestion = function (props) {
                     };
                     return [4 /*yield*/, axios_1["default"].put(URL + "/user/over?userId=" + userId + "&" + qs_1.stringify(data)).then(function () {
                             axios_1["default"].get(URL + "/user/info?userId=" + userId).then(function (res) {
-                                console.log('incomingData', res === null || res === void 0 ? void 0 : res.data[0]);
                                 localStorage.setItem('user', JSON.stringify(res === null || res === void 0 ? void 0 : res.data[0]));
                             });
                         })];
@@ -160,18 +175,19 @@ var MainQuestion = function (props) {
             }
         });
     }); };
-    var openEndlessMode = function () {
+    //解锁新模式
+    var openEndlessMode = function (modeId) {
         dispatch({
             type: 'user/getUSerMode',
             payload: {}
         }).then(function (res) {
             if (res && res.length) {
                 res.forEach(function (item) {
-                    if (item.id === 1 && item.userId === null) {
+                    if (item.id === modeId && item.userId === null) {
                         dispatch({
                             type: 'user/unlockUserMode',
                             payload: {
-                                modeId: 1
+                                modeId: modeId
                             }
                         });
                     }
@@ -198,9 +214,15 @@ var MainQuestion = function (props) {
             }
         });
     };
+    var handleAgain = function () {
+        setIndex(0);
+        setEnd(false);
+        setRight(0);
+        setLife(globalData_1.LifeNum);
+    };
     return (react_1["default"].createElement("div", { className: QuestionList_less_1["default"].box },
         (end) && react_1["default"].createElement("div", null,
-            react_1["default"].createElement(endShow_1["default"], { modeId: '0', updateGrade: userPassGame, right: right, nextGame: nextGame, again: function () { setIndex(0); setEnd(false); setRight(0); }, returnMap: returnMap })),
+            react_1["default"].createElement(endShow_1["default"], { modeId: modeId, updateGrade: userPassGame, right: right, nextGame: nextGame, again: handleAgain, returnMap: returnMap })),
         (!end && !showStory) && react_1["default"].createElement("div", null,
             react_1["default"].createElement("div", { className: QuestionList_less_1["default"].tool },
                 react_1["default"].createElement("div", { className: QuestionList_less_1["default"].process },
@@ -222,7 +244,7 @@ var MainQuestion = function (props) {
                     life)),
             react_1["default"].createElement(question_1["default"], { question: questions === null || questions === void 0 ? void 0 : questions.data[index], onBtnClick: onBtnClick })),
         showStory && react_1["default"].createElement("div", null,
-            react_1["default"].createElement(StoryShow_1["default"], { story: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.story, setShowStory: setShowStory, isLastGame: isLastGame, openEndlessMode: openEndlessMode }))));
+            react_1["default"].createElement(StoryShow_1["default"], { story: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.story, setShowStory: setShowStory, isLastGame: isLastGame, openEndlessMode: openEndlessMode(1) }))));
 };
 function mapStateToProps(state) {
     // const questions = state.questions.data;

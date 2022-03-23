@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.LifeNum = exports.passRightNum = exports.Menu = exports.MaxCheckpoint = void 0;
+exports.modeId = exports.user = exports.QuestionNum = exports.LifeNum = exports.passRightNum = exports.Menu = exports.MaxCheckpoint = void 0;
 var MaxCheckpoint = 20;
 exports.MaxCheckpoint = MaxCheckpoint;
 var passRightNum = 3; // 通关限制
@@ -10,6 +10,7 @@ var Menu = [
         chapterId: 1,
         checkpoint: 1,
         title: '欢迎新员工',
+        open: true,
         story: "\u6B22\u8FCE\u65B0\u5458\u5DE5\u7684\u5230\u6765\uFF01\n    \u8FD9\u662F\u5F00\u59CB\u5DE5\u4F5C\u7684\u7B2C\u4E00\u5929\u3002\n    \u6211\u4EEC\u56E2\u961F\u8FD1\u671F\u7684\u4EFB\u52A1\u662F\u5F00\u53D1\u51FA\u4E00\u6B3E\u8F6F\u4EF6\u3002\n    \u8FD8\u4E0D\u4F1A\u7684\u8BDD\u4E5F\u6CA1\u6709\u5173\u7CFB\uFF0C\u6211\u4EEC\u4E00\u6B65\u4E00\u6B65\u6765\u3002\n    \u9996\u5148\u8981\u4E86\u89E3\u4EC0\u4E48\u662F\u8F6F\u4EF6\u3002\n    \u8F6F\u4EF6\u662F\u8BBE\u8BA1\u5F00\u53D1\u7684\uFF0C\u800C\u4E0D\u662F\u4F20\u7EDF\u610F\u4E49\u4E0A\u751F\u4EA7\u5236\u9020\u7684\u3002\n    \u5C06\u7CFB\u7EDF\u5316\u7684\u3001\u89C4\u8303\u7684\u3001\u53EF\u91CF\u5316\u7684\u65B9\u6CD5\u5E94\u7528\u4E8E\u8F6F\u4EF6\u7684\u5F00\u53D1\u3001\u8FD0\u884C\u548C\u7EF4\u62A4\uFF0C\u5373\u5C06\u5DE5\u7A0B\u5316\u7684\u65B9\u6CD5\u5E94\u7528\u4E8E\u8F6F\u4EF6\uFF0C\u8FD9\u5C31\u662F\u8F6F\u4EF6\u5DE5\u7A0B\u3002\n    \u5173\u4E8E\u66F4\u591A\u8BE6\u7EC6\u7684\u8D44\u6599\uFF0C\u4F60\u53EF\u4EE5\u5728\u4E0B\u9762\u7684\u63A2\u7D22\u4E2D\u83B7\u53D6\u3002\n    \u76F8\u4FE1\u4F60\u7684\u80FD\u529B\u54E6\u3002"
     },
     {
@@ -87,5 +88,15 @@ var Menu = [
     },
 ];
 exports.Menu = Menu;
-var LifeNum = 3;
+var LifeNum = 3; // 生命次数
 exports.LifeNum = LifeNum;
+// export default {
+//   MaxCheckpoint,
+//   Menu
+// };
+var user = JSON.parse(localStorage.getItem('user') || '')[0] || JSON.parse(localStorage.getItem('user') || '');
+exports.user = user;
+var modeId = localStorage.getItem('modeId') || '0';
+exports.modeId = modeId;
+var QuestionNum = 5; // 主线模式题目数量
+exports.QuestionNum = QuestionNum;

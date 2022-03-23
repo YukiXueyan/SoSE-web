@@ -65,6 +65,7 @@ const StoryShow = ({ story, setShowStory, isLastGame, openEndlessMode }: any) =>
       {btnWord ? '开始' : <DoubleRightOutlined />}
     </Button>
     <Button type='text' style={{ margin:'0 8px'}} onClick={() => {
+      console.log('click 跳过')
       setShowStory(false)
     }}>
       跳过

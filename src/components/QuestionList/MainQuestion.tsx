@@ -5,6 +5,7 @@ import { history } from 'umi';
 import axios from "axios";
 import { stringify } from 'qs'
 
+//@ts-ignore
 import Question from '../qAndA/question';
 import { Card, Progress, Button } from 'antd';
 import {
@@ -12,13 +13,14 @@ import {
 } from '@ant-design/icons';
 import styles from './QuestionList.less';
 import ShowTimer from './timer';
+//@ts-ignore
 import EndShow from './endShow';
 import StoryShow from './StoryShow';
 
-import { passRightNum, Menu, LifeNum } from '../../utils/globalData'
+import { passRightNum, Menu, LifeNum, QuestionNum } from '../../utils/globalData'
 
 const user = JSON.parse(localStorage.getItem('user') || '')[0] || JSON.parse(localStorage.getItem('user') || '');
-const modeId = localStorage.getItem('modeId')
+const modeId = localStorage.getItem('modeId') || '0'
 
 const MainQuestion = (props: any) => {
   const { dispatch, questions,
@@ -34,8 +36,8 @@ const MainQuestion = (props: any) => {
 
   const isLastGame = _.get(checkpoint, 'end');
 
-  function getData(checkpoint: any, chapterId: any, pageSize: any) {
-    console.log('test, getData')
+  function getData(params: { checkpoint?: any; chapterId?: any; pageSize: any; }) {
+    const {checkpoint, chapterId, pageSize} = params;
     dispatch({
       type: `questions/getQuestions`,
       payload: {
@@ -47,12 +49,23 @@ const MainQuestion = (props: any) => {
   }
 
   useEffect(() => {
-    console.log('init', props)
-    getData(1, 1, 10)
+    console.log('props', props)
+    switch (modeId){
+      case '0':
+        getData({
+          checkpoint:checkpoint?.checkpoint, chapterId:checkpoint?.chapterId, pageSize:QuestionNum
+        })
+        break;
+      case '1':
+        getData({
+          pageSize:10
+        })
+        break;
+      
+    } 
   }, [])
   useEffect(() => {
     const list = questions?.data || []
-    console.log('questions', questions, list)
 
     setTotalNum(list?.length);
     setIndex(0)
@@ -79,13 +92,15 @@ const MainQuestion = (props: any) => {
         if (Number(modeId) === 1) {
           addRecord()
         }
-
       }
     }
-
     if (index === questions?.data.length && index) {
       setEnd(true);
     }
+
+    //解锁新模式
+    //    openEndlessMode(2)
+
   }, [index]);
 
   // 添加游戏记录（非主线模式
@@ -105,6 +120,7 @@ const MainQuestion = (props: any) => {
 
   // 主线模式通关，修改进度
   const userPassGame = async () => {
+    const URL = 'http://localhost:3000'
     const userId = user.id;
     if (user?.chapterId === checkpoint?.chapterId && user?.checkpoint === checkpoint?.checkpoint && right > passRightNum) {
       //通关
@@ -119,7 +135,6 @@ const MainQuestion = (props: any) => {
         axios.get(
           `${URL}/user/info?userId=${userId}`
         ).then((res: { data: any[]; }) => {
-          console.log('incomingData', res?.data[0])
           localStorage.setItem('user', JSON.stringify(res?.data[0]))
         })
       });
@@ -127,7 +142,8 @@ const MainQuestion = (props: any) => {
     }
   }
 
-  const openEndlessMode = () => {
+  //解锁新模式
+  const openEndlessMode = (modeId:any) => {
 
     dispatch({
       type: 'user/getUSerMode',
@@ -135,11 +151,11 @@ const MainQuestion = (props: any) => {
     }).then((res: any[]) => {
       if (res && res.length) {
         res.forEach((item: { id: number; userId: null; }) => {
-          if (item.id === 1 && item.userId === null) {
+          if (item.id === modeId && item.userId === null) {
             dispatch({
               type: 'user/unlockUserMode',
               payload: {
-                modeId: 1
+                modeId
               }
             })
           }
@@ -172,15 +188,19 @@ const MainQuestion = (props: any) => {
     })
   }
 
+  const handleAgain = () => {
+    setIndex(0); setEnd(false); setRight(0);
+    setLife(LifeNum)
+  }
   return (
     <div className={styles.box}>
       {(end) && <div>
         <EndShow
-          modeId={'0'}
+          modeId={modeId}
           updateGrade={userPassGame}
           right={right}
           nextGame={nextGame}
-          again={() => { setIndex(0); setEnd(false); setRight(0) }}
+          again={handleAgain}
           returnMap={returnMap}
 
         />
@@ -212,7 +232,7 @@ const MainQuestion = (props: any) => {
 
       {showStory && <div>
         <StoryShow story={checkpoint?.story} setShowStory={setShowStory} isLastGame={isLastGame}
-          openEndlessMode={openEndlessMode} />
+          openEndlessMode={openEndlessMode(1)} />
       </div>}
 
     </div>

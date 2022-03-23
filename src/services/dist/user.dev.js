@@ -12,6 +12,7 @@ exports.addUserPoint = addUserPoint;
 exports.addNewUser = addNewUser;
 exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
+exports.userRecord = userRecord;
 
 var _request = _interopRequireDefault(require("../utils/request"));
 
@@ -166,4 +167,10 @@ function deleteUser(data) {
       }
     }
   });
+} //获取用户信息
+// userId
+
+
+function userRecord(data) {
+  return (0, _request["default"])("".concat(_url["default"], "/record?userId=").concat(userId, "&").concat((0, _qs.stringify)(data)));
 }

@@ -282,6 +282,33 @@ var _default = {
           }
         }
       }, deleteUser);
+    }),
+    getRecord:
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function getRecord(_ref29, _ref30) {
+      var payload, call, put, _ref31, status, data;
+
+      return regeneratorRuntime.wrap(function getRecord$(_context10) {
+        while (1) {
+          switch (_context10.prev = _context10.next) {
+            case 0:
+              payload = _ref29.payload;
+              call = _ref30.call, put = _ref30.put;
+              _context10.next = 4;
+              return call(_user.userRecord, payload);
+
+            case 4:
+              _ref31 = _context10.sent;
+              status = _ref31.status;
+              data = _ref31.data;
+              return _context10.abrupt("return", data);
+
+            case 8:
+            case "end":
+              return _context10.stop();
+          }
+        }
+      }, getRecord);
     })
   }
 };

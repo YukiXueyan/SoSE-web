@@ -59,6 +59,7 @@ var StoryShow = function (_a) {
         react_1["default"].createElement("div", { className: StoryShow_less_1["default"].btns },
             react_1["default"].createElement(antd_1.Button, { type: 'text' }, btnWord ? '开始' : react_1["default"].createElement(icons_1.DoubleRightOutlined, null)),
             react_1["default"].createElement(antd_1.Button, { type: 'text', style: { margin: '0 8px' }, onClick: function () {
+                    console.log('click 跳过');
                     setShowStory(false);
                 } }, "\u8DF3\u8FC7"),
             showEnding && react_1["default"].createElement("div", null,
