@@ -1,46 +1,47 @@
-// @import '../index.less';
-@main:#9899E4;
+@import '../../index.less';
 .normal {
   font-family: Georgia, sans-serif;
   text-align: center;
   position: relative;
-}
 
 
-.box{
-  display:flex;
-  flex-wrap: wrap;
-  
-  font-size: 28px;
+  .content{
+    position: absolute;
+    top: 30vh;
+    width: 100%;
+    text-align: center;
+  }
+  .name{
 
+    font-size:8vh;
+    color: @main4;
 
-  .box2{
-    width: 45%;
-    height: 10vw;
-    color:#0003D1;
-    background:@main;
-    margin:20px;
+  }
+  .box{
+    margin-top: 10vh;
+
     display: flex;
     justify-content: center;
-    align-items:center;
-    &:hover{
-      background:#3334CC;
-      color:#fff;
+    font-weight: 200;
+    font-size:5vh;
+    a{
+      color: @main2;
+      margin-right: 24px;
+    }
+
+    .box2{
 
     }
-  }
-  .boxUnlocked{
-    &:hover{
-      background:#3334CC;
-      color:#fff;
-
+    .boxLocked{
+      color: @main1;
+    }
+    .boxUnLocked{
+      &:hover{
+        color: @main4;
+      }
     }
   }
-  .boxLocked{
-    &:hover{
-      color:#0003D1;
-      background:@main;
 
-    }
-  }
+
 }
+

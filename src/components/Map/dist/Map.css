@@ -1,0 +1,22 @@
+.map {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.map .node {
+  width: 100%;
+  margin-top: 32px;
+}
+.map .node .title {
+  color: #adb5bd;
+  font-size: 24px;
+}
+.map .node .title:hover {
+  color: #757cbb;
+  cursor: pointer;
+}
+.map .node .title2 {
+  color: #e3e3e3;
+  font-size: 24px;
+}

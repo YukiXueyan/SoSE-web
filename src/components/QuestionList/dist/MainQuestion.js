@@ -234,7 +234,7 @@ var MainQuestion = function (props) {
     return (react_1["default"].createElement("div", { className: QuestionList_less_1["default"].box },
         (end) && react_1["default"].createElement("div", null,
             react_1["default"].createElement(endShow_1["default"], { modeId: modeId, updateGrade: userPassGame, right: right, nextGame: nextGame, again: handleAgain, returnMap: returnMap })),
-        (!end && !showStory) && react_1["default"].createElement("div", null,
+        (!end && !showStory) && react_1["default"].createElement("div", { className: QuestionList_less_1["default"].content },
             react_1["default"].createElement("div", { className: QuestionList_less_1["default"].tool },
                 react_1["default"].createElement("div", { className: QuestionList_less_1["default"].process },
                     react_1["default"].createElement(antd_1.Progress, { percent: index * 100 / totalNum, showInfo: false }),
@@ -254,12 +254,7 @@ var MainQuestion = function (props) {
                     react_1["default"].createElement(icons_1.FieldTimeOutlined, null),
                     life)),
             react_1["default"].createElement(question_1["default"], { question: questions === null || questions === void 0 ? void 0 : questions.data[index], onBtnClick: onBtnClick })),
-        console.log({ showStory: showStory }),
-        showStory && react_1["default"].createElement("div", null,
-            react_1["default"].createElement(StoryShow_1["default"], { story: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.story, setShowStory: setShowStory, isLastGame: isLastGame }),
-            react_1["default"].createElement(antd_1.Button, { onClick: function () {
-                    setShowStory(false);
-                } }, "\u5F00\u59CB"))));
+        showStory && react_1["default"].createElement(StoryShow_1["default"], { story: checkpoint === null || checkpoint === void 0 ? void 0 : checkpoint.story, setShowStory: setShowStory, isLastGame: isLastGame })));
 };
 function mapStateToProps(state) {
     // const questions = state.questions.data;

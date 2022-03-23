@@ -1,0 +1,27 @@
+.box {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 5vw;
+  padding: 8px;
+  border: 2px solid #4a4b9d;
+  border-radius: 12px;
+  min-height: 50vh;
+}
+.box button:focus {
+  border-color: #d9d9d9;
+  color: rgba(0, 0, 0, 0.85);
+}
+.box .tool {
+  display: flex;
+  justify-content: space-between;
+}
+.box .tool .process {
+  width: 50%;
+  display: flex;
+}
+.box .tool .process .desc {
+  display: inline-block;
+  white-space: nowrap;
+  margin-left: 8px;
+}

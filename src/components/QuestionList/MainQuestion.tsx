@@ -219,7 +219,7 @@ const MainQuestion = (props: any) => {
         />
       </div>}
 
-      {(!end && !showStory) && <div>
+      {(!end && !showStory) && <div className={styles.content}>
         <div className={styles.tool}>
           <div className={styles.process}>
             <Progress percent={index * 100 / totalNum} showInfo={false} />
@@ -242,20 +242,13 @@ const MainQuestion = (props: any) => {
         <Question question={questions?.data[index]} onBtnClick={onBtnClick} />
         {/* <Question question={questionList[index]} onBtnClick={onBtnClick} /> */}
       </div>}
-
-{console.log({showStory})}
-      {showStory && <div>
-        {/* 重复渲染？ */}
-          <StoryShow 
+{/* todo 解决传入dispatch导致重复渲染的问题？ */}
+      {showStory && <StoryShow 
           story={checkpoint?.story}
           setShowStory={setShowStory}
           isLastGame={isLastGame}
           // openEndlessMode={openEndlessMode({modeId:1})}
-          />
-          <Button onClick={() =>{
-              setShowStory(false)
-          }}>开始</Button>
-      </div>}
+          />}
 
     </div>
   );

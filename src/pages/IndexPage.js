@@ -5,7 +5,7 @@ import MainIndex from '../components/MainIndex/MainIndex'
 import TopNav from '../components/TopNav/TopNav';
 import { message } from 'antd';
 import { history } from 'umi';
-import {Button} from 'antd';
+import { Button } from 'antd';
 
 const modeBtnList = [
   '/endlessMode',
@@ -18,20 +18,20 @@ const IndexPage = ({ dispatch, products }) => {
 
   useEffect(() => {
     localStorage.setItem('modeId', 0)
-  },[]),
+  }, []),
 
-  function addNewUser() {
-    dispatch({
-      type: 'user/addUser',
-    }).then(res => {
-      if (res && res.length > 0) {
-        localStorage.setItem('userId', res[0].id)
-        localStorage.setItem('user', JSON.stringify(res[0]))
+    function addNewUser() {
+      dispatch({
+        type: 'user/addUser',
+      }).then(res => {
+        if (res && res.length > 0) {
+          localStorage.setItem('userId', res[0].id)
+          localStorage.setItem('user', JSON.stringify(res[0]))
 
-      }
+        }
 
-    });
-  }
+      });
+    }
   function getUser() {
     dispatch({
       type: 'user/getUserInfo',
@@ -79,11 +79,11 @@ const IndexPage = ({ dispatch, products }) => {
     // href={modeBtnList[index]}
     userModeList.map((item, index) => {
       if (item.userId) {
-        const btn = <div className={styles.box2} onClick={() => {userChangeMode(item?.modeId, index)}} key={index}>{item.name}</div>
+        const btn = <a className={styles.boxUnLocked} onClick={() => { userChangeMode(item?.modeId, index) }} key={index}>{item.name}</a>
         // const btn = <a href={modeBtnList[index]} className={styles.box2} onClick={userChangeMode(item?.modeId)} key={index}>{item.name}</a>
         btns.push(btn);
       } else {
-        const btn = <div className={styles.box2} onClick={lockedBtn} key={index}>{item.name}</div>
+        const btn = <a className={styles.boxLocked} onClick={lockedBtn} key={index}>{item.name}</a>
         btns.push(btn);
       }
     })
@@ -92,13 +92,23 @@ const IndexPage = ({ dispatch, products }) => {
   return (
     <div className={styles.normal}>
       <TopNav isIndex={true} />
-      The Story of Software engineering
-      <MainIndex />
-      <div className={styles.box}>
+      <div className={styles.content}>
+        <div className={styles.name}>
+        软件工程物语
+        <br />
+          <span style={{fontSize:'7vh'}}>
+          The Story of Software engineering
+          </span>
+          <br />
+          
+        </div>
+        <div className={styles.box}>
 
-        <a href="/game" className={styles.box2} onClick={()=>{localStorage.setItem('modeId', 0)}}>Getting Started</a>
-        {renderModeListBtn()}
+          <a href="/game" className={styles.boxUnLocked} onClick={() => { localStorage.setItem('modeId', 0) }}>Getting Started</a>
+          {renderModeListBtn()}
+        </div>
       </div>
+
     </div>
   );
 }

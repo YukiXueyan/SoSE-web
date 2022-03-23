@@ -1,10 +1,16 @@
+@import '../../../index.less';
 .box{
     display: flex;
     justify-content:center;
-    align-items: center;
+    // align-items: center;
     flex-direction: column;
 
-    margin: 20px 0;
+    margin:5vw;
+    padding:8px;
+    border:2px solid @main4;
+    border-radius: 12px;
+
+    min-height:50vh;
 
     button{
         &:focus{
@@ -28,4 +34,8 @@
             }
         }
     }
+}
+
+.content{
+
 }

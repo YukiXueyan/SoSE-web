@@ -1,0 +1,32 @@
+.normal {
+  font-family: Georgia, sans-serif;
+  text-align: center;
+  position: relative;
+}
+.normal .content {
+  position: absolute;
+  top: 30vh;
+  width: 100%;
+  text-align: center;
+}
+.normal .name {
+  font-size: 8vh;
+  color: #4a4b9d;
+}
+.normal .box {
+  margin-top: 10vh;
+  display: flex;
+  justify-content: center;
+  font-weight: 200;
+  font-size: 5vh;
+}
+.normal .box a {
+  color: #757cbb;
+  margin-right: 24px;
+}
+.normal .box .boxLocked {
+  color: #a4abd6;
+}
+.normal .box .boxUnLocked:hover {
+  color: #4a4b9d;
+}
