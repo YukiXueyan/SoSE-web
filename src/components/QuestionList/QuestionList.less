@@ -1,49 +1,89 @@
 @import '../../../index.less';
-.box{
+.box {
+  display: flex;
+  // justify-content:center;
+  // align-items: center;
+  flex-direction: column;
+
+  margin: 5vw;
+  padding: 8px;
+  border: 2px solid @main4;
+  border-radius: 12px;
+
+  min-height: 50vh;
+
+  button {
+    &:focus {
+      border-color: #d9d9d9;
+      color: rgba(0, 0, 0, 0.85);
+    }
+  }
+
+  .tool {
     display: flex;
-    // justify-content:center;
-    // align-items: center;
-    flex-direction: column;
+    justify-content: space-between;
 
-    margin:5vw;
-    padding:8px;
-    border:2px solid @main4;
-    border-radius: 12px;
+    .process {
+      width: 50%;
+      display: flex;
 
-    min-height:50vh;
-
-    button{
-        &:focus{
-            border-color:#d9d9d9;
-            color: rgba(0, 0, 0, 0.85);
-        }
+      .desc {
+        display: inline-block;
+        white-space: nowrap;
+        margin-left: 8px;
+      }
     }
 
-    .tool{
-        display: flex;
-        justify-content:space-between;
+    .timer {
+      display: flex;
+      align-items: center;
 
-        .process{
-            width:50%;
-            display: flex;
-
-            .desc{
-                display: inline-block;
-                white-space: nowrap;
-                margin-left: 8px;
-            }
-        }
+      .stop {
+        margin-right: 8px;
+      }
     }
+  }
 
-    .footer{
-        display: flex;
-        flex-direction:row-reverse;
-    }
+  .footer {
+    display: flex;
+    flex-direction: row-reverse;
+  }
 }
 
-.content{
-    min-height: 50vh;
-    display: flex;
-    flex-direction: column;
-    justify-content:space-around;
+.content {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.endshow {
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 7vh;
+    color: @main4;
+    margin-bottom: 16px;
+  }
+
+  .next {
+    position: absolute;
+    right: 0;
+    top: 10;
+  }
+
+  .main {
+    .links {
+      display: flex;
+
+      a {
+        margin-right: 16px;
+      }
+    }
+  }
 }

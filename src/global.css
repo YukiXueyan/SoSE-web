@@ -1,11 +1,12 @@
-div {
-  font-size: 16px;
+div{
+  font-size:16px;
 }
 .fade-enter {
   opacity: 0;
   z-index: 1;
 }
+
 .fade-enter.fade-enter-active {
   opacity: 1;
-  transition: opacity 250ms ease-in;
+  transition: opacity 1s ease-in;
 }

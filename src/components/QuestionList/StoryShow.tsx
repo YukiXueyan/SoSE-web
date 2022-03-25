@@ -1,77 +1,96 @@
 import React, { useState, useEffect } from 'react';
 
 import _ from 'lodash';
-import styled from './StoryShow.less'
-import { Button } from 'antd';
-import { DoubleRightOutlined } from '@ant-design/icons';
+import styled from './StoryShow.less';
+import { Button, Tooltip } from 'antd';
+import {
+  DoubleRightOutlined,
+  StepForwardOutlined,
+  HomeOutlined,
+  PlayCircleOutlined,
+} from '@ant-design/icons';
 import { history } from 'umi';
 //
 // const StoryShow = ({  }: any) => {
-  const StoryShow = ({ story, setShowStory, isLastGame }: any) => {
-
+const StoryShow = ({ story, setShowStory, isLastGame }: any) => {
   const [storyList, setStoryList] = useState<any>([]);
   const [index, setIndex] = useState(0);
   const [btnWord, setBtnWord] = useState(false);
-  const [showEnding, setShowEnding] = useState(false)
+  const [showEnding, setShowEnding] = useState(false);
 
   useEffect(() => {
     const list = String(story).split('\n');
-    setStoryList(list)
-    setIndex(0)
-  }, [])
+    setStoryList(list);
+    setIndex(0);
+  }, []);
 
   // 下一步劇情
   const continueStory = () => {
     const len = storyList.length;
     if (index + 1 >= len) {
       if (isLastGame) {
-        setShowEnding(true)
-        history.push('/')
+        setShowEnding(true);
+        history.push('/');
       } else {
-        setShowStory(false)
+        setShowStory(false);
       }
     } else {
-      setIndex(index + 1)
+      setIndex(index + 1);
     }
     if (index === len - 2 && !isLastGame) {
-      setBtnWord(true)
+      setBtnWord(true);
     }
-
-  }
-
+  };
 
   const finallyGoBack = () => {
-    history.push('/')
-  }
+    history.push('/');
+  };
   return (
     <div className={styled.content}>
-    {storyList[index]}
-    <div className={styled.btns}>
-      <Button type='text' onClick={() => { continueStory() }}>
-        {btnWord ? '开始' : <DoubleRightOutlined />}
-      </Button>
-      <Button type='text' style={{ margin: '0 8px' }} onClick={() => {
-        
-        if(isLastGame){
-          history.push('/')
-        }else{
-          setShowStory(false)
-        }
-      }}>
-        跳过
-      </Button>
-      {showEnding && <div>
-        <Button onClick={()=>{finallyGoBack}}>
-          返回主页
-        </Button>
-      </div>}
+      {storyList[index]}
+      <div className={styled.btns}>
+        <Tooltip placement="topLeft" title={btnWord ? '开始' : '继续'}>
+          <Button
+            type="text"
+            onClick={() => {
+              continueStory();
+            }}
+          >
+            {btnWord ? <PlayCircleOutlined /> : <DoubleRightOutlined />}
+          </Button>
+        </Tooltip>
+        <Tooltip placement="topLeft" title={'跳过'}>
+          <Button
+            type="text"
+            style={{ margin: '0 8px' }}
+            onClick={() => {
+              if (isLastGame) {
+                history.push('/');
+              } else {
+                setShowStory(false);
+              }
+            }}
+          >
+            {/* 跳过 */}
+            <StepForwardOutlined />
+          </Button>
+        </Tooltip>
+
+        {showEnding && (
+          <div>
+            <Button
+              onClick={() => {
+                finallyGoBack;
+              }}
+            >
+              {/* 返回主页 */}
+              <HomeOutlined />
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
-
-  </div>
-  )
-
-}
-
-
+  );
+};
 
 export default StoryShow;

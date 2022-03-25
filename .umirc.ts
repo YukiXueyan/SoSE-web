@@ -5,21 +5,36 @@ export default defineConfig({
     type: 'none',
   },
   routes: [
-    { path: '/testMode', component: '@/pages/index' },
-    { path: '/game', component: '@/pages/IndexGame' },
-    { path: '/review', component: '@/pages/ReviewPage' },
-    { path: '/products', component: '@/pages/Products' },
-    { path: '/endlessMode', component: '@/pages/IndexGame' },
-    { path: '/info', component: '@/pages/InfoPage' },
-    { path: '/', component: '@/pages/IndexPage' },
-    {component: '@/pages/404'} // 配置404
-
+    {
+      path: '/',
+      component: '@/layouts/index',
+      routes: [
+        { path: '/testMode', component: '@/pages/index' },
+        { path: '/game', component: '@/pages/IndexGame' },
+        { path: '/review', component: '@/pages/ReviewPage' },
+        { path: '/products', component: '@/pages/Products' },
+        { path: '/endlessMode', component: '@/pages/IndexGame' },
+        { path: '/info', component: '@/pages/InfoPage' },
+        { path: '/', component: '@/pages/IndexPage' },
+      ],
+    },
+    // { path: '/testMode', component: '@/pages/index' },
+    // { path: '/game', component: '@/pages/IndexGame' },
+    // { path: '/review', component: '@/pages/ReviewPage' },
+    // { path: '/products', component: '@/pages/Products' },
+    // { path: '/endlessMode', component: '@/pages/IndexGame' },
+    // { path: '/info', component: '@/pages/InfoPage' },
+    // { path: '/', component: '@/pages/IndexPage' },
+    { component: '@/pages/404' }, // 配置404
   ],
   fastRefresh: {},
   alias: {
-    "@": 'src',
+    '@': 'src',
   },
-  mfsu:{},
-  title:'软件工程物语',
-  404:true
+  mfsu: {},
+  title: '软件工程物语',
+  404: true,
+  dynamicImport: {
+    loading: '@/components/PageLoading',
+  },
 });

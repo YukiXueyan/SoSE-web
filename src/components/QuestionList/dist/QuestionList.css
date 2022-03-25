@@ -24,6 +24,13 @@
   white-space: nowrap;
   margin-left: 8px;
 }
+.box .tool .timer {
+  display: flex;
+  align-items: center;
+}
+.box .tool .timer .stop {
+  margin-right: 8px;
+}
 .box .footer {
   display: flex;
   flex-direction: row-reverse;
@@ -32,5 +39,29 @@
   min-height: 50vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+.endshow {
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.endshow .title {
+  font-size: 7vh;
+  color: #4a4b9d;
+  margin-bottom: 16px;
+}
+.endshow .next {
+  position: absolute;
+  right: 0;
+  top: 10;
+}
+.endshow .main .links {
+  display: flex;
+}
+.endshow .main .links a {
+  margin-right: 16px;
 }
