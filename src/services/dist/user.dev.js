@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
 exports.passGame = passGame;
 exports.userMode = userMode;
@@ -14,28 +14,39 @@ exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
 exports.userRecord = userRecord;
 
-var _request = _interopRequireDefault(require("../utils/request"));
+var _request = _interopRequireDefault(require('../utils/request'));
 
-var _url = _interopRequireDefault(require("../utils/url"));
+var _url = _interopRequireDefault(require('../utils/url'));
 
-var _qs = require("qs");
+var _qs = require('qs');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var userId = localStorage.getItem('userId'); // 用户通关
 
 function passGame(data) {
   return regeneratorRuntime.async(function passGame$(_context) {
     while (1) {
-      switch (_context.prev = _context.next) {
+      switch ((_context.prev = _context.next)) {
         case 0:
-          return _context.abrupt("return", (0, _request["default"])("".concat(_url["default"], "/user/over?userId=").concat(userId, "&").concat((0, _qs.stringify)(data)), {
-            method: 'PUT',
-            data: data
-          }));
+          return _context.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''
+                .concat(_url['default'], '/user/over?userId=')
+                .concat(userId, '&')
+                .concat((0, _qs.stringify)(data)),
+              {
+                method: 'PUT',
+                data: data,
+              },
+            ),
+          );
 
         case 1:
-        case "end":
+        case 'end':
           return _context.stop();
       }
     }
@@ -43,38 +54,53 @@ function passGame(data) {
 } // 获取用户已解锁的模式
 // userId
 
-
 function userMode(data) {
   return regeneratorRuntime.async(function userMode$(_context2) {
     while (1) {
-      switch (_context2.prev = _context2.next) {
+      switch ((_context2.prev = _context2.next)) {
         case 0:
-          return _context2.abrupt("return", (0, _request["default"])("".concat(_url["default"], "/user/mode/list?userId=").concat(userId), {
-            method: 'GET',
-            data: data
-          }));
+          return _context2.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''
+                .concat(_url['default'], '/user/mode/list?userId=')
+                .concat(userId),
+              {
+                method: 'GET',
+                data: data,
+              },
+            ),
+          );
 
         case 1:
-        case "end":
+        case 'end':
           return _context2.stop();
       }
     }
   });
 } // 解锁模式
 
-
 function unlockMode(data) {
   return regeneratorRuntime.async(function unlockMode$(_context3) {
     while (1) {
-      switch (_context3.prev = _context3.next) {
+      switch ((_context3.prev = _context3.next)) {
         case 0:
-          return _context3.abrupt("return", (0, _request["default"])("".concat(_url["default"], "/user/mode/unlock?userId=").concat(userId, "&").concat((0, _qs.stringify)(data)), {
-            method: 'POST',
-            data: data
-          }));
+          return _context3.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''
+                .concat(_url['default'], '/user/mode/unlock?userId=')
+                .concat(userId, '&')
+                .concat((0, _qs.stringify)(data)),
+              {
+                method: 'POST',
+                data: data,
+              },
+            ),
+          );
 
         case 1:
-        case "end":
+        case 'end':
           return _context3.stop();
       }
     }
@@ -82,31 +108,41 @@ function unlockMode(data) {
 } //获取用户信息
 // userId
 
-
 function userInfo() {
-  return (0, _request["default"])("".concat(_url["default"], "/user/info?userId=").concat(userId));
+  return (0, _request['default'])(
+    ''.concat(_url['default'], '/user/info?userId=').concat(userId),
+  );
 } //获取用户成就列表
 // userId
 
-
 function userAchieve() {
-  return (0, _request["default"])("".concat(_url["default"], "/user/achieve?userId=").concat(userId));
+  return (0, _request['default'])(
+    ''.concat(_url['default'], '/achieve/list?userId=').concat(userId),
+  );
 } // 增加用户积分
 // point
-
 
 function addUserPoint(data) {
   return regeneratorRuntime.async(function addUserPoint$(_context4) {
     while (1) {
-      switch (_context4.prev = _context4.next) {
+      switch ((_context4.prev = _context4.next)) {
         case 0:
-          return _context4.abrupt("return", (0, _request["default"])("".concat(_url["default"], "/user/addPoint?userId=").concat(userId, "&").concat((0, _qs.stringify)(data)), {
-            method: 'POST',
-            data: data
-          }));
+          return _context4.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''
+                .concat(_url['default'], '/user/addPoint?userId=')
+                .concat(userId, '&')
+                .concat((0, _qs.stringify)(data)),
+              {
+                method: 'POST',
+                data: data,
+              },
+            ),
+          );
 
         case 1:
-        case "end":
+        case 'end':
           return _context4.stop();
       }
     }
@@ -114,55 +150,70 @@ function addUserPoint(data) {
 } // 解锁用户成就
 // 添加新用户
 
-
 function addNewUser() {
   return regeneratorRuntime.async(function addNewUser$(_context5) {
     while (1) {
-      switch (_context5.prev = _context5.next) {
+      switch ((_context5.prev = _context5.next)) {
         case 0:
-          return _context5.abrupt("return", (0, _request["default"])("".concat(_url["default"], "/user/add"), {
-            method: 'POST'
-          }));
+          return _context5.abrupt(
+            'return',
+            (0, _request['default'])(''.concat(_url['default'], '/user/add'), {
+              method: 'POST',
+            }),
+          );
 
         case 1:
-        case "end":
+        case 'end':
           return _context5.stop();
       }
     }
   });
 } // 修改用户名 // name
 
-
 function updateUser(data) {
   return regeneratorRuntime.async(function updateUser$(_context6) {
     while (1) {
-      switch (_context6.prev = _context6.next) {
+      switch ((_context6.prev = _context6.next)) {
         case 0:
-          return _context6.abrupt("return", (0, _request["default"])("".concat(_url["default"], "/user/changeInfo?userId=").concat(userId, "&").concat((0, _qs.stringify)(data)), {
-            method: 'PUT',
-            data: data
-          }));
+          return _context6.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''
+                .concat(_url['default'], '/user/changeInfo?userId=')
+                .concat(userId, '&')
+                .concat((0, _qs.stringify)(data)),
+              {
+                method: 'PUT',
+                data: data,
+              },
+            ),
+          );
 
         case 1:
-        case "end":
+        case 'end':
           return _context6.stop();
       }
     }
   });
 } // 删除数据
 
-
 function deleteUser(data) {
   return regeneratorRuntime.async(function deleteUser$(_context7) {
     while (1) {
-      switch (_context7.prev = _context7.next) {
+      switch ((_context7.prev = _context7.next)) {
         case 0:
-          return _context7.abrupt("return", (0, _request["default"])("".concat(_url["default"], "/user/delete?userId=").concat(userId), {
-            method: 'delete'
-          }));
+          return _context7.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''.concat(_url['default'], '/user/delete?userId=').concat(userId),
+              {
+                method: 'delete',
+              },
+            ),
+          );
 
         case 1:
-        case "end":
+        case 'end':
           return _context7.stop();
       }
     }
@@ -170,7 +221,11 @@ function deleteUser(data) {
 } //获取用户信息
 // userId
 
-
 function userRecord(data) {
-  return (0, _request["default"])("".concat(_url["default"], "/record?userId=").concat(userId, "&").concat((0, _qs.stringify)(data)));
+  return (0, _request['default'])(
+    ''
+      .concat(_url['default'], '/record?userId=')
+      .concat(userId, '&')
+      .concat((0, _qs.stringify)(data)),
+  );
 }

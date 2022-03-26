@@ -1,61 +1,82 @@
 // @import '../../index.less';
-@main:#9899E4;
-.achieve{
-    width: 100%;
-    height: 100%;
-    // 
+@main: #9899e4;
+.achieve {
+  width: 100%;
+  height: 100%;
+  //
 
-    .box{
+  .box {
+    display: flex;
+    flex-wrap: wrap;
+    .item {
+      // background-color:@main;
+      width: 15rem;
+      height: 15rem;
+      margin-right: 16px;
+      margin-bottom: 16px;
+      padding: 8px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #e5e5e5;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .left {
         display: flex;
-        flex-wrap:wrap;
-        .item{
-            background-color:@main;
-            width: 20%;
-            margin-right: 16px;
-            margin-bottom: 16px;
-            padding:8px;
-            border-radius: 8px;
+        align-items: center;
+      }
 
-            display:flex;
-
-            .left{
-                display: flex;
-                align-items:center;
-            }
-
-            .right{
-                display:flex;
-                flex-direction: column;
-
-                margin-left: 8px;
-            }
-        }
-    }
-
-    
-}
-
-.userInfo{
-    .item{
+      .right {
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 4px;
 
-        .title{
-            font-weight:600;
+        .title {
+          font-weight: 600;
+          font-size: 1.2rem;
         }
-        .desc{
-            margin-left:8px;
+
+        .desc {
         }
+      }
+      .icon {
+        @icon: 7rem;
+        width: @icon;
+        height: @icon;
+        background-color: #e5e5e5;
+        border-radius: @icon;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
+  }
 }
 
-.Record{
-    .tabContent{
-        // display: flex;
-        // word-wrap: break-word;
-        // white-space:nowrap;
+.userInfo {
+  .item {
+    display: flex;
+
+    .title {
+      font-weight: 600;
     }
+    .desc {
+      margin-left: 8px;
+    }
+  }
 }
 
-.Story{
+.Record {
+  .tabContent {
+    // display: flex;
+    // word-wrap: break-word;
+    // white-space:nowrap;
+  }
+}
 
+.Story {
 }

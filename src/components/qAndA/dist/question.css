@@ -1,5 +1,6 @@
 .qbox .qdesc {
-  margin: 4px 0;
+  margin: 16px 0;
+  font-size: 5vh;
 }
 .qbox .options {
   display: flex;
