@@ -20,6 +20,7 @@ var dva_1 = require('dva');
 var info_less_1 = require('./info.less');
 var icons_1 = require('@ant-design/icons');
 // import { IconStar } from ''
+var rc_queue_anim_1 = require('rc-queue-anim');
 var Achieve = function (params) {
   var dispatch = params.dispatch,
     questions = params.questions,
@@ -28,7 +29,6 @@ var Achieve = function (params) {
     achieveList = _a[0],
     setAchieveList = _a[1];
   react_1.useEffect(function () {
-    console.log('params', params);
     dispatch({
       type: 'user/getUserAchieve',
       payload: {},
@@ -36,11 +36,13 @@ var Achieve = function (params) {
       setAchieveList(res);
     });
   }, []);
-  console.log(params);
   var renderItem = function (item) {
     return react_1['default'].createElement(
       'div',
-      { className: info_less_1['default'].item },
+      {
+        className: info_less_1['default'].item,
+        key: item === null || item === void 0 ? void 0 : item.id,
+      },
       react_1['default'].createElement(
         'div',
         { className: info_less_1['default'].left },
@@ -85,8 +87,14 @@ var Achieve = function (params) {
     'div',
     { className: info_less_1['default'].achieve },
     react_1['default'].createElement(
-      'div',
-      { className: info_less_1['default'].box },
+      rc_queue_anim_1['default'],
+      {
+        className: info_less_1['default'].box,
+        animConfig: [
+          { opacity: [1, 0], translateY: [0, 50] },
+          { opacity: [1, 0], translateY: [0, -50] },
+        ],
+      },
       (achieveList === null || achieveList === void 0
         ? void 0
         : achieveList.length) &&
@@ -99,10 +107,6 @@ var Achieve = function (params) {
                 return renderItem(item);
               }),
         ),
-      (achieveList === null || achieveList === void 0
-        ? void 0
-        : achieveList.length) === 0 &&
-        react_1['default'].createElement('div', null, 'empty'),
     ),
   );
 };

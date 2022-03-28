@@ -160,7 +160,7 @@ var antd_1 = require('antd');
 var icons_1 = require('@ant-design/icons');
 var QuestionList_less_1 = require('./QuestionList.less');
 //@ts-ignore
-var Endshow2_1 = require('./Endshow2');
+var ShowEnd_1 = require('./ShowEnd');
 // import EndShow from './endShow';
 var StoryShow_1 = require('./StoryShow');
 var globalData_1 = require('../../utils/globalData');
@@ -274,8 +274,9 @@ var MainQuestion = function (props) {
           setEnd(true);
           setLife(globalData_1.LifeNum);
           setResult(null);
-          if (Number(modeId) === 1) {
+          if (Number(modeId) !== 0) {
             addRecord();
+            judgeAchieve();
           }
         }
       }
@@ -302,6 +303,52 @@ var MainQuestion = function (props) {
         grade: right * 20,
         number: index,
       },
+    });
+    if (right > 10) {
+      openEndlessMode(2);
+    }
+    if (right > 20) {
+      openEndlessMode(3);
+    }
+  };
+  //判断成就是否存在
+  var judgeAchieve = function () {
+    dispatch({
+      type: 'user/getUserAchieve',
+      payload: {},
+    }).then(function (res) {
+      var achieveList =
+        res === null || res === void 0
+          ? void 0
+          : res.filter(function (x) {
+              return (
+                (x === null || x === void 0 ? void 0 : x.modeID) === modeId &&
+                !(x === null || x === void 0 ? void 0 : x.userId) &&
+                (x === null || x === void 0 ? void 0 : x.number) <= right
+              );
+            });
+      if (
+        achieveList === null || achieveList === void 0
+          ? void 0
+          : achieveList.length
+      ) {
+        achieveList === null || achieveList === void 0
+          ? void 0
+          : achieveList.map(function (item) {
+              addAchieve(item === null || item === void 0 ? void 0 : item.id);
+            });
+      }
+    });
+  };
+  //无尽模式游戏成就
+  var addAchieve = function (id) {
+    dispatch({
+      type: 'user/addUserAchieves',
+      payload: {
+        achieveId: id,
+      },
+    }).then(function () {
+      antd_1.message.success('新的成就解锁了✿✿ヽ(°▽°)ノ✿');
     });
   };
   var returnMap = function () {
@@ -387,7 +434,6 @@ var MainQuestion = function (props) {
   };
   //解锁新模式
   var openEndlessMode = function (params) {
-    console.log('openEndlessMode');
     var mode = params.mode;
     dispatch({
       type: 'user/getUSerMode',
@@ -401,6 +447,8 @@ var MainQuestion = function (props) {
               payload: {
                 modeId: mode,
               },
+            }).then(function () {
+              antd_1.message.success('新的模式解锁了ლ(╹◡╹ლ)');
             });
           }
         });
@@ -444,7 +492,7 @@ var MainQuestion = function (props) {
     'div',
     { className: QuestionList_less_1['default'].box },
     end &&
-      react_1['default'].createElement(Endshow2_1['default'], {
+      react_1['default'].createElement(ShowEnd_1['default'], {
         modeId: modeId,
         updateGrade: userPassGame,
         right: right,
@@ -456,7 +504,7 @@ var MainQuestion = function (props) {
       !showStory &&
       react_1['default'].createElement(
         'div',
-        { className: QuestionList_less_1['default'].content },
+        { className: QuestionList_less_1['default'].content, key: 'content' },
         react_1['default'].createElement(
           'div',
           { className: QuestionList_less_1['default'].tool },
@@ -471,8 +519,8 @@ var MainQuestion = function (props) {
               'div',
               { className: QuestionList_less_1['default'].desc },
               index,
-              ' / ',
-              totalNum,
+              '  ',
+              Number(modeId) === 0 ? '/' + totalNum : '',
             ),
           ),
           react_1['default'].createElement(
@@ -560,10 +608,6 @@ var MainQuestion = function (props) {
 };
 function mapStateToProps(state) {
   // const questions = state.questions.data;
-  return __assign(
-    {},
-    state,
-    // ...listSelector(state, ownProps),
-  );
+  return __assign({}, state);
 }
 exports['default'] = dva_1.connect(mapStateToProps)(MainQuestion);

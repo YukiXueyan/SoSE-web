@@ -45,7 +45,14 @@ export async function addUserPoint(data) {
   });
 }
 // 解锁用户成就
-
+// achieveId
+export async function addUserAchieve(data) {
+  const { achieveId } = data;
+  return request(`${URL}/achieve/add?userId=${userId}&achieveId=${achieveId}`, {
+    method: 'POST',
+    data,
+  });
+}
 // 添加新用户
 export async function addNewUser() {
   return request(`${URL}/user/add`, { method: 'POST' });

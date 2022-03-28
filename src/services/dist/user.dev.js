@@ -9,6 +9,7 @@ exports.unlockMode = unlockMode;
 exports.userInfo = userInfo;
 exports.userAchieve = userAchieve;
 exports.addUserPoint = addUserPoint;
+exports.addUserAchieve = addUserAchieve;
 exports.addNewUser = addNewUser;
 exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
@@ -148,14 +149,43 @@ function addUserPoint(data) {
     }
   });
 } // 解锁用户成就
-// 添加新用户
+// achieveId
 
-function addNewUser() {
-  return regeneratorRuntime.async(function addNewUser$(_context5) {
+function addUserAchieve(data) {
+  var achieveId;
+  return regeneratorRuntime.async(function addUserAchieve$(_context5) {
     while (1) {
       switch ((_context5.prev = _context5.next)) {
         case 0:
+          achieveId = data.achieveId;
           return _context5.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''
+                .concat(_url['default'], '/achieve/add?userId=')
+                .concat(userId, '&achieveId=')
+                .concat(achieveId),
+              {
+                method: 'POST',
+                data: data,
+              },
+            ),
+          );
+
+        case 2:
+        case 'end':
+          return _context5.stop();
+      }
+    }
+  });
+} // 添加新用户
+
+function addNewUser() {
+  return regeneratorRuntime.async(function addNewUser$(_context6) {
+    while (1) {
+      switch ((_context6.prev = _context6.next)) {
+        case 0:
+          return _context6.abrupt(
             'return',
             (0, _request['default'])(''.concat(_url['default'], '/user/add'), {
               method: 'POST',
@@ -164,18 +194,18 @@ function addNewUser() {
 
         case 1:
         case 'end':
-          return _context5.stop();
+          return _context6.stop();
       }
     }
   });
 } // 修改用户名 // name
 
 function updateUser(data) {
-  return regeneratorRuntime.async(function updateUser$(_context6) {
+  return regeneratorRuntime.async(function updateUser$(_context7) {
     while (1) {
-      switch ((_context6.prev = _context6.next)) {
+      switch ((_context7.prev = _context7.next)) {
         case 0:
-          return _context6.abrupt(
+          return _context7.abrupt(
             'return',
             (0, _request['default'])(
               ''
@@ -191,18 +221,18 @@ function updateUser(data) {
 
         case 1:
         case 'end':
-          return _context6.stop();
+          return _context7.stop();
       }
     }
   });
 } // 删除数据
 
 function deleteUser(data) {
-  return regeneratorRuntime.async(function deleteUser$(_context7) {
+  return regeneratorRuntime.async(function deleteUser$(_context8) {
     while (1) {
-      switch ((_context7.prev = _context7.next)) {
+      switch ((_context8.prev = _context8.next)) {
         case 0:
-          return _context7.abrupt(
+          return _context8.abrupt(
             'return',
             (0, _request['default'])(
               ''.concat(_url['default'], '/user/delete?userId=').concat(userId),
@@ -214,7 +244,7 @@ function deleteUser(data) {
 
         case 1:
         case 'end':
-          return _context7.stop();
+          return _context8.stop();
       }
     }
   });

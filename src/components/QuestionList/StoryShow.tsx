@@ -10,6 +10,7 @@ import {
   PlayCircleOutlined,
 } from '@ant-design/icons';
 import { history } from 'umi';
+import QueueAnim from 'rc-queue-anim';
 //
 // const StoryShow = ({  }: any) => {
 const StoryShow = ({ story, setShowStory, isLastGame }: any) => {
@@ -46,50 +47,58 @@ const StoryShow = ({ story, setShowStory, isLastGame }: any) => {
     history.push('/');
   };
   return (
-    <div className={styled.content}>
-      {storyList[index]}
-      <div className={styled.btns}>
-        <Tooltip placement="topLeft" title={btnWord ? '开始' : '继续'}>
-          <Button
-            type="text"
-            onClick={() => {
-              continueStory();
-            }}
-          >
-            {btnWord ? <PlayCircleOutlined /> : <DoubleRightOutlined />}
-          </Button>
-        </Tooltip>
-        <Tooltip placement="topLeft" title={'跳过'}>
-          <Button
-            type="text"
-            style={{ margin: '0 8px' }}
-            onClick={() => {
-              if (isLastGame) {
-                history.push('/');
-              } else {
-                setShowStory(false);
-              }
-            }}
-          >
-            {/* 跳过 */}
-            <StepForwardOutlined />
-          </Button>
-        </Tooltip>
-
-        {showEnding && (
-          <div>
+    <QueueAnim
+      animConfig={[
+        { opacity: [1, 0], translateY: [0, 50] },
+        { opacity: [1, 0], translateY: [0, -50] },
+      ]}
+      duration={1000}
+    >
+      <div className={styled.content} key="showStory">
+        {storyList[index]}
+        <div className={styled.btns}>
+          <Tooltip placement="topLeft" title={btnWord ? '开始' : '继续'}>
             <Button
+              type="text"
               onClick={() => {
-                finallyGoBack;
+                continueStory();
               }}
             >
-              {/* 返回主页 */}
-              <HomeOutlined />
+              {btnWord ? <PlayCircleOutlined /> : <DoubleRightOutlined />}
             </Button>
-          </div>
-        )}
+          </Tooltip>
+          <Tooltip placement="topLeft" title={'跳过'}>
+            <Button
+              type="text"
+              style={{ margin: '0 8px' }}
+              onClick={() => {
+                if (isLastGame) {
+                  history.push('/');
+                } else {
+                  setShowStory(false);
+                }
+              }}
+            >
+              {/* 跳过 */}
+              <StepForwardOutlined />
+            </Button>
+          </Tooltip>
+
+          {showEnding && (
+            <div>
+              <Button
+                onClick={() => {
+                  finallyGoBack;
+                }}
+              >
+                {/* 返回主页 */}
+                <HomeOutlined />
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </QueueAnim>
   );
 };
 

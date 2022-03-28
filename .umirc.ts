@@ -15,6 +15,7 @@ export default defineConfig({
         { path: '/products', component: '@/pages/Products' },
         { path: '/endlessMode', component: '@/pages/IndexGame' },
         { path: '/info', component: '@/pages/InfoPage' },
+        { path: '/admin', component: '@/pages/AdminPage' },
         { path: '/', component: '@/pages/IndexPage' },
       ],
     },

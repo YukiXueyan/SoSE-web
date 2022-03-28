@@ -44,9 +44,16 @@ var Map = function (_a) {
                       style: judge(item)
                         ? { fontSize: '24px', color: '#615ea8' }
                         : { fontSize: '24px', color: '#e3e3e3' },
-                      key: index,
                     },
                   ),
+                  key:
+                    '' +
+                    (item === null || item === void 0
+                      ? void 0
+                      : item.chapterId) +
+                    (item === null || item === void 0
+                      ? void 0
+                      : item.checkpoint),
                 },
                 judge(item) ||
                   (item === null || item === void 0 ? void 0 : item.open)

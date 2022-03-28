@@ -7,13 +7,13 @@ import {
   QuestionOutlined,
 } from '@ant-design/icons';
 // import { IconStar } from ''
+import QueueAnim from 'rc-queue-anim';
 
 const Achieve = (params: any) => {
   const { dispatch, questions, loading } = params;
   const [achieveList, setAchieveList] = useState([]);
 
   useEffect(() => {
-    console.log('params', params);
     dispatch({
       type: `user/getUserAchieve`,
       payload: {},
@@ -21,11 +21,10 @@ const Achieve = (params: any) => {
       setAchieveList(res);
     });
   }, []);
-  console.log(params);
 
   const renderItem = (item: any) => {
     return (
-      <div className={styles.item}>
+      <div className={styles.item} key={item?.id}>
         <div className={styles.left}>
           <div className={styles.icon}>
             {item?.userId ? (
@@ -53,12 +52,17 @@ const Achieve = (params: any) => {
   };
   return (
     <div className={styles.achieve}>
-      <div className={styles.box}>
+      <QueueAnim
+        className={styles.box}
+        animConfig={[
+          { opacity: [1, 0], translateY: [0, 50] },
+          { opacity: [1, 0], translateY: [0, -50] },
+        ]}
+      >
         {achieveList?.length && (
           <>{achieveList?.map((item: any) => renderItem(item))}</>
         )}
-        {achieveList?.length === 0 && <div>empty</div>}
-      </div>
+      </QueueAnim>
     </div>
   );
 };

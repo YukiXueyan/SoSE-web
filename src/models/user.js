@@ -18,6 +18,7 @@ import {
   deleteUser,
   unlockMode,
   userRecord,
+  addUserAchieve,
 } from '../services/user';
 
 export default {
@@ -85,6 +86,12 @@ export default {
     *getRecord({ payload }, { call, put }) {
       const { status, data } = yield call(userRecord, payload);
       return data;
+    },
+    //addUserAchieve
+    *addUserAchieves({ payload }, { call, put }) {
+      const { status, data } = yield call(addUserAchieve, payload);
+      // yield call(userAchieve, payload)
+      return { status, data };
     },
   },
 };

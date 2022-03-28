@@ -95,13 +95,13 @@ const IndexPage = ({ dispatch, products }) => {
     return btns;
   };
   return (
-    <div className={styles.normal}>
+    <div className={styles.normal} key="index">
       <TopNav isIndex={true} />
       <div className={styles.content}>
         <div className={styles.name}>
-          软件工程物语
-          <br />
-          <span style={{ fontSize: '7vh' }}>
+          {/* 软件工程物语 */}
+          {/* <br /> */}
+          <span style={{ fontSize: '8vh' }}>
             The Story of Software engineering
           </span>
           <br />

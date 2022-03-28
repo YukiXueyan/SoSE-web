@@ -7,7 +7,7 @@ import { stringify } from 'qs';
 
 //@ts-ignore
 import Question from '../qAndA/question';
-import { Progress, Button } from 'antd';
+import { Progress, Button, message } from 'antd';
 import {
   FieldTimeOutlined,
   ReloadOutlined,
@@ -17,10 +17,12 @@ import {
   HeartFilled,
   StopFilled,
 } from '@ant-design/icons';
+import QueueAnim from 'rc-queue-anim';
+
 import styles from './QuestionList.less';
 import ShowTimer from './timer';
 //@ts-ignore
-import EndShow from './Endshow2';
+import EndShow from './ShowEnd';
 // import EndShow from './endShow';
 import StoryShow from './StoryShow';
 
@@ -121,8 +123,9 @@ const MainQuestion = (props: any) => {
         setEnd(true);
         setLife(LifeNum);
         setResult(null);
-        if (Number(modeId) === 1) {
+        if (Number(modeId) !== 0) {
           addRecord();
+          judgeAchieve();
         }
       }
     }
@@ -135,6 +138,7 @@ const MainQuestion = (props: any) => {
   }, [index]);
 
   // 添加游戏记录（非主线模式
+
   const addRecord = () => {
     dispatch({
       type: `questions/successGame`,
@@ -143,6 +147,42 @@ const MainQuestion = (props: any) => {
         grade: right * 20,
         number: index,
       },
+    });
+
+    if (right > 10) {
+      openEndlessMode(2);
+    }
+    if (right > 20) {
+      openEndlessMode(3);
+    }
+  };
+
+  //判断成就是否存在
+  const judgeAchieve = () => {
+    dispatch({
+      type: `user/getUserAchieve`,
+      payload: {},
+    }).then((res: any) => {
+      const achieveList = res?.filter((x: any) => {
+        return x?.modeID === modeId && !x?.userId && x?.number <= right;
+      });
+      if (achieveList?.length) {
+        achieveList?.map((item: any) => {
+          addAchieve(item?.id);
+        });
+      }
+    });
+  };
+
+  //无尽模式游戏成就
+  const addAchieve = (id: number) => {
+    dispatch({
+      type: `user/addUserAchieves`,
+      payload: {
+        achieveId: id,
+      },
+    }).then(() => {
+      message.success('新的成就解锁了✿✿ヽ(°▽°)ノ✿');
     });
   };
   const returnMap = () => {
@@ -184,7 +224,6 @@ const MainQuestion = (props: any) => {
 
   //解锁新模式
   const openEndlessMode = (params: any) => {
-    console.log('openEndlessMode');
     const { mode } = params;
     dispatch({
       type: 'user/getUSerMode',
@@ -198,6 +237,8 @@ const MainQuestion = (props: any) => {
               payload: {
                 modeId: mode,
               },
+            }).then(() => {
+              message.success('新的模式解锁了ლ(╹◡╹ლ)');
             });
           }
         });
@@ -248,12 +289,12 @@ const MainQuestion = (props: any) => {
       )}
 
       {!end && !showStory && (
-        <div className={styles.content}>
+        <div className={styles.content} key="content">
           <div className={styles.tool}>
             <div className={styles.process}>
               <Progress percent={(index * 100) / totalNum} showInfo={false} />
               <div className={styles.desc}>
-                {index} / {totalNum}
+                {index} {Number(modeId) === 0 ? `/${totalNum}` : ''}
               </div>
             </div>
 
@@ -301,6 +342,7 @@ const MainQuestion = (props: any) => {
           {/* <Question question={questionList[index]} onBtnClick={onBtnClick} /> */}
         </div>
       )}
+
       {/* todo 解决传入dispatch导致重复渲染的问题？ */}
       {showStory && (
         <StoryShow

@@ -35,9 +35,9 @@ const Map = ({ user, setStartGame, setCheckpoint }: any) => {
                       ? { fontSize: '24px', color: '#615ea8' }
                       : { fontSize: '24px', color: '#e3e3e3' }
                   }
-                  key={index}
                 />
               }
+              key={`${item?.chapterId}${item?.checkpoint}`}
             >
               {judge(item) || item?.open ? (
                 <span

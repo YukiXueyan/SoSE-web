@@ -366,6 +366,37 @@ var _default = {
           }
         }, getRecord);
       }),
+    //addUserAchieve
+    addUserAchieves:
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function addUserAchieves(_ref33, _ref34) {
+        var payload, call, put, _ref35, status, data;
+
+        return regeneratorRuntime.wrap(function addUserAchieves$(_context11) {
+          while (1) {
+            switch ((_context11.prev = _context11.next)) {
+              case 0:
+                payload = _ref33.payload;
+                (call = _ref34.call), (put = _ref34.put);
+                _context11.next = 4;
+                return call(_user.addUserAchieve, payload);
+
+              case 4:
+                _ref35 = _context11.sent;
+                status = _ref35.status;
+                data = _ref35.data;
+                return _context11.abrupt('return', {
+                  status: status,
+                  data: data,
+                });
+
+              case 8:
+              case 'end':
+                return _context11.stop();
+            }
+          }
+        }, addUserAchieves);
+      }),
   },
 };
 exports['default'] = _default;

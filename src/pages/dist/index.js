@@ -14,41 +14,371 @@ var __assign =
       };
     return __assign.apply(this, arguments);
   };
+var __awaiter =
+  (this && this.__awaiter) ||
+  function (thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P
+        ? value
+        : new P(function (resolve) {
+            resolve(value);
+          });
+    }
+    return new (P || (P = Promise))(function (resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator['throw'](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done
+          ? resolve(result.value)
+          : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+var __generator =
+  (this && this.__generator) ||
+  function (thisArg, body) {
+    var _ = {
+        label: 0,
+        sent: function () {
+          if (t[0] & 1) throw t[1];
+          return t[1];
+        },
+        trys: [],
+        ops: [],
+      },
+      f,
+      y,
+      t,
+      g;
+    return (
+      (g = { next: verb(0), throw: verb(1), return: verb(2) }),
+      typeof Symbol === 'function' &&
+        (g[Symbol.iterator] = function () {
+          return this;
+        }),
+      g
+    );
+    function verb(n) {
+      return function (v) {
+        return step([n, v]);
+      };
+    }
+    function step(op) {
+      if (f) throw new TypeError('Generator is already executing.');
+      while (_)
+        try {
+          if (
+            ((f = 1),
+            y &&
+              (t =
+                op[0] & 2
+                  ? y['return']
+                  : op[0]
+                  ? y['throw'] || ((t = y['return']) && t.call(y), 0)
+                  : y.next) &&
+              !(t = t.call(y, op[1])).done)
+          )
+            return t;
+          if (((y = 0), t)) op = [op[0] & 2, t.value];
+          switch (op[0]) {
+            case 0:
+            case 1:
+              t = op;
+              break;
+            case 4:
+              _.label++;
+              return { value: op[1], done: false };
+            case 5:
+              _.label++;
+              y = op[1];
+              op = [0];
+              continue;
+            case 7:
+              op = _.ops.pop();
+              _.trys.pop();
+              continue;
+            default:
+              if (
+                !((t = _.trys), (t = t.length > 0 && t[t.length - 1])) &&
+                (op[0] === 6 || op[0] === 2)
+              ) {
+                _ = 0;
+                continue;
+              }
+              if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) {
+                _.label = op[1];
+                break;
+              }
+              if (op[0] === 6 && _.label < t[1]) {
+                _.label = t[1];
+                t = op;
+                break;
+              }
+              if (t && _.label < t[2]) {
+                _.label = t[2];
+                _.ops.push(op);
+                break;
+              }
+              if (t[2]) _.ops.pop();
+              _.trys.pop();
+              continue;
+          }
+          op = body.call(thisArg, _);
+        } catch (e) {
+          op = [6, e];
+          y = 0;
+        } finally {
+          f = t = 0;
+        }
+      if (op[0] & 5) throw op[1];
+      return { value: op[0] ? op[1] : void 0, done: true };
+    }
+  };
+var __rest =
+  (this && this.__rest) ||
+  function (s, e) {
+    var t = {};
+    for (var p in s)
+      if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === 'function')
+      for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+        if (
+          e.indexOf(p[i]) < 0 &&
+          Object.prototype.propertyIsEnumerable.call(s, p[i])
+        )
+          t[p[i]] = s[p[i]];
+      }
+    return t;
+  };
+var __spreadArrays =
+  (this && this.__spreadArrays) ||
+  function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++)
+      s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+      for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+        r[k] = a[j];
+    return r;
+  };
 exports.__esModule = true;
 var react_1 = require('react');
-var dva_1 = require('dva');
-var index_less_1 = require('./index.less');
-// @ts-ignore
-var EndShow2_1 = require('../components/QuestionList/EndShow2');
-// export default function IndexPage({ dispatch, questions, loading }:any) {
-var Game = function (_a) {
-  var dispatch = _a.dispatch,
-    questions = _a.questions,
-    loading = _a.loading;
+var antd_1 = require('antd');
+// interface any {
+//   key: string;
+//   name: string;
+//   age: number;
+//   address: string;
+// }
+var originData = [];
+for (var i = 0; i < 100; i++) {
+  originData.push({
+    key: i.toString(),
+    name: 'Edrward ' + i,
+    age: 32,
+    address: 'London Park no. ' + i,
+  });
+}
+var EditableCell = function (_a) {
+  var editing = _a.editing,
+    dataIndex = _a.dataIndex,
+    title = _a.title,
+    inputType = _a.inputType,
+    record = _a.record,
+    index = _a.index,
+    children = _a.children,
+    restProps = __rest(_a, [
+      'editing',
+      'dataIndex',
+      'title',
+      'inputType',
+      'record',
+      'index',
+      'children',
+    ]);
+  var inputNode =
+    inputType === 'number'
+      ? react_1['default'].createElement(antd_1.InputNumber, null)
+      : react_1['default'].createElement(antd_1.Input, null);
   return react_1['default'].createElement(
-    'div',
-    null,
-    react_1['default'].createElement(
-      'h1',
-      { className: index_less_1['default'].title },
-      'Page index',
-    ),
-    react_1['default'].createElement(EndShow2_1['default'], {
-      modeId: '1',
-      updateGrade: function () {},
-      right: 20,
-      nextGame: function () {},
-      again: function () {},
-      returnMap: function () {},
+    'td',
+    __assign({}, restProps),
+    editing
+      ? react_1['default'].createElement(
+          antd_1.Form.Item,
+          {
+            name: dataIndex,
+            style: { margin: 0 },
+            rules: [
+              {
+                required: true,
+                message: 'Please Input ' + title + '!',
+              },
+            ],
+          },
+          inputNode,
+        )
+      : children,
+  );
+};
+var EditableTable = function () {
+  var form = antd_1.Form.useForm()[0];
+  var _a = react_1.useState(originData),
+    data = _a[0],
+    setData = _a[1];
+  var _b = react_1.useState(''),
+    editingKey = _b[0],
+    setEditingKey = _b[1];
+  var isEditing = function (record) {
+    return record.key === editingKey;
+  };
+  var edit = function (record) {
+    // form.setFieldsValue({ name: '', age: '', address: '', ...record });
+    form.setFieldsValue(__assign({}, record));
+    setEditingKey(record.key);
+  };
+  var cancel = function () {
+    setEditingKey('');
+  };
+  var save = function (key) {
+    return __awaiter(void 0, void 0, void 0, function () {
+      var row, newData, index, item, errInfo_1;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            _a.trys.push([0, 2, , 3]);
+            return [4 /*yield*/, form.validateFields()];
+          case 1:
+            row = _a.sent();
+            newData = __spreadArrays(data);
+            index = newData.findIndex(function (item) {
+              return key === item.key;
+            });
+            if (index > -1) {
+              item = newData[index];
+              newData.splice(index, 1, __assign(__assign({}, item), row));
+              setData(newData);
+              setEditingKey('');
+            } else {
+              newData.push(row);
+              setData(newData);
+              setEditingKey('');
+            }
+            return [3 /*break*/, 3];
+          case 2:
+            errInfo_1 = _a.sent();
+            console.log('Validate Failed:', errInfo_1);
+            return [3 /*break*/, 3];
+          case 3:
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  var columns = [
+    {
+      title: 'name',
+      dataIndex: 'name',
+      width: '25%',
+      editable: true,
+    },
+    {
+      title: 'age',
+      dataIndex: 'age',
+      width: '15%',
+      editable: true,
+    },
+    {
+      title: 'address',
+      dataIndex: 'address',
+      width: '40%',
+      editable: true,
+    },
+    {
+      title: 'operation',
+      dataIndex: 'operation',
+      render: function (_, record) {
+        var editable = isEditing(record);
+        console.log({ editable: editable });
+        return editable
+          ? react_1['default'].createElement(
+              'span',
+              null,
+              react_1['default'].createElement(
+                antd_1.Typography.Link,
+                {
+                  onClick: function () {
+                    return save(record.key);
+                  },
+                  style: { marginRight: 8 },
+                },
+                'Save',
+              ),
+              react_1['default'].createElement(
+                antd_1.Popconfirm,
+                { title: 'Sure to cancel?', onConfirm: cancel },
+                react_1['default'].createElement('a', null, 'Cancel'),
+              ),
+            )
+          : react_1['default'].createElement(
+              antd_1.Typography.Link,
+              {
+                disabled: editingKey !== '',
+                onClick: function () {
+                  return edit(record);
+                },
+              },
+              'Edit',
+            );
+      },
+    },
+  ];
+  var mergedColumns = columns.map(function (col) {
+    if (!col.editable) {
+      return col;
+    }
+    return __assign(__assign({}, col), {
+      onCell: function (record) {
+        return {
+          record: record,
+          inputType: col.dataIndex === 'age' ? 'number' : 'text',
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: isEditing(record),
+        };
+      },
+    });
+  });
+  return react_1['default'].createElement(
+    antd_1.Form,
+    { form: form, component: false },
+    react_1['default'].createElement(antd_1.Table, {
+      components: {
+        body: {
+          cell: EditableCell,
+        },
+      },
+      bordered: true,
+      dataSource: data,
+      columns: mergedColumns,
+      rowClassName: 'editable-row',
+      pagination: {
+        onChange: cancel,
+      },
     }),
   );
 };
-function mapStateToProps(state) {
-  // const questions = state.questions.data;
-  return __assign(
-    {},
-    state,
-    // ...listSelector(state, ownProps),
-  );
-}
-exports['default'] = dva_1.connect(mapStateToProps)(Game);
+exports['default'] = EditableTable;

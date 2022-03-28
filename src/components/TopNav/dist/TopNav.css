@@ -3,12 +3,7 @@
   display: flex;
   justify-content: space-between;
   padding: 8px 16px;
-
-  &:hover {
-    // background-color:#dbe4ff;
-  }
-
-  .title {
-    font-size: 1rem;
-  }
+}
+.topnav .title {
+  font-size: 1rem;
 }
