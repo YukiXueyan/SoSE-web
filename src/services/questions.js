@@ -50,3 +50,19 @@ export async function addRecord(data) {
     { method: 'POST', data },
   );
 }
+// update question
+export async function updateQ(data) {
+  return request(`${URL}/question/update?${stringify(data)}`, {
+    method: 'PUT',
+    data,
+  });
+}
+
+// delete question
+// id
+export async function deleteQ(data) {
+  return request(`${URL}/question/add?${stringify(data)}`, {
+    method: 'delete',
+    data,
+  });
+}

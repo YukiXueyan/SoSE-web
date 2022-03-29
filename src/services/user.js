@@ -66,7 +66,8 @@ export async function updateUser(data) {
 }
 // 删除数据
 export async function deleteUser(data) {
-  return request(`${URL}/user/delete?userId=${userId}`, { method: 'delete' });
+  const { id } = data;
+  return request(`${URL}/user/delete?userId=${id}`, { method: 'delete' });
 }
 
 //获取用户信息

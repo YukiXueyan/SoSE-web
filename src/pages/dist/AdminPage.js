@@ -168,6 +168,7 @@ exports.__esModule = true;
 var react_1 = require('react');
 var dva_1 = require('dva');
 var axios_1 = require('axios');
+// 1-问题，2-成就，3-用户
 var antd_1 = require('antd');
 var icons_1 = require('@ant-design/icons');
 var Header = antd_1.Layout.Header,
@@ -206,7 +207,7 @@ var EditableCell = function (_a) {
             style: { margin: 0 },
             rules: [
               {
-                required: true,
+                required: false,
                 message: 'Please Input ' + title + '!',
               },
             ],
@@ -257,10 +258,47 @@ var Admin = function (params) {
       String(record === null || record === void 0 ? void 0 : record.id),
     );
   };
+  //删除
+  var onDelete = function (record) {
+    console.log('onDelete', record);
+    switch (defaultMenuKey) {
+      case '1':
+        dispatch({
+          type: 'questions/deleteQuestion',
+          payload: {
+            id: record.id,
+          },
+        }).then(function () {
+          getQData({ pageSize: pageSize, pageNum: pageNum });
+        });
+        break;
+      case '3':
+        dispatch({
+          type: 'user/deleteUser',
+          payload: {
+            id: record.id,
+          },
+        }).then(function () {
+          console.log('已经删除');
+          getUserData();
+        });
+        break;
+      case '2':
+        // dispatch({
+        //   type: `questions/deleteQuestion`,
+        //   payload: {
+        //     id:record.id
+        //   },
+        // }).then(() => {
+        //   getQData({ pageSize, pageNum });
+        // });
+        break;
+    }
+  };
   var cancel = function () {
     setEditingKey('');
   };
-  var save = function (key) {
+  var save = function (val) {
     return __awaiter(void 0, void 0, void 0, function () {
       var row, errInfo_1;
       return __generator(this, function (_a) {
@@ -270,7 +308,7 @@ var Admin = function (params) {
             return [4 /*yield*/, form.validateFields()];
           case 1:
             row = _a.sent();
-            console.log('save', key, row);
+            onUpdate(row, val);
             return [3 /*break*/, 3];
           case 2:
             errInfo_1 = _a.sent();
@@ -296,6 +334,7 @@ var Admin = function (params) {
   react_1.useEffect(
     function () {
       changeData();
+      changeColumns();
     },
     [defaultMenuKey],
   );
@@ -324,6 +363,26 @@ var Admin = function (params) {
         renderAchieve();
         break;
     }
+  };
+  var onUpdate = function (data, val) {
+    var newData = __assign(__assign({}, val), data);
+    switch (defaultMenuKey) {
+      case '1':
+        dispatch({
+          type: 'questions/updateQuestion',
+          payload: newData,
+        }).then(function () {
+          getQData({ pageSize: pageSize, pageNum: pageNum });
+        });
+        break;
+      case '3':
+        getUserData();
+        break;
+      case '2':
+        getAData();
+        break;
+    }
+    setEditingKey('');
   };
   function getQData(params) {
     var pageNum = params.pageNum,
@@ -404,7 +463,7 @@ var Admin = function (params) {
         },
       },
       {
-        title: 'operation',
+        title: '操作',
         dataIndex: 'operation',
         render: function (_, record) {
           // const editable = true;
@@ -417,27 +476,46 @@ var Admin = function (params) {
                   antd_1.Typography.Link,
                   {
                     onClick: function () {
-                      return save(record.id);
+                      return save(record);
                     },
                     style: { marginRight: 8 },
                   },
-                  'Save',
+                  '\u4FDD\u5B58',
                 ),
                 react_1['default'].createElement(
                   antd_1.Popconfirm,
-                  { title: 'Sure to cancel?', onConfirm: cancel },
-                  react_1['default'].createElement('a', null, 'Cancel'),
+                  {
+                    title: '\u4E0D\u4FDD\u5B58\u5C31\u9000\u51FA\u5417?',
+                    onConfirm: cancel,
+                  },
+                  react_1['default'].createElement('a', null, '\u53D6\u6D88'),
                 ),
               )
             : react_1['default'].createElement(
-                antd_1.Typography.Link,
-                {
-                  disabled: editingKey !== '',
-                  onClick: function () {
-                    return edit(record);
+                'span',
+                null,
+                react_1['default'].createElement(
+                  antd_1.Typography.Link,
+                  {
+                    disabled: editingKey !== '',
+                    onClick: function () {
+                      return edit(record);
+                    },
+                    style: { marginRight: 8 },
                   },
-                },
-                'Edit',
+                  '\u7F16\u8F91',
+                ),
+                react_1['default'].createElement(
+                  antd_1.Popconfirm,
+                  {
+                    title: '\u786E\u8BA4\u5220\u9664\u5417?',
+                    onConfirm: function () {
+                      return onDelete(record);
+                    },
+                    onCancel: cancel,
+                  },
+                  react_1['default'].createElement('a', null, '\u5220\u9664'),
+                ),
               );
         },
       },
@@ -484,10 +562,11 @@ var Admin = function (params) {
         },
       },
       {
-        title: 'operation',
+        title: '操作',
         dataIndex: 'operation',
         render: function (_, record) {
-          var editable = isEditing(record);
+          // const editable = true;
+          var editable = String(record.id) === editingKey;
           return editable
             ? react_1['default'].createElement(
                 'span',
@@ -496,27 +575,46 @@ var Admin = function (params) {
                   antd_1.Typography.Link,
                   {
                     onClick: function () {
-                      return save(record.key);
+                      return save(record);
                     },
                     style: { marginRight: 8 },
                   },
-                  'Save',
+                  '\u4FDD\u5B58',
                 ),
                 react_1['default'].createElement(
                   antd_1.Popconfirm,
-                  { title: 'Sure to cancel?', onConfirm: cancel },
-                  react_1['default'].createElement('a', null, 'Cancel'),
+                  {
+                    title: '\u4E0D\u4FDD\u5B58\u5C31\u9000\u51FA\u5417?',
+                    onConfirm: cancel,
+                  },
+                  react_1['default'].createElement('a', null, '\u53D6\u6D88'),
                 ),
               )
             : react_1['default'].createElement(
-                antd_1.Typography.Link,
-                {
-                  disabled: editingKey !== '',
-                  onClick: function () {
-                    return edit(record);
+                'span',
+                null,
+                react_1['default'].createElement(
+                  antd_1.Typography.Link,
+                  {
+                    disabled: editingKey !== '',
+                    onClick: function () {
+                      return edit(record);
+                    },
+                    style: { marginRight: 8 },
                   },
-                },
-                'Edit',
+                  '\u7F16\u8F91',
+                ),
+                react_1['default'].createElement(
+                  antd_1.Popconfirm,
+                  {
+                    title: '\u786E\u8BA4\u5220\u9664\u5417?',
+                    onConfirm: function () {
+                      return onDelete(record);
+                    },
+                    onCancel: cancel,
+                  },
+                  react_1['default'].createElement('a', null, '\u5220\u9664'),
+                ),
               );
         },
       },
@@ -551,10 +649,11 @@ var Admin = function (params) {
         editable: true,
       },
       {
-        title: 'operation',
+        title: '操作',
         dataIndex: 'operation',
         render: function (_, record) {
-          var editable = isEditing(record);
+          // const editable = true;
+          var editable = String(record.id) === editingKey;
           return editable
             ? react_1['default'].createElement(
                 'span',
@@ -563,27 +662,46 @@ var Admin = function (params) {
                   antd_1.Typography.Link,
                   {
                     onClick: function () {
-                      return save(record.key);
+                      return save(record);
                     },
                     style: { marginRight: 8 },
                   },
-                  'Save',
+                  '\u4FDD\u5B58',
                 ),
                 react_1['default'].createElement(
                   antd_1.Popconfirm,
-                  { title: 'Sure to cancel?', onConfirm: cancel },
-                  react_1['default'].createElement('a', null, 'Cancel'),
+                  {
+                    title: '\u4E0D\u4FDD\u5B58\u5C31\u9000\u51FA\u5417?',
+                    onConfirm: cancel,
+                  },
+                  react_1['default'].createElement('a', null, '\u53D6\u6D88'),
                 ),
               )
             : react_1['default'].createElement(
-                antd_1.Typography.Link,
-                {
-                  disabled: editingKey !== '',
-                  onClick: function () {
-                    return edit(record);
+                'span',
+                null,
+                react_1['default'].createElement(
+                  antd_1.Typography.Link,
+                  {
+                    disabled: editingKey !== '',
+                    onClick: function () {
+                      return edit(record);
+                    },
+                    style: { marginRight: 8 },
                   },
-                },
-                'Edit',
+                  '\u7F16\u8F91',
+                ),
+                react_1['default'].createElement(
+                  antd_1.Popconfirm,
+                  {
+                    title: '\u786E\u8BA4\u5220\u9664\u5417?',
+                    onConfirm: function () {
+                      return onDelete(record);
+                    },
+                    onCancel: cancel,
+                  },
+                  react_1['default'].createElement('a', null, '\u5220\u9664'),
+                ),
               );
         },
       },
@@ -606,7 +724,6 @@ var Admin = function (params) {
       },
     });
   });
-  console.log(defaultMenuKey, editingKey);
   return react_1['default'].createElement(
     antd_1.Layout,
     { style: { minHeight: '100vh' } },
@@ -620,7 +737,6 @@ var Admin = function (params) {
           defaultSelectedKeys: ['1'],
           mode: 'inline',
           onClick: function (val) {
-            console.log(val);
             setEditingKey('');
             setDefaultMenuKey(
               val === null || val === void 0 ? void 0 : val.key,
@@ -656,14 +772,6 @@ var Admin = function (params) {
             icon: react_1['default'].createElement(icons_1.FileOutlined, null),
           },
           '\u7528\u6237\u7BA1\u7406',
-        ),
-        react_1['default'].createElement(
-          antd_1.Menu.Item,
-          {
-            key: '9',
-            icon: react_1['default'].createElement(icons_1.FileOutlined, null),
-          },
-          'Files',
         ),
       ),
     ),

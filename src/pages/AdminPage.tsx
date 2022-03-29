@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import styles from './adminPage.less';
 import axios from 'axios';
 
+// 1-问题，2-成就，3-用户
 import {
   Layout,
   Menu,
@@ -53,7 +54,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
           style={{ margin: 0 }}
           rules={[
             {
-              required: true,
+              required: false,
               message: `Please Input ${title}!`,
             },
           ]}
@@ -89,15 +90,52 @@ const Admin = (params: any) => {
     form.setFieldsValue({ ...record });
     setEditingKey(String(record?.id));
   };
+  //删除
+  const onDelete = (record: any) => {
+    console.log('onDelete', record);
+    switch (defaultMenuKey) {
+      case '1':
+        dispatch({
+          type: `questions/deleteQuestion`,
+          payload: {
+            id: record.id,
+          },
+        }).then(() => {
+          getQData({ pageSize, pageNum });
+        });
+        break;
+      case '3':
+        dispatch({
+          type: `user/deleteUser`,
+          payload: {
+            id: record.id,
+          },
+        }).then(() => {
+          console.log('已经删除');
+          getUserData();
+        });
+        break;
+      case '2':
+        // dispatch({
+        //   type: `questions/deleteQuestion`,
+        //   payload: {
+        //     id:record.id
+        //   },
+        // }).then(() => {
+        //   getQData({ pageSize, pageNum });
+
+        // });
+        break;
+    }
+  };
 
   const cancel = () => {
     setEditingKey('');
   };
-
-  const save = async (key: React.Key) => {
+  const save = async (val: any) => {
     try {
       const row = (await form.validateFields()) as any; // 输入框对象
-      console.log('save', key, row);
+      onUpdate(row, val);
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
@@ -116,6 +154,7 @@ const Admin = (params: any) => {
 
   useEffect(() => {
     changeData();
+    changeColumns();
   }, [defaultMenuKey]);
 
   const changeData = () => {
@@ -143,6 +182,30 @@ const Admin = (params: any) => {
         renderAchieve();
         break;
     }
+  };
+  const onUpdate = (data: any, val: any) => {
+    const newData = {
+      ...val,
+      ...data,
+    };
+
+    switch (defaultMenuKey) {
+      case '1':
+        dispatch({
+          type: `questions/updateQuestion`,
+          payload: newData,
+        }).then(() => {
+          getQData({ pageSize, pageNum });
+        });
+        break;
+      case '3':
+        getUserData();
+        break;
+      case '2':
+        getAData();
+        break;
+    }
+    setEditingKey('');
   };
   function getQData(params: {
     pageNum?: any;
@@ -225,7 +288,7 @@ const Admin = (params: any) => {
       },
 
       {
-        title: 'operation',
+        title: '操作',
         dataIndex: 'operation',
         render: (_: any, record: any) => {
           // const editable = true;
@@ -233,22 +296,32 @@ const Admin = (params: any) => {
           return editable ? (
             <span>
               <Typography.Link
-                onClick={() => save(record.id)}
+                onClick={() => save(record)}
                 style={{ marginRight: 8 }}
               >
-                Save
+                保存
               </Typography.Link>
-              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                <a>Cancel</a>
+              <Popconfirm title="不保存就退出吗?" onConfirm={cancel}>
+                <a>取消</a>
               </Popconfirm>
             </span>
           ) : (
-            <Typography.Link
-              disabled={editingKey !== ''}
-              onClick={() => edit(record)}
-            >
-              Edit
-            </Typography.Link>
+            <span>
+              <Typography.Link
+                disabled={editingKey !== ''}
+                onClick={() => edit(record)}
+                style={{ marginRight: 8 }}
+              >
+                编辑
+              </Typography.Link>
+              <Popconfirm
+                title="确认删除吗?"
+                onConfirm={() => onDelete(record)}
+                onCancel={cancel}
+              >
+                <a>删除</a>
+              </Popconfirm>
+            </span>
           );
         },
       },
@@ -288,29 +361,40 @@ const Admin = (params: any) => {
         render: (val: any) => <span>第{val}关</span>,
       },
       {
-        title: 'operation',
+        title: '操作',
         dataIndex: 'operation',
         render: (_: any, record: any) => {
-          const editable = isEditing(record);
+          // const editable = true;
+          const editable = String(record.id) === editingKey;
           return editable ? (
             <span>
               <Typography.Link
-                onClick={() => save(record.key)}
+                onClick={() => save(record)}
                 style={{ marginRight: 8 }}
               >
-                Save
+                保存
               </Typography.Link>
-              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                <a>Cancel</a>
+              <Popconfirm title="不保存就退出吗?" onConfirm={cancel}>
+                <a>取消</a>
               </Popconfirm>
             </span>
           ) : (
-            <Typography.Link
-              disabled={editingKey !== ''}
-              onClick={() => edit(record)}
-            >
-              Edit
-            </Typography.Link>
+            <span>
+              <Typography.Link
+                disabled={editingKey !== ''}
+                onClick={() => edit(record)}
+                style={{ marginRight: 8 }}
+              >
+                编辑
+              </Typography.Link>
+              <Popconfirm
+                title="确认删除吗?"
+                onConfirm={() => onDelete(record)}
+                onCancel={cancel}
+              >
+                <a>删除</a>
+              </Popconfirm>
+            </span>
           );
         },
       },
@@ -346,29 +430,40 @@ const Admin = (params: any) => {
         editable: true,
       },
       {
-        title: 'operation',
+        title: '操作',
         dataIndex: 'operation',
         render: (_: any, record: any) => {
-          const editable = isEditing(record);
+          // const editable = true;
+          const editable = String(record.id) === editingKey;
           return editable ? (
             <span>
               <Typography.Link
-                onClick={() => save(record.key)}
+                onClick={() => save(record)}
                 style={{ marginRight: 8 }}
               >
-                Save
+                保存
               </Typography.Link>
-              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                <a>Cancel</a>
+              <Popconfirm title="不保存就退出吗?" onConfirm={cancel}>
+                <a>取消</a>
               </Popconfirm>
             </span>
           ) : (
-            <Typography.Link
-              disabled={editingKey !== ''}
-              onClick={() => edit(record)}
-            >
-              Edit
-            </Typography.Link>
+            <span>
+              <Typography.Link
+                disabled={editingKey !== ''}
+                onClick={() => edit(record)}
+                style={{ marginRight: 8 }}
+              >
+                编辑
+              </Typography.Link>
+              <Popconfirm
+                title="确认删除吗?"
+                onConfirm={() => onDelete(record)}
+                onCancel={cancel}
+              >
+                <a>删除</a>
+              </Popconfirm>
+            </span>
           );
         },
       },
@@ -392,7 +487,6 @@ const Admin = (params: any) => {
     };
   });
 
-  console.log(defaultMenuKey, editingKey);
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
@@ -401,7 +495,6 @@ const Admin = (params: any) => {
           defaultSelectedKeys={['1']}
           mode="inline"
           onClick={(val) => {
-            console.log(val);
             setEditingKey('');
             setDefaultMenuKey(val?.key);
           }}
@@ -422,9 +515,6 @@ const Admin = (params: any) => {
             // }}
           >
             用户管理
-          </Menu.Item>
-          <Menu.Item key="9" icon={<FileOutlined />}>
-            Files
           </Menu.Item>
         </Menu>
       </Sider>

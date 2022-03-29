@@ -217,6 +217,60 @@ var _default = {
           }
         }, choiceMode);
       }),
+    updateQuestion:
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function updateQuestion(_ref15, _ref16) {
+        var payload, call, put, _ref17, status, data;
+
+        return regeneratorRuntime.wrap(function updateQuestion$(_context5) {
+          while (1) {
+            switch ((_context5.prev = _context5.next)) {
+              case 0:
+                payload = _ref15.payload;
+                (call = _ref16.call), (put = _ref16.put);
+                _context5.next = 4;
+                return call(_questions.updateQ, payload);
+
+              case 4:
+                _ref17 = _context5.sent;
+                status = _ref17.status;
+                data = _ref17.data;
+                return _context5.abrupt('return', data);
+
+              case 8:
+              case 'end':
+                return _context5.stop();
+            }
+          }
+        }, updateQuestion);
+      }),
+    deleteQuestion:
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function deleteQuestion(_ref18, _ref19) {
+        var payload, call, put, _ref20, status, data;
+
+        return regeneratorRuntime.wrap(function deleteQuestion$(_context6) {
+          while (1) {
+            switch ((_context6.prev = _context6.next)) {
+              case 0:
+                payload = _ref18.payload;
+                (call = _ref19.call), (put = _ref19.put);
+                _context6.next = 4;
+                return call(_questions.deleteQ, payload);
+
+              case 4:
+                _ref20 = _context6.sent;
+                status = _ref20.status;
+                data = _ref20.data;
+                return _context6.abrupt('return', data);
+
+              case 8:
+              case 'end':
+                return _context6.stop();
+            }
+          }
+        }, deleteQuestion);
+      }),
   },
 };
 exports['default'] = _default;

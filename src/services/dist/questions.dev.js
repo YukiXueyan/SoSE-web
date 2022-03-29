@@ -8,6 +8,8 @@ exports.questionListAll = questionListAll;
 exports.passGame = passGame;
 exports.getRecord = getRecord;
 exports.addRecord = addRecord;
+exports.updateQ = updateQ;
+exports.deleteQ = deleteQ;
 
 var _request = _interopRequireDefault(require('../utils/request'));
 
@@ -161,6 +163,59 @@ function addRecord(data) {
         case 1:
         case 'end':
           return _context5.stop();
+      }
+    }
+  });
+} // update question
+
+function updateQ(data) {
+  return regeneratorRuntime.async(function updateQ$(_context6) {
+    while (1) {
+      switch ((_context6.prev = _context6.next)) {
+        case 0:
+          return _context6.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''
+                .concat(_url['default'], '/question/update?')
+                .concat((0, _qs.stringify)(data)),
+              {
+                method: 'PUT',
+                data: data,
+              },
+            ),
+          );
+
+        case 1:
+        case 'end':
+          return _context6.stop();
+      }
+    }
+  });
+} // delete question
+// id
+
+function deleteQ(data) {
+  return regeneratorRuntime.async(function deleteQ$(_context7) {
+    while (1) {
+      switch ((_context7.prev = _context7.next)) {
+        case 0:
+          return _context7.abrupt(
+            'return',
+            (0, _request['default'])(
+              ''
+                .concat(_url['default'], '/question/add?')
+                .concat((0, _qs.stringify)(data)),
+              {
+                method: 'delete',
+                data: data,
+              },
+            ),
+          );
+
+        case 1:
+        case 'end':
+          return _context7.stop();
       }
     }
   });

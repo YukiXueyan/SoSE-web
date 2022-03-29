@@ -13,6 +13,8 @@ import {
   questionList,
   questionListAll,
   addRecord,
+  updateQ,
+  deleteQ,
 } from '../services/questions';
 
 export default {
@@ -54,6 +56,14 @@ export default {
     },
     *choiceMode({ payload }, { call, put }) {
       const { status, data } = yield put({ type: 'changeMode', payload: data });
+      return data;
+    },
+    *updateQuestion({ payload }, { call, put }) {
+      const { status, data } = yield call(updateQ, payload);
+      return data;
+    },
+    *deleteQuestion({ payload }, { call, put }) {
+      const { status, data } = yield call(deleteQ, payload);
       return data;
     },
   },

@@ -228,21 +228,23 @@ function updateUser(data) {
 } // 删除数据
 
 function deleteUser(data) {
+  var id;
   return regeneratorRuntime.async(function deleteUser$(_context8) {
     while (1) {
       switch ((_context8.prev = _context8.next)) {
         case 0:
+          id = data.id;
           return _context8.abrupt(
             'return',
             (0, _request['default'])(
-              ''.concat(_url['default'], '/user/delete?userId=').concat(userId),
+              ''.concat(_url['default'], '/user/delete?userId=').concat(id),
               {
                 method: 'delete',
               },
             ),
           );
 
-        case 1:
+        case 2:
         case 'end':
           return _context8.stop();
       }
