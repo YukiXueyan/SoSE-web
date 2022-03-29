@@ -168,6 +168,9 @@ exports.__esModule = true;
 var react_1 = require('react');
 var dva_1 = require('dva');
 var axios_1 = require('axios');
+var globalData_1 = require('../utils/globalData');
+var qs_1 = require('qs');
+var umi_1 = require('umi');
 // 1-问题，2-成就，3-用户
 var antd_1 = require('antd');
 var icons_1 = require('@ant-design/icons');
@@ -260,7 +263,6 @@ var Admin = function (params) {
   };
   //删除
   var onDelete = function (record) {
-    console.log('onDelete', record);
     switch (defaultMenuKey) {
       case '1':
         dispatch({
@@ -279,19 +281,15 @@ var Admin = function (params) {
             id: record.id,
           },
         }).then(function () {
-          console.log('已经删除');
           getUserData();
         });
         break;
       case '2':
-        // dispatch({
-        //   type: `questions/deleteQuestion`,
-        //   payload: {
-        //     id:record.id
-        //   },
-        // }).then(() => {
-        //   getQData({ pageSize, pageNum });
-        // });
+        axios_1['default']
+          ['delete'](globalData_1.URL + '/achieve/delete?id=' + record.id)
+          .then(function () {
+            getAData();
+          });
         break;
     }
   };
@@ -376,10 +374,21 @@ var Admin = function (params) {
         });
         break;
       case '3':
-        getUserData();
+        console.log('newData', newData);
+        axios_1['default']
+          .put(
+            globalData_1.URL + '/user/updateAdmin?' + qs_1.stringify(newData),
+          )
+          .then(function () {
+            getUserData();
+          });
         break;
       case '2':
-        getAData();
+        axios_1['default']
+          .put(globalData_1.URL + '/achieve/update?' + qs_1.stringify(newData))
+          .then(function () {
+            getAData();
+          });
         break;
     }
     setEditingKey('');
@@ -395,6 +404,7 @@ var Admin = function (params) {
         pageNum: pageNum,
         pageSize: pageSize,
         rand: false,
+        isAll: true,
       },
     }).then(function (res) {
       setDataSource(res || []);
@@ -724,6 +734,20 @@ var Admin = function (params) {
       },
     });
   });
+  var onCreateItem = function () {
+    console.log('onCreateItem');
+    if (defaultMenuKey === '3') {
+      dispatch({
+        type: 'user/addUser',
+        payload: {},
+      }).then(function (res) {
+        getUserData();
+        antd_1.message.success('新建成功');
+      });
+    } else {
+      umi_1.history.push('/admin/detail?key=' + defaultMenuKey);
+    }
+  };
   return react_1['default'].createElement(
     antd_1.Layout,
     { style: { minHeight: '100vh' } },
@@ -787,6 +811,18 @@ var Admin = function (params) {
             className: 'site-layout-background',
             style: { padding: 24, minHeight: 360 },
           },
+          react_1['default'].createElement(
+            Header,
+            {
+              className: 'site-layout-background',
+              style: { padding: '0 8', background: '#fff' },
+            },
+            react_1['default'].createElement(
+              antd_1.Button,
+              { onClick: onCreateItem },
+              '\u65B0\u5EFA',
+            ),
+          ),
           react_1['default'].createElement(
             antd_1.Form,
             { form: form, component: false },

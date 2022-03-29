@@ -16,6 +16,7 @@ export default defineConfig({
         { path: '/endlessMode', component: '@/pages/IndexGame' },
         { path: '/info', component: '@/pages/InfoPage' },
         { path: '/admin', component: '@/pages/AdminPage' },
+        { path: '/admin/detail', component: '@/pages/AdminDetailPage' },
         { path: '/', component: '@/pages/IndexPage' },
       ],
     },

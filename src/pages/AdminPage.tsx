@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import styles from './adminPage.less';
 import axios from 'axios';
+import { Link } from 'umi';
+import { URL } from '../utils/globalData';
+import { stringify } from 'qs';
 
+import { history } from 'umi';
 // 1-问题，2-成就，3-用户
 import {
   Layout,
@@ -14,6 +18,8 @@ import {
   Popconfirm,
   Form,
   Typography,
+  Button,
+  message,
 } from 'antd';
 import {
   DesktopOutlined,
@@ -92,7 +98,6 @@ const Admin = (params: any) => {
   };
   //删除
   const onDelete = (record: any) => {
-    console.log('onDelete', record);
     switch (defaultMenuKey) {
       case '1':
         dispatch({
@@ -111,20 +116,14 @@ const Admin = (params: any) => {
             id: record.id,
           },
         }).then(() => {
-          console.log('已经删除');
           getUserData();
         });
         break;
       case '2':
-        // dispatch({
-        //   type: `questions/deleteQuestion`,
-        //   payload: {
-        //     id:record.id
-        //   },
-        // }).then(() => {
-        //   getQData({ pageSize, pageNum });
+        axios.delete(`${URL}/achieve/delete?id=${record.id}`).then(() => {
+          getAData();
+        });
 
-        // });
         break;
     }
   };
@@ -199,10 +198,16 @@ const Admin = (params: any) => {
         });
         break;
       case '3':
-        getUserData();
+        console.log('newData', newData);
+        axios.put(`${URL}/user/updateAdmin?${stringify(newData)}`).then(() => {
+          getUserData();
+        });
         break;
       case '2':
-        getAData();
+        axios.put(`${URL}/achieve/update?${stringify(newData)}`).then(() => {
+          getAData();
+        });
+
         break;
     }
     setEditingKey('');
@@ -220,6 +225,7 @@ const Admin = (params: any) => {
         pageNum,
         pageSize,
         rand: false,
+        isAll: true,
       },
     }).then((res: any) => {
       setDataSource(res || []);
@@ -487,6 +493,21 @@ const Admin = (params: any) => {
     };
   });
 
+  const onCreateItem = () => {
+    console.log('onCreateItem');
+    if (defaultMenuKey === '3') {
+      dispatch({
+        type: `user/addUser`,
+        payload: {},
+      }).then((res: any) => {
+        getUserData();
+        message.success('新建成功');
+      });
+    } else {
+      history.push(`/admin/detail?key=${defaultMenuKey}`);
+    }
+  };
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
@@ -526,6 +547,12 @@ const Admin = (params: any) => {
           >
             {/* {renderQuestions()} */}
             {/* <Table columns={columns} dataSource={dataSource} /> */}
+            <Header
+              className="site-layout-background"
+              style={{ padding: '0 8', background: '#fff' }}
+            >
+              <Button onClick={onCreateItem}>新建</Button>
+            </Header>
             <Form form={form} component={false}>
               <Table
                 components={{

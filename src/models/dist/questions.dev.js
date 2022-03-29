@@ -7,8 +7,6 @@ exports['default'] = void 0;
 
 var _request = _interopRequireDefault(require('../utils/request'));
 
-var _qs = require('qs');
-
 var _questions = require('../services/questions');
 
 function _interopRequireDefault(obj) {
@@ -64,8 +62,6 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-// import {URL} from '../utils/url';
-var URL = 'http://localhost:3000/';
 var _default = {
   namespace: 'questions',
   state: {

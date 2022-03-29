@@ -1,10 +1,12 @@
-export default function getUser(dispatch) {
-  let userId = null,
+'use strict';
+exports.__esModule = true;
+function getUser(dispatch) {
+  var userId = null,
     user = {};
   dispatch({
     type: 'user/getUserInfo',
     payload: {},
-  }).then((res: any) => {
+  }).then(function (res) {
     if (res && res.length > 0) {
       localStorage.setItem('user', JSON.stringify(res[0]));
       user = res[0];
@@ -12,3 +14,4 @@ export default function getUser(dispatch) {
   });
   return user;
 }
+exports['default'] = getUser;

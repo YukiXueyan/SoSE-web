@@ -1,7 +1,4 @@
 import request from '../utils/request';
-// import {URL} from '../utils/url';
-const URL = 'http://localhost:3000/';
-import { stringify } from 'qs';
 
 // const delay = (millisecond) => {
 //   return new Promise((resolve) => {
