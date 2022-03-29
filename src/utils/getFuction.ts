@@ -1,4 +1,4 @@
-export default function getUser(dispatch) {
+function getUser(dispatch) {
   let userId = null,
     user = {};
   dispatch({
@@ -12,3 +12,16 @@ export default function getUser(dispatch) {
   });
   return user;
 }
+
+const changePoint = (dispatch: any, point: any) => {
+  dispatch({
+    type: `user/addUserPoints`,
+    payload: {
+      point: point,
+    },
+  }).then(() => {
+    getUser(dispatch);
+  });
+};
+
+export { getUser, changePoint };

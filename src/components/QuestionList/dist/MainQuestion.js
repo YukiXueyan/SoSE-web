@@ -164,16 +164,16 @@ var ShowEnd_1 = require('./ShowEnd');
 // import EndShow from './endShow';
 var StoryShow_1 = require('./StoryShow');
 var globalData_1 = require('../../utils/globalData');
-var user =
-  JSON.parse(localStorage.getItem('user') || '')[0] ||
-  JSON.parse(localStorage.getItem('user') || '');
+var getFuction_1 = require('@/utils/getFuction');
 var modeId = localStorage.getItem('modeId') || '0';
 var MainQuestion = function (props) {
   var dispatch = props.dispatch,
     questions = props.questions,
+    user = props.user,
     checkpoint = props.checkpoint,
     setCheckpoint = props.setCheckpoint,
     setStartGame = props.setStartGame;
+  console.log('user', user);
   var _a = react_1.useState(0),
     index = _a[0],
     setIndex = _a[1];
@@ -195,7 +195,13 @@ var MainQuestion = function (props) {
   var _g = react_1.useState(globalData_1.LifeNum),
     life = _g[0],
     setLife = _g[1];
+  var _h = react_1.useState([]),
+    wrongNote = _h[0],
+    setWrongNote = _h[1]; // 错题记录
   var isLastGame = lodash_1['default'].get(checkpoint, 'end') || false;
+  react_1.useEffect(function () {
+    getFuction_1.getUser(dispatch);
+  }, []);
   function getData(params) {
     var checkpoint = params.checkpoint,
       chapterId = params.chapterId,
@@ -270,6 +276,15 @@ var MainQuestion = function (props) {
       } else if (result === false) {
         var newLife = life - 1;
         setLife(newLife);
+        //错题记录
+        var newNoteId =
+          questions === null || questions === void 0
+            ? void 0
+            : questions.data[index].id;
+        var noteList = wrongNote;
+        //@ts-ignore
+        noteList.push(newNoteId);
+        setWrongNote(noteList);
         if (newLife === 0) {
           setEnd(true);
           setLife(globalData_1.LifeNum);
@@ -277,7 +292,9 @@ var MainQuestion = function (props) {
           if (Number(modeId) !== 0) {
             addRecord();
             judgeAchieve();
+            addPoint(right * globalData_1.Question_point);
           }
+          addWrongNote();
         }
       }
       if (
@@ -288,12 +305,41 @@ var MainQuestion = function (props) {
         index
       ) {
         setEnd(true);
+        addPoint(globalData_1.Main_point);
+        addWrongNote();
       }
       //解锁新模式
       //    openEndlessMode(2)
     },
     [index],
   );
+  var addWrongNote = function () {
+    var list = wrongNote;
+    console.log('addWrongNote', list);
+    // list?.map(item => {
+    //   dispatch({
+    //     type: `wrongNote/add`,
+    //     payload: {
+    //       questionId:item
+    //     },
+    //   }).then(() => {
+    //     console.log('wrongNote/add')
+    //   })
+    // })
+    dispatch({
+      type: 'wrongNote/add',
+      payload: {
+        questionId: list,
+      },
+    }).then(function () {
+      console.log('wrongNote/add');
+    });
+    setWrongNote([]);
+  };
+  var addPoint = function (point) {
+    var newPoint = user.data.point + point;
+    getFuction_1.changePoint(dispatch, newPoint);
+  };
   // 添加游戏记录（非主线模式
   var addRecord = function () {
     dispatch({
@@ -363,20 +409,23 @@ var MainQuestion = function (props) {
   var userPassGame = function () {
     return __awaiter(void 0, void 0, void 0, function () {
       var URL, userId, newProgress, data, incomingData;
-      return __generator(this, function (_a) {
-        switch (_a.label) {
+      var _a, _b;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
           case 0:
             URL = 'http://localhost:3000';
-            userId = user.id;
+            userId = user.data.id;
             if (
               !(
-                (user === null || user === void 0 ? void 0 : user.chapterId) ===
+                ((_a = user.data) === null || _a === void 0
+                  ? void 0
+                  : _a.chapterId) ===
                   (checkpoint === null || checkpoint === void 0
                     ? void 0
                     : checkpoint.chapterId) &&
-                (user === null || user === void 0
+                ((_b = user.data) === null || _b === void 0
                   ? void 0
-                  : user.checkpoint) ===
+                  : _b.checkpoint) ===
                   (checkpoint === null || checkpoint === void 0
                     ? void 0
                     : checkpoint.checkpoint) &&
@@ -424,8 +473,8 @@ var MainQuestion = function (props) {
                 }),
             ];
           case 1:
-            incomingData = _a.sent();
-            _a.label = 2;
+            incomingData = _c.sent();
+            _c.label = 2;
           case 2:
             return [2 /*return*/];
         }
@@ -519,7 +568,7 @@ var MainQuestion = function (props) {
               'div',
               { className: QuestionList_less_1['default'].desc },
               index,
-              '  ',
+              ' ',
               Number(modeId) === 0 ? '/' + totalNum : '',
             ),
           ),

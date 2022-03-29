@@ -1,5 +1,6 @@
 'use strict';
 exports.__esModule = true;
+exports.changePoint = exports.getUser = void 0;
 function getUser(dispatch) {
   var userId = null,
     user = {};
@@ -14,4 +15,15 @@ function getUser(dispatch) {
   });
   return user;
 }
-exports['default'] = getUser;
+exports.getUser = getUser;
+var changePoint = function (dispatch, point) {
+  dispatch({
+    type: 'user/addUserPoints',
+    payload: {
+      point: point,
+    },
+  }).then(function () {
+    getUser(dispatch);
+  });
+};
+exports.changePoint = changePoint;

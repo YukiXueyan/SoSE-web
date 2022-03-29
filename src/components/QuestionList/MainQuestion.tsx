@@ -31,17 +31,18 @@ import {
   Menu,
   LifeNum,
   QuestionNum,
+  Question_point,
+  Main_point,
 } from '../../utils/globalData';
+import { getUser, changePoint } from '@/utils/getFuction';
 
-const user =
-  JSON.parse(localStorage.getItem('user') || '')[0] ||
-  JSON.parse(localStorage.getItem('user') || '');
 const modeId = localStorage.getItem('modeId') || '0';
 
 const MainQuestion = (props: any) => {
-  const { dispatch, questions, checkpoint, setCheckpoint, setStartGame } =
+  const { dispatch, questions, user, checkpoint, setCheckpoint, setStartGame } =
     props;
 
+  console.log('user', user);
   const [index, setIndex] = useState(0);
   const [totalNum, setTotalNum] = useState(NaN);
   const [end, setEnd] = useState(false);
@@ -49,9 +50,13 @@ const MainQuestion = (props: any) => {
   const [result, setResult] = useState<boolean | null>(null); // 是否答对
   const [showStory, setShowStory] = useState(false); // 展示故事
   const [life, setLife] = useState(LifeNum);
+  const [wrongNote, setWrongNote] = useState([]); // 错题记录
 
   const isLastGame = _.get(checkpoint, 'end') || false;
 
+  useEffect(() => {
+    getUser(dispatch);
+  }, []);
   function getData(params: {
     checkpoint?: any;
     chapterId?: any;
@@ -119,6 +124,14 @@ const MainQuestion = (props: any) => {
     } else if (result === false) {
       const newLife = life - 1;
       setLife(newLife);
+
+      //错题记录
+      const newNoteId = questions?.data[index].id;
+      const noteList = wrongNote;
+      //@ts-ignore
+      noteList.push(newNoteId);
+      setWrongNote(noteList);
+
       if (newLife === 0) {
         setEnd(true);
         setLife(LifeNum);
@@ -126,19 +139,52 @@ const MainQuestion = (props: any) => {
         if (Number(modeId) !== 0) {
           addRecord();
           judgeAchieve();
+          addPoint(right * Question_point);
         }
+        addWrongNote();
       }
     }
     if (index === questions?.data.length && index) {
       setEnd(true);
+      addPoint(Main_point);
+      addWrongNote();
     }
 
     //解锁新模式
     //    openEndlessMode(2)
   }, [index]);
 
-  // 添加游戏记录（非主线模式
+  const addWrongNote = () => {
+    const list = wrongNote;
+    console.log('addWrongNote', list);
+    // list?.map(item => {
+    //   dispatch({
+    //     type: `wrongNote/add`,
+    //     payload: {
+    //       questionId:item
+    //     },
+    //   }).then(() => {
+    //     console.log('wrongNote/add')
+    //   })
+    // })
+    dispatch({
+      type: `wrongNote/add`,
+      payload: {
+        questionId: list,
+      },
+    }).then(() => {
+      console.log('wrongNote/add');
+    });
 
+    setWrongNote([]);
+  };
+
+  const addPoint = (point: number) => {
+    const newPoint = user.data.point + point;
+    changePoint(dispatch, newPoint);
+  };
+
+  // 添加游戏记录（非主线模式
   const addRecord = () => {
     dispatch({
       type: `questions/successGame`,
@@ -198,10 +244,10 @@ const MainQuestion = (props: any) => {
   // 主线模式通关，修改进度
   const userPassGame = async () => {
     const URL = 'http://localhost:3000';
-    const userId = user.id;
+    const userId = user.data.id;
     if (
-      user?.chapterId === checkpoint?.chapterId &&
-      user?.checkpoint === checkpoint?.checkpoint &&
+      user.data?.chapterId === checkpoint?.chapterId &&
+      user.data?.checkpoint === checkpoint?.checkpoint &&
       right > passRightNum
     ) {
       //通关

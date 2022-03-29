@@ -29,19 +29,20 @@ var userId = localStorage.getItem('userId'); // export async function passGame(d
 // questionId
 
 function addNote(data) {
-  var questionId;
+  var questionId, param;
   return regeneratorRuntime.async(function addNote$(_context) {
     while (1) {
       switch ((_context.prev = _context.next)) {
         case 0:
           questionId = data.questionId;
+          param = JSON.stringify(questionId);
           return _context.abrupt(
             'return',
             (0, _request['default'])(
               ''
                 .concat(_url['default'], '/note/add?userId=')
                 .concat(userId, '&questionId=')
-                .concat(questionId),
+                .concat(param),
               {
                 method: 'POST',
                 data: data,
@@ -49,7 +50,7 @@ function addNote(data) {
             ),
           );
 
-        case 2:
+        case 3:
         case 'end':
           return _context.stop();
       }

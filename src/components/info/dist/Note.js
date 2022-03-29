@@ -22,26 +22,6 @@ var antd_1 = require('antd');
 var icons_1 = require('@ant-design/icons');
 var globalData_1 = require('@/utils/globalData');
 var getFuction_1 = require('@/utils/getFuction');
-var data1 = [
-  {
-    title: 'Title 1',
-  },
-  {
-    title: 'Title 2',
-  },
-  {
-    title: 'Title 3',
-  },
-  {
-    title: 'Title 4',
-  },
-  {
-    title: 'Title 5',
-  },
-  {
-    title: 'Title 6',
-  },
-];
 var Note = function (params) {
   var dispatch = params.dispatch,
     user = params.user;
@@ -53,11 +33,9 @@ var Note = function (params) {
       String(item === null || item === void 0 ? void 0 : item.unlock) === '0'
     );
   };
-  console.log('user', user);
   react_1.useEffect(function () {
     initData();
-    var usere = getFuction_1['default'](dispatch);
-    console.log(usere);
+    getFuction_1.getUser(dispatch);
   }, []);
   var initData = function () {
     dispatch({
@@ -124,13 +102,13 @@ var Note = function (params) {
         antd_1.message.success('解锁成功！');
         initData();
       });
-      getFuction_1['default'](dispatch);
+      getFuction_1.getUser(dispatch);
     });
   };
   var renderItem = function (item) {
-    var optionList = JSON.parse(
-      item === null || item === void 0 ? void 0 : item.options,
-    );
+    var optionList =
+      JSON.parse(item === null || item === void 0 ? void 0 : item.options) ||
+      [];
     var optionStr = optionList.join('   ,   ');
     return react_1['default'].createElement(
       'div',
@@ -138,6 +116,8 @@ var Note = function (params) {
       react_1['default'].createElement(
         'div',
         { className: info_less_1['default'].content },
+        String(item === null || item === void 0 ? void 0 : item.type) === '3' &&
+          react_1['default'].createElement(antd_1.Tag, null, ' ', '判断'),
         item === null || item === void 0 ? void 0 : item.question,
       ),
       react_1['default'].createElement(
@@ -158,7 +138,7 @@ var Note = function (params) {
           react_1['default'].createElement(
             antd_1.Tag,
             { color: 'blue' },
-            '            ',
+            ' ',
             item === null || item === void 0 ? void 0 : item.currentAnswer,
           ),
         ),

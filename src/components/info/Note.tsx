@@ -9,28 +9,7 @@ import {
 } from '@ant-design/icons';
 
 import { unLockPoint } from '@/utils/globalData';
-import getUser from '@/utils/getFuction';
-
-const data1 = [
-  {
-    title: 'Title 1',
-  },
-  {
-    title: 'Title 2',
-  },
-  {
-    title: 'Title 3',
-  },
-  {
-    title: 'Title 4',
-  },
-  {
-    title: 'Title 5',
-  },
-  {
-    title: 'Title 6',
-  },
-];
+import { getUser } from '@/utils/getFuction';
 
 const Note = (params: any) => {
   const { dispatch, user } = params;
@@ -38,11 +17,9 @@ const Note = (params: any) => {
   const [data, setData] = useState([]);
 
   const isLocked = (item: any) => String(item?.unlock) === '0';
-  console.log('user', user);
   useEffect(() => {
     initData();
-    const usere = getUser(dispatch);
-    console.log(usere);
+    getUser(dispatch);
   }, []);
   const initData = () => {
     dispatch({
@@ -113,11 +90,16 @@ const Note = (params: any) => {
   };
 
   const renderItem = (item: any) => {
-    const optionList = JSON.parse(item?.options);
+    const optionList = JSON.parse(item?.options) || [];
     const optionStr = optionList.join('   ,   ');
     return (
       <div className={styles.item}>
-        <div className={styles.content}>{item?.question}</div>
+        <div className={styles.content}>
+          {/* {String(item?.type) === '1' && <Tag > {'单选'}</Tag>}
+        {String(item?.type) === '2' && <Tag > {'多选'}</Tag>} */}
+          {String(item?.type) === '3' && <Tag> {'判断'}</Tag>}
+          {item?.question}
+        </div>
         <div className={styles.options}>{optionStr}</div>
         <div className={styles.tools}>
           <div

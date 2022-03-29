@@ -143,7 +143,7 @@ const URL = 'http://localhost:3000';
 
 const QuestionNum = 10; // 主线模式题目数量
 const Question_point = 10; // 无尽模式-答对一题的分数
-const Main_point = 200; // 主线模式：通关的分数
+const Main_point = 100; // 主线模式：通关的分数
 const unLockPoint = 50; // 错题解锁消耗分数
 
 export {

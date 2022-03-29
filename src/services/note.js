@@ -15,7 +15,8 @@ const userId = localStorage.getItem('userId');
 // questionId
 export async function addNote(data) {
   const { questionId } = data;
-  return request(`${URL}/note/add?userId=${userId}&questionId=${questionId}`, {
+  const param = JSON.stringify(questionId);
+  return request(`${URL}/note/add?userId=${userId}&questionId=${param}`, {
     method: 'POST',
     data,
   });
