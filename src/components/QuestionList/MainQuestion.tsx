@@ -14,6 +14,7 @@ import {
   UnorderedListOutlined,
   HomeOutlined,
   HeartOutlined,
+  CloseSquareOutlined,
   HeartFilled,
   StopFilled,
 } from '@ant-design/icons';
@@ -352,9 +353,10 @@ const MainQuestion = (props: any) => {
 
             <div className={styles.timer}>
               <div className={styles.stop} onClick={stopGame}>
-                <StopFilled />
+                {/* <StopFilled /> */}
+                <CloseSquareOutlined />
               </div>
-              <HeartFilled />
+              <HeartFilled style={{ color: '#e03131' }} />
               <span
                 style={{
                   marginLeft: '8px',

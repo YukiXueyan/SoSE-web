@@ -8,10 +8,6 @@ import _ from 'lodash';
 import styled from './Map.less';
 
 const Map = ({ user, setStartGame, setCheckpoint }: any) => {
-  useEffect(() => {
-    console.log('user', user);
-  }, [user]);
-
   const judge = (item: any) => {
     return (
       user?.chapterId > item?.chapterId ||

@@ -30,7 +30,7 @@ export default {
   },
   reducers: {
     save(state, { payload: user }) {
-      console.log('save-User', user[0]);
+      // console.log('save-User', user[0]);
       return {
         ...state,
         data: user[0],

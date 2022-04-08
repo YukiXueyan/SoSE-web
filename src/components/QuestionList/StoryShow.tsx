@@ -55,7 +55,7 @@ const StoryShow = ({ story, setShowStory, isLastGame }: any) => {
       duration={1000}
     >
       <div className={styled.content} key="showStory">
-        {storyList[index]}
+        <div className={styled.story}>{storyList[index]}</div>
         <div className={styled.btns}>
           <Tooltip placement="topLeft" title={btnWord ? '开始' : '继续'}>
             <Button
