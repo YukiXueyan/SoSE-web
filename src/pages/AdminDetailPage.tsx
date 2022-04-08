@@ -1,11 +1,12 @@
 import React from 'react';
-import { Layout, Form, Input, Button, Radio, InputNumber } from 'antd';
+import { Layout, Form, Input, Button, Radio, InputNumber, message } from 'antd';
 const { Header, Content, Footer } = Layout;
 import { connect } from 'dva';
 import queryString from 'query-string';
 import axios from 'axios';
 import { URL } from '../utils/globalData';
 import { stringify } from 'qs';
+import { history } from 'umi';
 
 const AdminDetail = (props: any) => {
   const query = window.location.search;
@@ -15,17 +16,29 @@ const AdminDetail = (props: any) => {
   const onFinish = (values: any) => {
     console.log('Success:', values);
 
+    const { feature } = values;
+
     switch (key) {
       case '1':
+        axios.post(`${URL}/question/add?${stringify(values)}`).then(() => {
+          message.success({
+            content: '新建成功',
+          });
+          history.push(`/admin`);
+        });
         break;
       case '2':
-        const { feature } = values;
         const feature2 = JSON.parse(feature);
         const data = {
           ...values,
           feature: feature2,
         };
-        axios.post(`${URL}/achieve/addAchieve?${stringify(data)}`);
+        axios.post(`${URL}/achieve/addAchieve?${stringify(data)}`).then(() => {
+          message.success({
+            content: '新建成功',
+          });
+          history.push(`/admin`);
+        });
         break;
     }
   };

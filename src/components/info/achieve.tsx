@@ -8,19 +8,43 @@ import {
 } from '@ant-design/icons';
 // import { IconStar } from ''
 import QueueAnim from 'rc-queue-anim';
+import { message } from 'antd';
 
 const Achieve = (params: any) => {
-  const { dispatch, questions, loading } = params;
+  const { dispatch, questions, loading, user } = params;
   const [achieveList, setAchieveList] = useState([]);
 
   useEffect(() => {
+    initData();
+  }, []);
+
+  const initData = () => {
     dispatch({
       type: `user/getUserAchieve`,
       payload: {},
     }).then((res: any) => {
       setAchieveList(res);
     });
-  }, []);
+  };
+
+  const getAchievePrize = (item: any) => {
+    const point = user.data?.point + item?.gift;
+    dispatch({
+      type: `user/unlockUserAchievePrize`,
+      payload: {
+        id: item?.user_aid,
+      },
+    }).then(() => {
+      dispatch({
+        type: `user/addUserPoints`,
+        payload: {
+          point: point,
+        },
+      });
+      initData();
+      message.success('领取奖励成功(๑•̀ㅂ•́)و✧');
+    });
+  };
 
   const renderItem = (item: any) => {
     return (
@@ -28,10 +52,23 @@ const Achieve = (params: any) => {
         <div className={styles.left}>
           <div className={styles.icon}>
             {item?.userId ? (
-              <img
-                src={require('@/assets/star.svg')}
-                style={{ width: '100%' }}
-              />
+              <>
+                {item?.isGetPride ? (
+                  <img
+                    src={require('@/assets/star.svg')}
+                    style={{ width: '100%' }}
+                  />
+                ) : (
+                  <img
+                    src={require('@/assets/Gift.png')}
+                    // style={{ width: '100%' }}
+                    className={styles.gift}
+                    onClick={() => {
+                      getAchievePrize(item);
+                    }}
+                  />
+                )}
+              </>
             ) : (
               <QuestionOutlined
                 style={{ fontSize: '4rem', color: '#adb5bd' }}
@@ -41,10 +78,12 @@ const Achieve = (params: any) => {
         </div>
         <div className={styles.right}>
           <div className={styles.title}>
-            {item?.userId ? item?.name : '也许这是一个秘密'}
+            {/* {item?.userId ? item?.name : '也许这是一个秘密'} */}
+            {item?.name}
           </div>
           <div className={styles.desc}>
-            {item?.userId ? item?.desc : '继续玩下去就知道了'}
+            {/* {item?.userId ? item?.desc : '继续玩下去就知道了'} */}
+            {item?.desc}
           </div>
         </div>
       </div>

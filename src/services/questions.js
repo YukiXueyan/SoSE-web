@@ -61,7 +61,7 @@ export async function updateQ(data) {
 // delete question
 // id
 export async function deleteQ(data) {
-  return request(`${URL}/question/add?${stringify(data)}`, {
+  return request(`${URL}/question/delete?${stringify(data)}`, {
     method: 'delete',
     data,
   });

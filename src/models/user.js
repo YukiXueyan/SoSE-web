@@ -19,6 +19,7 @@ import {
   unlockMode,
   userRecord,
   addUserAchieve,
+  addUserAchievePrize,
 } from '../services/user';
 
 export default {
@@ -29,6 +30,7 @@ export default {
   },
   reducers: {
     save(state, { payload: user }) {
+      console.log('save-User', user[0]);
       return {
         ...state,
         data: user[0],
@@ -90,6 +92,12 @@ export default {
     //addUserAchieve
     *addUserAchieves({ payload }, { call, put }) {
       const { status, data } = yield call(addUserAchieve, payload);
+      // yield call(userAchieve, payload)
+      return { status, data };
+    },
+    //获取成就奖励
+    *unlockUserAchievePrize({ payload }, { call, put }) {
+      const { status, data } = yield call(addUserAchievePrize, payload);
       // yield call(userAchieve, payload)
       return { status, data };
     },

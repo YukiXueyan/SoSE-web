@@ -1,6 +1,6 @@
 const MaxCheckpoint = 20;
-const passRightNum = 3; // 通关限制
-// g故事情节
+const passRightNum = 1; // 通关限制
+// 故事情节
 const Menu = [
   {
     chapterId: 1,
@@ -141,7 +141,7 @@ const modeId = localStorage.getItem('modeId') || '0';
 
 const URL = 'http://localhost:3000';
 
-const QuestionNum = 10; // 主线模式题目数量
+const QuestionNum = 2; // 主线模式题目数量
 const Question_point = 10; // 无尽模式-答对一题的分数
 const Main_point = 100; // 主线模式：通关的分数
 const unLockPoint = 50; // 错题解锁消耗分数

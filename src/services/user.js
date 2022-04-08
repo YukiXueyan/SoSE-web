@@ -75,3 +75,11 @@ export async function deleteUser(data) {
 export function userRecord(data) {
   return request(`${URL}/record?userId=${userId}&${stringify(data)}`);
 }
+
+export function addUserAchievePrize(data) {
+  const { id } = data;
+  return request(`${URL}/achieve/userAchievePrize?id=${id}`, {
+    method: 'put',
+    data,
+  });
+}

@@ -7,6 +7,7 @@ import { URL } from '../utils/globalData';
 import { stringify } from 'qs';
 
 import { history } from 'umi';
+
 // 1-问题，2-成就，3-用户
 import {
   Layout,
@@ -107,6 +108,7 @@ const Admin = (params: any) => {
           },
         }).then(() => {
           getQData({ pageSize, pageNum });
+          message.success('删除成功');
         });
         break;
       case '3':
@@ -117,11 +119,13 @@ const Admin = (params: any) => {
           },
         }).then(() => {
           getUserData();
+          message.success('删除成功');
         });
         break;
       case '2':
         axios.delete(`${URL}/achieve/delete?id=${record.id}`).then(() => {
           getAData();
+          message.success('删除成功');
         });
 
         break;
@@ -198,7 +202,6 @@ const Admin = (params: any) => {
         });
         break;
       case '3':
-        console.log('newData', newData);
         axios.put(`${URL}/user/updateAdmin?${stringify(newData)}`).then(() => {
           getUserData();
         });
@@ -436,6 +439,30 @@ const Admin = (params: any) => {
         editable: true,
       },
       {
+        title: '属性',
+        dataIndex: 'key',
+        key: 'key',
+        editable: true,
+      },
+      {
+        title: '值',
+        dataIndex: 'value',
+        key: 'value',
+        editable: true,
+      },
+      {
+        title: '奖励',
+        dataIndex: 'gift',
+        key: 'gift',
+        editable: true,
+      },
+      {
+        title: '扩展信息',
+        dataIndex: 'feature',
+        key: 'feature',
+        editable: true,
+      },
+      {
         title: '操作',
         dataIndex: 'operation',
         render: (_: any, record: any) => {
@@ -494,7 +521,6 @@ const Admin = (params: any) => {
   });
 
   const onCreateItem = () => {
-    console.log('onCreateItem');
     if (defaultMenuKey === '3') {
       dispatch({
         type: `user/addUser`,

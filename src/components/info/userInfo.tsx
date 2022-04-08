@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 
 import styles from './info.less';
-import { Button, Popconfirm, Input, Form } from 'antd';
+import { Button, Popconfirm, Input, message } from 'antd';
 const { Search } = Input;
+import { history } from 'umi';
 
 const UserInfo = ({ dispatch, user, loading }: any) => {
   const [changeUserName, setChangeUSerName] = useState(false);
@@ -36,12 +37,18 @@ const UserInfo = ({ dispatch, user, loading }: any) => {
     }).then(() => {
       getInfo();
       setChangeUSerName(false);
+      message.success('修改用户名成功');
     });
   };
   const deleteUser = () => {
     dispatch({
       type: 'user/deleteUser',
       payload: {},
+    }).then((res: any) => {
+      if (res) {
+        message.success('注销成功');
+        history.push('/');
+      }
     });
   };
 
@@ -85,7 +92,7 @@ const UserInfo = ({ dispatch, user, loading }: any) => {
         </div>
       )}
 
-      {/* {renderItem('积分', user?.data?.point)} */}
+      {renderItem('积分', user?.data?.point)}
       {renderItem(
         '目前进度',
         `第${user?.data?.chapterId || '-'}章-第${

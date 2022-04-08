@@ -13,17 +13,30 @@ const IndexPage = ({ dispatch, products }) => {
 
   useEffect(() => {
     localStorage.setItem('modeId', 0);
-  }, []),
-    function addNewUser() {
-      dispatch({
-        type: 'user/addUser',
-      }).then((res) => {
+  }, []);
+
+  function getUser2() {
+    dispatch({
+      type: 'user/addUser',
+    })
+      .then((res) => {
         if (res && res.length > 0) {
           localStorage.setItem('userId', res[0].id);
           localStorage.setItem('user', JSON.stringify(res[0]));
         }
+      })
+      .then(() => {
+        dispatch({
+          type: 'user/getUSerMode',
+          payload: {},
+        }).then((res) => {
+          if (res && res.length > 0) {
+            setUserModeList(res);
+          }
+        });
       });
-    };
+  }
+
   function getUser() {
     dispatch({
       type: 'user/getUserInfo',
@@ -34,7 +47,6 @@ const IndexPage = ({ dispatch, products }) => {
         localStorage.setItem('user', JSON.stringify(res[0]));
       }
     });
-
     dispatch({
       type: 'user/getUSerMode',
       payload: {},
@@ -50,7 +62,7 @@ const IndexPage = ({ dispatch, products }) => {
     if (userId) {
       getUser();
     } else {
-      addNewUser();
+      getUser2();
     }
   }, []);
 

@@ -6,6 +6,7 @@ import {
   QuestionCircleOutlined,
   StarOutlined,
   StarFilled,
+  SwapOutlined,
 } from '@ant-design/icons';
 
 import { unLockPoint } from '@/utils/globalData';
@@ -15,6 +16,7 @@ const Note = (params: any) => {
   const { dispatch, user } = params;
 
   const [data, setData] = useState([]);
+  const [isForkPage, setIsForkPage] = useState(false);
 
   const isLocked = (item: any) => String(item?.unlock) === '0';
   useEffect(() => {
@@ -167,10 +169,27 @@ const Note = (params: any) => {
       </div>
     );
   };
+
   return (
     <div className={styles.note}>
+      <div>当前积分：{user?.data?.point}</div>
+      <Button
+        onClick={() => {
+          // 筛选收藏
+          setIsForkPage(!isForkPage);
+        }}
+      >
+        <SwapOutlined />
+        {isForkPage ? '收藏' : '全部'}
+      </Button>
       <List
-        dataSource={data}
+        dataSource={
+          isForkPage
+            ? data?.filter((item: any) => {
+                return item?.isStar === 1;
+              })
+            : data
+        }
         locale={{
           emptyText: '',
         }}

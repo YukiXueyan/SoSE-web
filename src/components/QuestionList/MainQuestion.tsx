@@ -23,7 +23,6 @@ import styles from './QuestionList.less';
 import ShowTimer from './timer';
 //@ts-ignore
 import EndShow from './ShowEnd';
-// import EndShow from './endShow';
 import StoryShow from './StoryShow';
 
 import {
@@ -42,7 +41,6 @@ const MainQuestion = (props: any) => {
   const { dispatch, questions, user, checkpoint, setCheckpoint, setStartGame } =
     props;
 
-  console.log('user', user);
   const [index, setIndex] = useState(0);
   const [totalNum, setTotalNum] = useState(NaN);
   const [end, setEnd] = useState(false);
@@ -126,7 +124,8 @@ const MainQuestion = (props: any) => {
       setLife(newLife);
 
       //错题记录
-      const newNoteId = questions?.data[index].id;
+
+      const newNoteId = questions?.data[index]?.id;
       const noteList = wrongNote;
       //@ts-ignore
       noteList.push(newNoteId);
@@ -134,7 +133,7 @@ const MainQuestion = (props: any) => {
 
       if (newLife === 0) {
         setEnd(true);
-        setLife(LifeNum);
+        // setLife(LifeNum);
         setResult(null);
         if (Number(modeId) !== 0) {
           addRecord();
@@ -144,7 +143,7 @@ const MainQuestion = (props: any) => {
         addWrongNote();
       }
     }
-    if (index === questions?.data.length && index) {
+    if (index === questions?.data?.length && index) {
       setEnd(true);
       addPoint(Main_point);
       addWrongNote();
@@ -154,9 +153,9 @@ const MainQuestion = (props: any) => {
     //    openEndlessMode(2)
   }, [index]);
 
+  // 添加错题
   const addWrongNote = () => {
     const list = wrongNote;
-    console.log('addWrongNote', list);
     // list?.map(item => {
     //   dispatch({
     //     type: `wrongNote/add`,
@@ -172,8 +171,6 @@ const MainQuestion = (props: any) => {
       payload: {
         questionId: list,
       },
-    }).then(() => {
-      console.log('wrongNote/add');
     });
 
     setWrongNote([]);
@@ -190,7 +187,7 @@ const MainQuestion = (props: any) => {
       type: `questions/successGame`,
       payload: {
         modeId: Number(modeId),
-        grade: right * 20,
+        grade: right * Question_point,
         number: index,
       },
     });
@@ -220,7 +217,7 @@ const MainQuestion = (props: any) => {
     });
   };
 
-  //无尽模式游戏成就
+  //解锁无尽模式游戏成就
   const addAchieve = (id: number) => {
     dispatch({
       type: `user/addUserAchieves`,
@@ -259,11 +256,13 @@ const MainQuestion = (props: any) => {
       const incomingData = await axios
         .put(`${URL}/user/over?userId=${userId}&${stringify(data)}`)
         .then(() => {
-          axios
-            .get(`${URL}/user/info?userId=${userId}`)
-            .then((res: { data: any[] }) => {
-              localStorage.setItem('user', JSON.stringify(res?.data[0]));
-            });
+          // axios
+          //   .get(`${URL}/user/info?userId=${userId}`)
+          //   .then((res: { data: any[] }) => {
+          //     localStorage.setItem('user', JSON.stringify(res?.data[0]));
+          //   });
+
+          getUser(dispatch);
         });
     }
   };
@@ -297,6 +296,7 @@ const MainQuestion = (props: any) => {
     option === current_option ? setResult(true) : setResult(false);
   };
 
+  //下一关
   const nextGame = () => {
     setIndex(0);
 
@@ -312,6 +312,11 @@ const MainQuestion = (props: any) => {
         pageSize: 5,
         pageNum: newProgress.checkpoint,
       },
+    }).then(() => {
+      setEnd(false);
+      setRight(0);
+      setLife(LifeNum);
+      setShowStory(true);
     });
   };
 
@@ -331,6 +336,7 @@ const MainQuestion = (props: any) => {
           nextGame={nextGame}
           again={handleAgain}
           returnMap={returnMap}
+          life={life}
         />
       )}
 
