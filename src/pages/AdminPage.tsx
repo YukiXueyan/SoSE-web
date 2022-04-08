@@ -536,7 +536,19 @@ const Admin = (params: any) => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={onCollapse}
+        style={{
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+        }}
+      >
         <Menu
           theme="dark"
           defaultSelectedKeys={['1']}
@@ -565,7 +577,7 @@ const Admin = (params: any) => {
           </Menu.Item>
         </Menu>
       </Sider>
-      <Layout className="site-layout">
+      <Layout className="site-layout" style={{ marginLeft: 200 }}>
         <Content style={{ margin: '0 16px' }}>
           <div
             className="site-layout-background"
