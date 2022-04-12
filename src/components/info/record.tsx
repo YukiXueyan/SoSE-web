@@ -43,13 +43,14 @@ const Record = (props: any) => {
     return (
       <div className={styles.tabContent}>
         <Timeline mode={'left'}>
-          <Timeline.Item>模式 - 游玩时间 - 成绩</Timeline.Item>
+          <Timeline.Item>模式 - 成绩 - 题目数</Timeline.Item>
           {recordData?.map((v: any) => {
             return (
               <Timeline.Item
-                label={moment(Date(v?.time)).format('YYYY-MM-DD hh:mm')}
+              // label={moment(Date(v?.time)).format('YYYY-MM-DD hh:mm')}
               >
-                {mode[v.modeId - 1]}-{v.playTime}-{v?.number}
+                {moment(Date(v?.time)).format('YYYY-MM-DD hh:mm')} :{' '}
+                {mode[v.modeId - 1]}-{v.grade}-{v?.number}
               </Timeline.Item>
             );
           })}

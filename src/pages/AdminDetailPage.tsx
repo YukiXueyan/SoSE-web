@@ -51,7 +51,7 @@ const AdminDetail = (props: any) => {
     <Layout className="layout">
       <Header></Header>
       <Content style={{ padding: '0 16px' }}>
-        <div className="site-layout-content">
+        <div className="site-layout-content" style={{ padding: '5vh 10vw 0' }}>
           <Form
             name="basic"
             labelCol={{ span: 8 }}

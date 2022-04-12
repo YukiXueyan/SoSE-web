@@ -1,5 +1,5 @@
 const MaxCheckpoint = 20;
-const passRightNum = 1; // 通关限制
+const passRightNum = 0; // 通关限制
 // 故事情节
 const Menu = [
   {

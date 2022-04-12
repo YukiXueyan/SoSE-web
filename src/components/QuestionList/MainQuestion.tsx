@@ -243,6 +243,7 @@ const MainQuestion = (props: any) => {
   const userPassGame = async () => {
     const URL = 'http://localhost:3000';
     const userId = user.data.id;
+
     if (
       user.data?.chapterId === checkpoint?.chapterId &&
       user.data?.checkpoint === checkpoint?.checkpoint &&
@@ -254,6 +255,7 @@ const MainQuestion = (props: any) => {
         chapterId: newProgress?.chapterId,
         checkpoint: newProgress?.checkpoint,
       };
+      console.log('pass');
       const incomingData = await axios
         .put(`${URL}/user/over?userId=${userId}&${stringify(data)}`)
         .then(() => {

@@ -7,6 +7,7 @@ import { URL } from '../utils/globalData';
 import { stringify } from 'qs';
 
 import { history } from 'umi';
+import AdminLogin from '@/components/adminLogin/adminLogin';
 
 // 1-问题，2-成就，3-用户
 import {
@@ -91,6 +92,9 @@ const Admin = (params: any) => {
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState('');
 
+  // const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
+
   const isEditing = (record: any) => String(record.id) === String(editingKey);
 
   const edit = (record: Partial<any> & { key: React.Key }) => {
@@ -158,6 +162,7 @@ const Admin = (params: any) => {
   useEffect(() => {
     changeData();
     changeColumns();
+    setDataSource([]);
   }, [defaultMenuKey]);
 
   const changeData = () => {
@@ -199,16 +204,19 @@ const Admin = (params: any) => {
           payload: newData,
         }).then(() => {
           getQData({ pageSize, pageNum });
+          setEditingKey('');
         });
         break;
       case '3':
         axios.put(`${URL}/user/updateAdmin?${stringify(newData)}`).then(() => {
           getUserData();
+          setEditingKey('');
         });
         break;
       case '2':
         axios.put(`${URL}/achieve/update?${stringify(newData)}`).then(() => {
           getAData();
+          setEditingKey('');
         });
 
         break;
@@ -577,40 +585,46 @@ const Admin = (params: any) => {
           </Menu.Item>
         </Menu>
       </Sider>
-      <Layout className="site-layout" style={{ marginLeft: 200 }}>
-        <Content style={{ margin: '0 16px' }}>
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
-          >
-            {/* {renderQuestions()} */}
-            {/* <Table columns={columns} dataSource={dataSource} /> */}
-            <Header
+      {isLogin ? (
+        <Layout className="site-layout" style={{ marginLeft: 200 }}>
+          <Content style={{ margin: '0 16px' }}>
+            <div
               className="site-layout-background"
-              style={{ padding: '0 8', background: '#fff' }}
+              style={{ padding: 24, minHeight: 360 }}
             >
-              <Button onClick={onCreateItem}>新建</Button>
-            </Header>
-            <Form form={form} component={false}>
-              <Table
-                components={{
-                  body: {
-                    cell: EditableCell,
-                  },
-                }}
-                bordered
-                dataSource={dataSource}
-                columns={mergedColumns}
-                rowClassName="editable-row"
-                pagination={{
-                  onChange: cancel,
-                }}
-              />
-            </Form>
-          </div>
-        </Content>
-        {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
-      </Layout>
+              {/* {renderQuestions()} */}
+              {/* <Table columns={columns} dataSource={dataSource} /> */}
+              <Header
+                className="site-layout-background"
+                style={{ padding: '0 8', background: '#fff' }}
+              >
+                <Button onClick={onCreateItem}>新建</Button>
+              </Header>
+              <Form form={form} component={false}>
+                <Table
+                  components={{
+                    body: {
+                      cell: EditableCell,
+                    },
+                  }}
+                  bordered
+                  dataSource={dataSource}
+                  columns={mergedColumns}
+                  rowClassName="editable-row"
+                  pagination={{
+                    onChange: cancel,
+                  }}
+                />
+              </Form>
+            </div>
+          </Content>
+          {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
+        </Layout>
+      ) : (
+        <Layout className={styles.loginBox}>
+          <AdminLogin setIsLogin={setIsLogin} />
+        </Layout>
+      )}
     </Layout>
   );
 };

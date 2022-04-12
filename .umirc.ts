@@ -35,6 +35,7 @@ export default defineConfig({
   },
   mfsu: {},
   title: '软件工程物语',
+  links: [{ rel: 'icon', href: '@/assets/gameIcon' }],
   404: true,
   dynamicImport: {
     loading: '@/components/PageLoading',

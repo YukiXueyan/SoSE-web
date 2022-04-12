@@ -117,6 +117,8 @@ const IndexPage = ({ dispatch, products }) => {
             The Story of Software engineering
           </span>
           <br />
+          <span style={{ fontSize: '4vh' }}>软件工程物语</span>
+          <br />
         </div>
         <div className={styles.box}>
           <a
@@ -129,6 +131,9 @@ const IndexPage = ({ dispatch, products }) => {
             主线模式
           </a>
           {renderModeListBtn()}
+          <a href="/info" className={styles.boxUnLocked}>
+            详细信息
+          </a>
         </div>
       </div>
     </div>
